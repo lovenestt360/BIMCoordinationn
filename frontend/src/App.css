@@ -1,34 +1,223 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* Klyron Consulting - BIM Coordination Landing Page Styles */
+
+.App {
+  min-height: 100vh;
+  background-color: #020617;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+/* Selection styling */
+::selection {
+  background-color: rgba(14, 165, 233, 0.3);
+  color: #F8FAFC;
 }
 
-.App-link {
-    color: #61dafb;
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #0EA5E9;
+  outline-offset: 2px;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Image loading placeholder */
+img {
+  background-color: #1E293B;
+}
+
+/* Custom button transitions */
+button,
+a {
+  transition: all 0.2s ease;
+}
+
+/* Card base styles */
+.tech-card {
+  background-color: #0F172A;
+  border: 1px solid #1E293B;
+  transition: all 0.3s ease;
+}
+
+.tech-card:hover {
+  border-color: #22D3EE;
+  box-shadow: 0 0 30px -5px rgba(34, 211, 238, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Blueprint background pattern */
+.blueprint-bg {
+  background-color: #020617;
+  background-image: 
+    linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Primary button */
+.btn-primary {
+  background-color: #0EA5E9;
+  color: #0F172A;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #22D3EE;
+  box-shadow: 0 0 20px -5px rgba(14, 165, 233, 0.5);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Outline button */
+.btn-outline {
+  border: 1px solid #0EA5E9;
+  color: #0EA5E9;
+  background: transparent;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background-color: #0EA5E9;
+  color: #0F172A;
+}
+
+/* Glow effects */
+.glow-accent {
+  box-shadow: 0 0 30px -5px rgba(14, 165, 233, 0.3);
+}
+
+.glow-highlight {
+  box-shadow: 0 0 30px -5px rgba(34, 211, 238, 0.3);
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px -5px rgba(14, 165, 233, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px -5px rgba(14, 165, 233, 0.5);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Stagger animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0EA5E9;
+}
+
+/* Form input styles override for dark theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: #F8FAFC;
+  -webkit-box-shadow: 0 0 0px 1000px #1E293B inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Calendar custom styles */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #0EA5E9;
+  --rdp-background-color: #1E293B;
+}
+
+.rdp-day_selected {
+  background-color: #0EA5E9 !important;
+  color: #0F172A !important;
+}
+
+.rdp-day:hover:not(.rdp-day_selected) {
+  background-color: #334155 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .blueprint-bg {
+    background-size: 30px 30px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .glass,
+  .tech-card {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    display: none !important;
+  }
 }
