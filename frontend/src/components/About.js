@@ -5,17 +5,17 @@ const About = () => {
     <section
       id="about"
       data-testid="about-section"
-      className="py-24 lg:py-32 blueprint-bg relative"
-    >
+      className="py-24 lg:py-32 blueprint-bg relative">
+
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="mb-16">
           <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="about-label">// ABOUT</p>
-          <h2 
+          <h2
             data-testid="about-title"
             className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-          >
+            style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+
             Meet the <span className="text-[#0EA5E9]">Engineer</span>
           </h2>
         </div>
@@ -23,35 +23,35 @@ const About = () => {
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Profile Card - Spans 2 columns */}
-          <div 
+          <div
             data-testid="about-profile-card"
-            className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-8 flex flex-col md:flex-row gap-8"
-          >
+            className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-8 flex flex-col md:flex-row gap-8">
+
             {/* Profile Image */}
             <div className="w-full md:w-64 h-64 md:h-auto flex-shrink-0">
-              <div 
-                className="w-full h-full rounded-sm bg-cover bg-center border border-[#1E293B]"
+              <div
+                className="w-full h-full bg-cover bg-center border border-[#1E293B] rounded-sm"
                 style={{
-                  backgroundImage: 'url(https://images.unsplash.com/photo-1646227655718-dd721b681d91?crop=entropy&cs=srgb&fm=jpg&q=85)',
-                }}
-              />
+                  backgroundImage: 'url(https://images.unsplash.com/photo-1646227655718-dd721b681d91?crop=entropy&cs=srgb&fm=jpg&q=85)'
+                }} />
+
             </div>
             
             {/* Bio */}
             <div className="flex flex-col justify-center">
-              <h3 
+              <h3
                 data-testid="about-name"
                 className="text-2xl font-bold mb-1"
-                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-              >
-                Mario Quissico Junior
+                style={{ fontFamily: 'Space Grotesk, sans-serif' }}>Mário Quissico Júnior
+
+
               </h3>
-              <p className="text-[#0EA5E9] font-mono text-sm mb-4">Civil Engineer & BIM Specialist</p>
-              <p className="text-[#94A3B8] leading-relaxed mb-6">
-                With over a decade of experience in construction engineering and BIM coordination, 
-                I founded Klyron Consulting to help construction teams eliminate costly clashes 
-                and streamline their building processes. My mission is to bring digital precision 
-                to every project, ensuring seamless coordination between all disciplines.
+              <p className="text-[#0EA5E9] font-mono text-sm mb-4">BIM Coordinator & Civil Engineer</p>
+              <p className="text-[#94A3B8] leading-relaxed mb-6">Civil Engineer and founder of Klyron Consulting, specialized in BIM Coordination and Clash Detection, delivering high-level coordination that aligns multidisciplinary teams, ensures seamless integration between disciplines, eliminates costly clashes, and provides fully coordinated, execution-ready models with practical solutions — reducing rework, minimizing delays, and bringing clarity to complex projects.
+
+
+
+
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
@@ -64,38 +64,38 @@ const About = () => {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
                   <CheckCircle size={16} className="text-[#22D3EE]" />
-                  <span>AutoCAD Proficient</span>
+                  <span>Autodesk Construction Cloud Expert</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Stats Card */}
-          <div 
+          <div
             data-testid="about-stats-card"
-            className="tech-card rounded-sm bg-[#0F172A] p-8 flex flex-col justify-center"
-          >
+            className="tech-card rounded-sm bg-[#0F172A] p-8 flex flex-col justify-center">
+
             <div className="space-y-8">
               <div>
-                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-experience">10+</p>
+                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-experience">4+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Years of Experience</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="font-mono text-4xl font-bold text-[#22D3EE]" data-testid="stat-projects">150+</p>
+                <p className="font-mono text-4xl font-bold text-[#22D3EE]" data-testid="stat-projects">15+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Projects Completed</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-clashes">50K+</p>
+                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-clashes">45K+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Clashes Resolved</p>
               </div>
             </div>
           </div>
 
           {/* Mission Card */}
-          <div 
+          <div
             data-testid="about-mission-card"
-            className="tech-card rounded-sm bg-[#0F172A] p-8"
-          >
+            className="tech-card rounded-sm bg-[#0F172A] p-8">
+
             <Award size={32} className="text-[#0EA5E9] mb-4" />
             <h4 className="text-lg font-bold mb-3" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
               Our Mission
@@ -107,10 +107,10 @@ const About = () => {
           </div>
 
           {/* Company Card */}
-          <div 
+          <div
             data-testid="about-company-card"
-            className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-8"
-          >
+            className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-8">
+
             <Building2 size={32} className="text-[#22D3EE] mb-4" />
             <h4 className="text-lg font-bold mb-3" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
               Klyron Consulting
@@ -122,20 +122,20 @@ const About = () => {
               that keep your projects on track and within budget.
             </p>
             <div className="flex flex-wrap gap-3">
-              {['Residential', 'Commercial', 'Industrial', 'Healthcare', 'Education'].map((tag) => (
-                <span 
-                  key={tag}
-                  className="px-3 py-1 bg-[#1E293B] rounded-sm text-xs font-mono text-[#94A3B8]"
-                >
+              {['Residential', 'Commercial', 'Industrial', 'Healthcare', 'Education'].map((tag) =>
+              <span
+                key={tag}
+                className="px-3 py-1 bg-[#1E293B] rounded-sm text-xs font-mono text-[#94A3B8]">
+
                   {tag}
                 </span>
-              ))}
+              )}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default About;
