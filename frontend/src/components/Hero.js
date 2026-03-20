@@ -90,7 +90,7 @@ const Hero = () => {
           className="grid grid-cols-3 gap-8 max-w-xl mx-auto mt-16 pt-8 border-t border-[#1E293B] animate-fade-in-up stagger-4">
 
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">150+</p>
+            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">15+</p>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Projects Delivered</p>
           </div>
           <div>
