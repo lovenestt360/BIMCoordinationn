@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Claude Code
+.claude/
+
 # IDE and editors
 .idea/
 .vscode/
@@ -31,6 +34,12 @@ dist/
 dist
 
 # Environment files (comprehensive coverage)
+.env
+.env.local
+.env.*.local
+frontend/.env
+frontend/.env.local
+backend/.env
 
 *token.json*
 *credentials.json*

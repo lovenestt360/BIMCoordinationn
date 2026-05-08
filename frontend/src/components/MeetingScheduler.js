@@ -5,17 +5,10 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../components/ui/select';
-import axios from 'axios';
+import { supabase } from '../lib/supabase';
 import { format, addDays, isBefore, startOfToday } from 'date-fns';
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const ALL_SLOTS = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
 
 const MeetingScheduler = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -31,7 +24,6 @@ const MeetingScheduler = () => {
     notes: '',
   });
 
-  // Fetch available slots when date changes
   useEffect(() => {
     if (selectedDate) {
       fetchAvailableSlots(format(selectedDate, 'yyyy-MM-dd'));
@@ -42,11 +34,16 @@ const MeetingScheduler = () => {
     setIsLoading(true);
     setSelectedTime('');
     try {
-      const response = await axios.get(`${API}/available-slots?date=${date}`);
-      setAvailableSlots(response.data.available_slots);
+      const { data, error } = await supabase
+        .rpc('get_booked_times', { booking_date: date });
+
+      if (error) throw error;
+
+      const bookedTimes = (data || []).map(r => r.booked_time);
+      setAvailableSlots(ALL_SLOTS.filter(slot => !bookedTimes.includes(slot)));
     } catch (error) {
       console.error('Error fetching slots:', error);
-      setAvailableSlots(['09:00', '10:00', '11:00', '14:00', '15:00', '16:00']);
+      setAvailableSlots(ALL_SLOTS);
     } finally {
       setIsLoading(false);
     }
@@ -68,34 +65,36 @@ const MeetingScheduler = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await axios.post(`${API}/meetings`, {
-        ...formData,
+      const { error } = await supabase.from('meeting_requests').insert([{
+        name: formData.name,
+        email: formData.email,
+        company: formData.company || null,
+        notes: formData.notes || null,
         date: format(selectedDate, 'yyyy-MM-dd'),
         time: selectedTime,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      });
+        status: 'pending',
+      }]);
 
-      if (response.data.success) {
-        setSubmitStatus({ 
-          type: 'success', 
-          message: 'Meeting scheduled successfully! You will receive a confirmation email shortly.' 
-        });
-        // Reset form
-        setFormData({ name: '', email: '', company: '', notes: '' });
-        setSelectedDate(null);
-        setSelectedTime('');
-      }
+      if (error) throw error;
+
+      setSubmitStatus({
+        type: 'success',
+        message: 'Meeting scheduled successfully! You will receive a confirmation email shortly.',
+      });
+      setFormData({ name: '', email: '', company: '', notes: '' });
+      setSelectedDate(null);
+      setSelectedTime('');
     } catch (error) {
-      setSubmitStatus({ 
-        type: 'error', 
-        message: error.response?.data?.detail || 'Failed to schedule meeting. Please try again.' 
+      setSubmitStatus({
+        type: 'error',
+        message: error.message || 'Failed to schedule meeting. Please try again.',
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Disable past dates and weekends
   const disabledDays = (date) => {
     const today = startOfToday();
     const maxDate = addDays(today, 60);
@@ -109,7 +108,7 @@ const MeetingScheduler = () => {
       className="py-24 lg:py-32 bg-[#0F172A] relative"
     >
       {/* Background Accent */}
-      <div 
+      <div
         className="absolute inset-0 opacity-5"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1766802981801-4b4a9a1d8f1c?crop=entropy&cs=srgb&fm=jpg&q=85)',
@@ -122,7 +121,7 @@ const MeetingScheduler = () => {
         {/* Section Header */}
         <div className="mb-16 text-center">
           <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="schedule-label">// SCHEDULE</p>
-          <h2 
+          <h2
             data-testid="schedule-title"
             className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
@@ -135,7 +134,7 @@ const MeetingScheduler = () => {
         </div>
 
         {/* Scheduler Card */}
-        <div 
+        <div
           data-testid="scheduler-card"
           className="glass rounded-sm max-w-4xl mx-auto overflow-hidden"
         >
@@ -144,7 +143,7 @@ const MeetingScheduler = () => {
             <div className="p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-[#1E293B]">
               <div className="flex items-center gap-2 mb-6">
                 <CalendarIcon size={20} className="text-[#0EA5E9]" />
-                <h3 
+                <h3
                   className="font-bold"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                 >
@@ -171,7 +170,7 @@ const MeetingScheduler = () => {
                       Available times for {format(selectedDate, 'MMM dd, yyyy')}
                     </span>
                   </div>
-                  
+
                   {isLoading ? (
                     <div className="text-center text-[#94A3B8] py-4">Loading...</div>
                   ) : availableSlots.length > 0 ? (
@@ -204,7 +203,7 @@ const MeetingScheduler = () => {
             <div className="p-6 lg:p-8">
               <div className="flex items-center gap-2 mb-6">
                 <User size={20} className="text-[#0EA5E9]" />
-                <h3 
+                <h3
                   className="font-bold"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                 >
@@ -279,11 +278,11 @@ const MeetingScheduler = () => {
 
                 {/* Status Message */}
                 {submitStatus && (
-                  <div 
+                  <div
                     data-testid="submit-status"
                     className={`flex items-center gap-2 p-3 rounded-sm ${
-                      submitStatus.type === 'success' 
-                        ? 'bg-green-900/30 text-green-400' 
+                      submitStatus.type === 'success'
+                        ? 'bg-green-900/30 text-green-400'
                         : 'bg-red-900/30 text-red-400'
                     }`}
                   >
@@ -298,7 +297,7 @@ const MeetingScheduler = () => {
 
                 {/* Selected Summary */}
                 {selectedDate && selectedTime && (
-                  <div 
+                  <div
                     data-testid="booking-summary"
                     className="p-3 bg-[#1E293B] rounded-sm border border-[#334155]"
                   >

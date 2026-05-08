@@ -4,9 +4,7 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
-import axios from 'axios';
-
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+import { supabase } from '../lib/supabase';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,19 +32,24 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await axios.post(`${API}/contact`, formData);
+      const { error } = await supabase.from('contact_messages').insert([{
+        name: formData.name,
+        email: formData.email,
+        company: formData.company || null,
+        message: formData.message,
+      }]);
 
-      if (response.data.success) {
-        setSubmitStatus({ 
-          type: 'success', 
-          message: 'Message sent successfully! We will get back to you soon.' 
-        });
-        setFormData({ name: '', email: '', company: '', message: '' });
-      }
+      if (error) throw error;
+
+      setSubmitStatus({
+        type: 'success',
+        message: 'Message sent successfully! We will get back to you soon.',
+      });
+      setFormData({ name: '', email: '', company: '', message: '' });
     } catch (error) {
-      setSubmitStatus({ 
-        type: 'error', 
-        message: error.response?.data?.detail || 'Failed to send message. Please try again.' 
+      setSubmitStatus({
+        type: 'error',
+        message: error.message || 'Failed to send message. Please try again.',
       });
     } finally {
       setIsSubmitting(false);
@@ -63,7 +66,7 @@ const Contact = () => {
         {/* Section Header */}
         <div className="mb-16">
           <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="contact-label">// CONTACT</p>
-          <h2 
+          <h2
             data-testid="contact-title"
             className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
@@ -79,21 +82,21 @@ const Contact = () => {
           {/* Contact Info */}
           <div className="space-y-6">
             {/* Email Card */}
-            <div 
+            <div
               data-testid="contact-email-card"
               className="tech-card rounded-sm bg-[#0F172A] p-6"
             >
               <div className="w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4">
                 <Mail size={24} className="text-[#0EA5E9]" />
               </div>
-              <h3 
+              <h3
                 className="font-bold mb-2"
                 style={{ fontFamily: 'Space Grotesk, sans-serif' }}
               >
                 Email Us
               </h3>
-              <a 
-                href="mailto:contact@klyronconsulting.com" 
+              <a
+                href="mailto:contact@klyronconsulting.com"
                 className="text-[#0EA5E9] hover:text-[#22D3EE] transition-colors text-sm"
               >
                 contact@klyronconsulting.com
@@ -101,14 +104,14 @@ const Contact = () => {
             </div>
 
             {/* Location Card */}
-            <div 
+            <div
               data-testid="contact-location-card"
               className="tech-card rounded-sm bg-[#0F172A] p-6"
             >
               <div className="w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4">
                 <MapPin size={24} className="text-[#22D3EE]" />
               </div>
-              <h3 
+              <h3
                 className="font-bold mb-2"
                 style={{ fontFamily: 'Space Grotesk, sans-serif' }}
               >
@@ -121,14 +124,14 @@ const Contact = () => {
             </div>
 
             {/* Response Time */}
-            <div 
+            <div
               data-testid="contact-response-card"
               className="tech-card rounded-sm bg-[#0F172A] p-6"
             >
               <div className="w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4">
                 <Phone size={24} className="text-[#0EA5E9]" />
               </div>
-              <h3 
+              <h3
                 className="font-bold mb-2"
                 style={{ fontFamily: 'Space Grotesk, sans-serif' }}
               >
@@ -142,11 +145,11 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <div 
+          <div
             data-testid="contact-form-container"
             className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-6 lg:p-8"
           >
-            <h3 
+            <h3
               className="text-xl font-bold mb-6"
               style={{ fontFamily: 'Space Grotesk, sans-serif' }}
             >
@@ -223,11 +226,11 @@ const Contact = () => {
 
               {/* Status Message */}
               {submitStatus && (
-                <div 
+                <div
                   data-testid="contact-submit-status"
                   className={`flex items-center gap-2 p-3 rounded-sm ${
-                    submitStatus.type === 'success' 
-                      ? 'bg-green-900/30 text-green-400' 
+                    submitStatus.type === 'success'
+                      ? 'bg-green-900/30 text-green-400'
                       : 'bg-red-900/30 text-red-400'
                   }`}
                 >
