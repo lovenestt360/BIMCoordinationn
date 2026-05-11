@@ -186,8 +186,8 @@ function ownerEmailHtml(record: any, meetLink: string, calendarLink: string): st
 
   <!-- Main Card -->
   <tr><td bgcolor="#1E293B" style="background-color:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
-  <table width="100%" cellpadding="0" cellspacing="0">
-    <tr><td class="card-pad" style="padding:28px 30px">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1E293B">
+    <tr><td class="card-pad" bgcolor="#1E293B" style="padding:28px 30px;background-color:#1E293B">
 
       <!-- Badge -->
       <div style="display:inline-block;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.25);border-radius:20px;padding:4px 12px;margin-bottom:14px">
@@ -301,10 +301,10 @@ function clientEmailHtml(record: any, meetLink: string): string {
 
   <!-- Main Card -->
   <tr><td bgcolor="#1E293B" style="background-color:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
-  <table width="100%" cellpadding="0" cellspacing="0">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1E293B">
 
     <!-- Hero -->
-    <tr><td class="hero-pad" style="background:linear-gradient(160deg,#0a1628 0%,#062318 50%,#0a1628 100%);padding:38px 30px;text-align:center;border-bottom:1px solid #334155">
+    <tr><td class="hero-pad" bgcolor="#0a1628" style="background:linear-gradient(160deg,#0a1628 0%,#062318 50%,#0a1628 100%);padding:38px 30px;text-align:center;border-bottom:1px solid #334155">
       <!-- Checkmark circle -->
       <table cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 18px">
         <tr>
@@ -355,13 +355,13 @@ function clientEmailHtml(record: any, meetLink: string): string {
 
     <!-- Meet Button -->
     ${meetLink ? `
-    <tr><td class="card-pad" style="padding:0 30px 24px;text-align:center">
+    <tr><td class="card-pad" bgcolor="#1E293B" style="padding:0 30px 24px;text-align:center;background-color:#1E293B">
       <p style="margin:0 0 14px;font-size:10px;font-weight:700;color:#475569;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">Join Your Meeting</p>
       ${meetBtn(meetLink, meetCode, true)}
     </td></tr>` : ""}
 
     <!-- Info box -->
-    <tr><td class="card-pad" style="padding:0 30px 24px">
+    <tr><td class="card-pad" bgcolor="#1E293B" style="padding:0 30px 24px;background-color:#1E293B">
       <table cellpadding="0" cellspacing="0" width="100%" style="background:rgba(14,165,233,0.07);border-radius:10px;border:1px solid rgba(14,165,233,0.2)">
         <tr><td style="padding:14px 16px">
           <p style="margin:0 0 5px;font-size:13px;font-weight:600;color:#0EA5E9;font-family:Arial,sans-serif">&#128161; Before the meeting</p>
@@ -371,7 +371,7 @@ function clientEmailHtml(record: any, meetLink: string): string {
     </td></tr>
 
     <!-- Questions -->
-    <tr><td style="padding:0 30px 26px;border-top:1px solid #334155">
+    <tr><td bgcolor="#1E293B" style="padding:0 30px 26px;border-top:1px solid #334155;background-color:#1E293B">
       <p style="margin:18px 0 0;font-size:13px;color:#64748B;line-height:1.7;font-family:Arial,sans-serif">Questions? Reply to this email or<br>contact us at <a href="mailto:contact@klyronconsulting.com" style="color:#0EA5E9;text-decoration:none;font-weight:500">contact@klyronconsulting.com</a></p>
     </td></tr>
 

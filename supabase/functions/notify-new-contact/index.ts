@@ -62,10 +62,10 @@ serve(async (req) => {
 
   <!-- Main Card -->
   <tr><td bgcolor="#1E293B" style="background-color:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
-  <table width="100%" cellpadding="0" cellspacing="0">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1E293B">
 
     <!-- Header -->
-    <tr><td class="card-pad" style="padding:28px 30px;background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 100%);border-bottom:1px solid #334155">
+    <tr><td class="card-pad" bgcolor="#0F172A" style="padding:28px 30px;background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 100%);border-bottom:1px solid #334155">
       <div style="display:inline-block;background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.28);border-radius:20px;padding:4px 12px;margin-bottom:12px">
         <span style="color:#0EA5E9;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif">New Message</span>
       </div>
@@ -74,7 +74,7 @@ serve(async (req) => {
     </td></tr>
 
     <!-- Message -->
-    <tr><td class="card-pad" style="padding:24px 30px 0">
+    <tr><td class="card-pad" bgcolor="#1E293B" style="padding:24px 30px 0;background-color:#1E293B">
       <p style="margin:0 0 10px;font-size:10px;font-weight:700;color:#475569;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">Message</p>
       <table cellpadding="0" cellspacing="0" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;border-left:4px solid #0EA5E9;overflow:hidden">
         <tr><td style="padding:18px">
@@ -84,7 +84,7 @@ serve(async (req) => {
     </td></tr>
 
     <!-- Sender Details -->
-    <tr><td class="card-pad" style="padding:22px 30px 0">
+    <tr><td class="card-pad" bgcolor="#1E293B" style="padding:22px 30px 0;background-color:#1E293B">
       <p style="margin:0 0 10px;font-size:10px;font-weight:700;color:#475569;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">Sender</p>
       <table cellpadding="0" cellspacing="0" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;overflow:hidden">
         <tr style="border-bottom:1px solid #334155">
@@ -103,7 +103,7 @@ serve(async (req) => {
     </td></tr>
 
     <!-- Reply Button -->
-    <tr><td class="card-pad" style="padding:22px 30px 28px">
+    <tr><td class="card-pad" bgcolor="#1E293B" style="padding:22px 30px 28px;background-color:#1E293B">
       <table cellpadding="0" cellspacing="0" class="btn-cell">
         <tr>
           <td class="btn-cell" style="background:#0F172A;border:1px solid #334155;border-radius:8px">
