@@ -4,6 +4,7 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const OWNER_EMAIL = "contact@klyronconsulting.com";
 
 const BASE_CSS = `
+  html,body{background-color:#0F172A}
   body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
   table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
   img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none}
@@ -30,7 +31,7 @@ serve(async (req) => {
     }
 
     const html = `<!DOCTYPE html>
-<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="en" bgcolor="#0F172A" style="background-color:#0F172A" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -38,7 +39,7 @@ serve(async (req) => {
 <title>New Contact Message</title>
 <style>${BASE_CSS}</style>
 </head>
-<body bgcolor="#0F172A" style="margin:0;padding:0;background:#0F172A;background-color:#0F172A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
+<body bgcolor="#0F172A" style="margin:0;padding:0;background:#0F172A;background-color:#0F172A;min-height:100%;width:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
 <div style="display:none;font-size:1px;color:#0F172A;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">New message from ${record.name}${record.company ? " · " + record.company : ""} — ${record.email}</div>
 
 <table class="wrap" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="background:#0F172A;background-color:#0F172A;padding:14px 10px">
