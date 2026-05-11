@@ -16,6 +16,7 @@ const BASE_CSS = `
     .fl{display:block!important;width:100%!important;text-align:center!important;padding:0 0 14px!important;border-right:none!important}
     .fr{display:block!important;width:100%!important;text-align:center!important;padding-left:0!important}
     .h1{font-size:20px!important;line-height:1.3!important}
+    body,.wrap{background-color:#0F172A!important}
   }
 `;
 
@@ -37,10 +38,10 @@ serve(async (req) => {
 <title>New Contact Message</title>
 <style>${BASE_CSS}</style>
 </head>
-<body style="margin:0;padding:0;background:#0F172A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
+<body bgcolor="#0F172A" style="margin:0;padding:0;background:#0F172A;background-color:#0F172A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
 <div style="display:none;font-size:1px;color:#0F172A;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">New message from ${record.name}${record.company ? " · " + record.company : ""} — ${record.email}</div>
 
-<table class="wrap" width="100%" cellpadding="0" cellspacing="0" style="background:#0F172A;padding:14px 10px">
+<table class="wrap" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="background:#0F172A;background-color:#0F172A;padding:14px 10px">
 <tr><td align="center">
 <table cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
 
@@ -128,7 +129,7 @@ serve(async (req) => {
           <td class="fr" style="vertical-align:middle;padding-left:18px">
             <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#9993; <a href="mailto:contact@klyronconsulting.com" style="color:#64748B;text-decoration:none">contact@klyronconsulting.com</a></p>
             <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#127758; <a href="https://www.klyronconsulting.com" style="color:#64748B;text-decoration:none">www.klyronconsulting.com</a></p>
-            <p style="margin:0"><a href="https://www.linkedin.com/company/klyron-consulting" style="display:inline-block;background:#0A66C2;border-radius:3px;padding:1px 6px 2px;font-size:13px;font-weight:800;color:#fff;text-decoration:none;font-family:Arial,sans-serif;line-height:1.5">in</a></p>
+            <p style="margin:0;font-size:12px;color:#64748B;font-family:Arial,sans-serif"><a href="https://www.linkedin.com/company/klyron-consulting" style="text-decoration:none;color:#64748B"><span style="display:inline-block;background:#0A66C2;border-radius:3px;padding:1px 5px 2px;font-size:12px;font-weight:800;color:#fff;font-family:Arial,sans-serif;line-height:1.5;vertical-align:middle;margin-right:5px">in</span>Klyron Consulting</a></p>
           </td>
         </tr></table>
       </td></tr>
