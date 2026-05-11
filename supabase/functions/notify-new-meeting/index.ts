@@ -261,7 +261,7 @@ async function sendEmail(to: string, subject: string, html: string) {
   await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
-    body: JSON.stringify({ from: "Klyron Consulting <onboarding@resend.dev>", to: [to], subject, html }),
+    body: JSON.stringify({ from: "Klyron Consulting <contact@klyronconsulting.com>", to: [to], subject, html }),
   });
 }
 

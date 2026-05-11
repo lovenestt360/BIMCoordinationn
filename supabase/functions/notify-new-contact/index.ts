@@ -19,7 +19,7 @@ serve(async (req) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Klyron Consulting <onboarding@resend.dev>",
+        from: "Klyron Consulting <contact@klyronconsulting.com>",
         to: [OWNER_EMAIL],
         subject: `✉️ New Message: ${record.name}`,
         html: `
