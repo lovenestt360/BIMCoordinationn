@@ -127,7 +127,7 @@ serve(async (req) => {
             <p style="margin:2px 0 0;font-size:9px;font-weight:700;letter-spacing:3px;color:#64748B;text-transform:uppercase;font-family:Arial,sans-serif">CONSULTING</p>
           </td>
           <td class="fr" style="vertical-align:middle;padding-left:18px">
-            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#9993; <a href="mailto:contact@klyronconsulting.com" style="color:#64748B;text-decoration:none">contact@klyronconsulting.com</a></p>
+            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">📧 <a href="mailto:contact@klyronconsulting.com" style="color:#64748B;text-decoration:none">contact@klyronconsulting.com</a></p>
             <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#127758; <a href="https://www.klyronconsulting.com" style="color:#64748B;text-decoration:none">www.klyronconsulting.com</a></p>
             <p style="margin:0;font-size:12px;color:#64748B;font-family:Arial,sans-serif"><a href="https://www.linkedin.com/company/klyron-consulting" style="text-decoration:none;color:#64748B"><span style="display:inline-block;background:#0A66C2;border-radius:3px;padding:1px 5px 2px;font-size:12px;font-weight:800;color:#fff;font-family:Arial,sans-serif;line-height:1.5;vertical-align:middle;margin-right:5px">in</span>Klyron Consulting</a></p>
           </td>
