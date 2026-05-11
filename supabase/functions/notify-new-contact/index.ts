@@ -127,8 +127,8 @@ serve(async (req) => {
           </td>
           <td class="fr" style="vertical-align:middle;padding-left:18px">
             <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#9993; <a href="mailto:contact@klyronconsulting.com" style="color:#64748B;text-decoration:none">contact@klyronconsulting.com</a></p>
-            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#127758; <a href="https://klyronconsulting.com" style="color:#64748B;text-decoration:none">klyronconsulting.com</a></p>
-            <p style="margin:0;font-size:12px;color:#64748B;font-family:Arial,sans-serif">in&nbsp;LinkedIn: Klyron Consulting</p>
+            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#127758; <a href="https://www.klyronconsulting.com" style="color:#64748B;text-decoration:none">www.klyronconsulting.com</a></p>
+            <p style="margin:0"><a href="https://www.linkedin.com/company/klyron-consulting" style="display:inline-block;background:#0A66C2;border-radius:3px;padding:1px 6px 2px;font-size:13px;font-weight:800;color:#fff;text-decoration:none;font-family:Arial,sans-serif;line-height:1.5">in</a></p>
           </td>
         </tr></table>
       </td></tr>

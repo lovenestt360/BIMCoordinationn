@@ -118,8 +118,8 @@ function footerCard(): string {
           </td>
           <td class="fr" style="vertical-align:middle;padding-left:18px">
             <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#9993; <a href="mailto:contact@klyronconsulting.com" style="color:#64748B;text-decoration:none">contact@klyronconsulting.com</a></p>
-            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#127758; <a href="https://klyronconsulting.com" style="color:#64748B;text-decoration:none">klyronconsulting.com</a></p>
-            <p style="margin:0;font-size:12px;color:#64748B;font-family:Arial,sans-serif">in&nbsp;LinkedIn: Klyron Consulting</p>
+            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#127758; <a href="https://www.klyronconsulting.com" style="color:#64748B;text-decoration:none">www.klyronconsulting.com</a></p>
+            <p style="margin:0"><a href="https://www.linkedin.com/company/klyron-consulting" style="display:inline-block;background:#0A66C2;border-radius:3px;padding:1px 6px 2px;font-size:13px;font-weight:800;color:#fff;text-decoration:none;font-family:Arial,sans-serif;line-height:1.5">in</a></p>
           </td>
         </tr></table>
       </td></tr>
@@ -133,23 +133,29 @@ function footerCard(): string {
 function meetBtn(meetLink: string, meetCode: string, center = false): string {
   if (!meetLink) return "";
   const align = center ? "center" : "left";
-  return `<table cellpadding="0" cellspacing="0" class="btn-wrap" align="${align}" style="margin:0 ${center ? "auto" : "0"}">
-    <tr>
-      <td class="btn-cell" style="background:#1a73e8;border-radius:10px;box-shadow:0 4px 16px rgba(26,115,232,0.4)">
-        <a href="${meetLink}" class="btn-a" style="display:inline-table;text-decoration:none;padding:14px 28px">
-          <table cellpadding="0" cellspacing="0"><tr>
-            <td style="vertical-align:middle;padding-right:10px">
-              <img src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png" width="22" height="22" alt="Meet" style="display:block">
-            </td>
-            <td style="vertical-align:middle">
-              <span style="color:#fff;font-size:15px;font-weight:700;font-family:Arial,sans-serif">Join with Google Meet</span>
-            </td>
-          </tr></table>
-        </a>
-      </td>
-    </tr>
-  </table>
-  <p style="margin:8px 0 0;font-size:12px;color:#22D3EE;font-family:Arial,sans-serif">${meetCode}</p>`;
+  return `<table cellpadding="0" cellspacing="0" width="100%">
+    <tr><td align="${align}">
+      <table cellpadding="0" cellspacing="0" class="btn-wrap">
+        <tr>
+          <td class="btn-cell" style="background:#1a73e8;border-radius:10px;box-shadow:0 4px 16px rgba(26,115,232,0.4)">
+            <a href="${meetLink}" class="btn-a" style="display:inline-table;text-decoration:none;padding:14px 28px">
+              <table cellpadding="0" cellspacing="0"><tr>
+                <td style="vertical-align:middle;padding-right:10px">
+                  <img src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png" width="22" height="22" alt="Meet" style="display:block">
+                </td>
+                <td style="vertical-align:middle">
+                  <span style="color:#fff;font-size:15px;font-weight:700;font-family:Arial,sans-serif">Join with Google Meet</span>
+                </td>
+              </tr></table>
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+    <tr><td align="${align}" style="padding-top:8px">
+      <a href="${meetLink}" style="font-size:12px;color:#22D3EE;text-decoration:none;font-family:Arial,sans-serif">${meetCode}</a>
+    </td></tr>
+  </table>`;
 }
 
 function ownerEmailHtml(record: any, meetLink: string, calendarLink: string): string {
