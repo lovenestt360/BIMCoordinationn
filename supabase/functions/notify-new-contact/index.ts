@@ -44,10 +44,10 @@ serve(async (req) => {
 
 <table class="wrap" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="background:#0F172A;background-color:#0F172A;padding:14px 10px">
 <tr><td align="center" bgcolor="#0F172A" style="background-color:#0F172A">
-<table cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
+<table cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="width:100%;max-width:600px;background-color:#0F172A">
 
   <!-- Top bar -->
-  <tr><td style="padding:0 0 12px">
+  <tr><td bgcolor="#0F172A" style="padding:0 0 12px;background-color:#0F172A">
     <table width="100%" cellpadding="0" cellspacing="0"><tr>
       <td style="font-size:11px;color:#475569;font-family:Arial,sans-serif">Official&nbsp;|&nbsp;Klyron Consulting</td>
       <td align="right"><a href="#" style="font-size:11px;color:#475569;text-decoration:none;font-family:Arial,sans-serif">View in browser</a></td>
@@ -55,13 +55,13 @@ serve(async (req) => {
   </td></tr>
 
   <!-- Logo -->
-  <tr><td style="padding:0 0 18px;text-align:center">
+  <tr><td bgcolor="#0F172A" style="padding:0 0 18px;text-align:center;background-color:#0F172A">
     <p style="margin:0;font-size:24px;font-weight:800;letter-spacing:3px;color:#F8FAFC;line-height:1;font-family:Arial,sans-serif">KLYRON<span style="color:#22D3EE">.</span></p>
     <p style="margin:2px 0 0;font-size:9px;font-weight:700;letter-spacing:4px;color:#64748B;text-transform:uppercase;font-family:Arial,sans-serif">CONSULTING</p>
   </td></tr>
 
   <!-- Main Card -->
-  <tr><td style="background:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
+  <tr><td bgcolor="#1E293B" style="background-color:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
   <table width="100%" cellpadding="0" cellspacing="0">
 
     <!-- Header -->
@@ -119,7 +119,7 @@ serve(async (req) => {
   </td></tr>
 
   <!-- Footer Card -->
-  <tr><td style="padding:18px 0 6px">
+  <tr><td bgcolor="#0F172A" style="padding:18px 0 6px;background-color:#0F172A">
     <table cellpadding="0" cellspacing="0" width="100%" style="background:#1E293B;border-radius:12px;border:1px solid #334155">
       <tr><td style="padding:18px 22px">
         <table cellpadding="0" cellspacing="0" width="100%"><tr>
