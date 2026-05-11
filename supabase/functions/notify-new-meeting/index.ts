@@ -227,58 +227,47 @@ function clientEmailHtml(record: any, meetLink: string): string {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Consultation Confirmed</title>
 </head>
-<body style="margin:0;padding:0;background:#F1F3F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#F1F3F4;padding:24px 16px">
+<body style="margin:0;padding:0;background:#0F172A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0F172A;padding:24px 16px">
   <tr><td align="center">
   <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">
 
     <!-- Brand -->
     <tr>
-      <td style="padding:0 0 16px">
-        <table cellpadding="0" cellspacing="0">
-          <tr>
-            <td style="background:#0F172A;border-radius:8px;padding:10px 18px">
-              <span style="color:#0EA5E9;font-size:18px;font-weight:700;letter-spacing:1px">KLYRON</span><span style="color:#22D3EE;font-size:18px;font-weight:700">.</span>
-            </td>
-          </tr>
-        </table>
+      <td style="padding:0 0 20px;text-align:center">
+        <span style="color:#0EA5E9;font-size:22px;font-weight:700;letter-spacing:2px">KLYRON</span><span style="color:#22D3EE;font-size:22px;font-weight:700">.</span>
       </td>
     </tr>
 
     <!-- Main Card -->
     <tr>
-      <td style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+      <td style="background:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
 
         <!-- Header -->
         <tr>
-          <td style="background:linear-gradient(135deg,#064E3B 0%,#065F46 100%);padding:32px 32px 28px;text-align:center">
-            <div style="width:56px;height:56px;background:rgba(52,211,153,0.2);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:56px">✅</div>
-            <h1 style="margin:0;color:#F8FAFC;font-size:22px;font-weight:700">Consultation Confirmed!</h1>
-            <p style="margin:8px 0 0;color:#6EE7B7;font-size:14px">We look forward to speaking with you</p>
-          </td>
-        </tr>
-
-        <!-- Greeting -->
-        <tr>
-          <td style="padding:28px 32px 0">
-            <p style="margin:0;font-size:15px;color:#374151">Hi <strong>${record.name}</strong>,</p>
-            <p style="margin:8px 0 0;font-size:14px;color:#6B7280;line-height:1.6">Your BIM consultation with <strong>Klyron Consulting</strong> has been scheduled. Here are your meeting details:</p>
+          <td style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 100%);padding:32px;text-align:center;border-bottom:1px solid #334155">
+            <div style="width:60px;height:60px;background:rgba(34,211,238,0.1);border:2px solid rgba(34,211,238,0.3);border-radius:50%;margin:0 auto 16px;line-height:60px;font-size:28px;text-align:center">✅</div>
+            <div style="display:inline-block;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);border-radius:20px;padding:4px 14px;margin-bottom:12px">
+              <span style="color:#22D3EE;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">Confirmed</span>
+            </div>
+            <h1 style="margin:0;color:#F8FAFC;font-size:24px;font-weight:700">Consultation Confirmed!</h1>
+            <p style="margin:8px 0 0;color:#94A3B8;font-size:14px">We look forward to speaking with you, ${record.name}</p>
           </td>
         </tr>
 
         <!-- Event Card -->
         <tr>
-          <td style="padding:20px 32px 0">
-            <table cellpadding="0" cellspacing="0" width="100%" style="background:#F8FAFC;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden">
+          <td style="padding:28px 32px 0">
+            <table cellpadding="0" cellspacing="0" width="100%" style="background:#0F172A;border-radius:12px;border:1px solid #334155;overflow:hidden">
               <tr>
-                <td style="padding:20px 20px 16px;border-bottom:1px solid #E2E8F0">
+                <td style="padding:20px;border-bottom:1px solid #334155">
                   <table cellpadding="0" cellspacing="0">
                     <tr>
-                      <td style="padding-right:12px;font-size:28px;vertical-align:top">📅</td>
+                      <td style="padding-right:14px;font-size:32px;vertical-align:top;line-height:1">📅</td>
                       <td>
-                        <p style="margin:0;font-size:16px;font-weight:700;color:#1E293B">BIM Consultation</p>
-                        <p style="margin:4px 0 0;font-size:13px;color:#64748B">${formatDate(record.date)}</p>
-                        <p style="margin:2px 0 0;font-size:13px;color:#64748B">${record.time} – ${endTime(record.time)} · ${record.timezone}</p>
+                        <p style="margin:0;font-size:16px;font-weight:700;color:#F8FAFC">BIM Consultation</p>
+                        <p style="margin:4px 0 0;font-size:13px;color:#0EA5E9;font-weight:500">${formatDate(record.date)}</p>
+                        <p style="margin:2px 0 0;font-size:13px;color:#94A3B8">${record.time} – ${endTime(record.time)} · ${record.timezone}</p>
                       </td>
                     </tr>
                   </table>
@@ -287,8 +276,8 @@ function clientEmailHtml(record: any, meetLink: string): string {
               ${record.notes ? `
               <tr>
                 <td style="padding:14px 20px">
-                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:1px;text-transform:uppercase">Your Notes</p>
-                  <p style="margin:0;font-size:13px;color:#475569;line-height:1.5">${record.notes}</p>
+                  <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#64748B;letter-spacing:1px;text-transform:uppercase">Your Notes</p>
+                  <p style="margin:0;font-size:13px;color:#CBD5E1;line-height:1.6">${record.notes}</p>
                 </td>
               </tr>` : ""}
             </table>
@@ -298,11 +287,11 @@ function clientEmailHtml(record: any, meetLink: string): string {
         <!-- Meet Button -->
         ${meetLink ? `
         <tr>
-          <td style="padding:24px 32px 0;text-align:center">
-            <p style="margin:0 0 14px;font-size:13px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:1px">Join Your Meeting</p>
+          <td style="padding:28px 32px 0;text-align:center">
+            <p style="margin:0 0 16px;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:1.5px">Join Your Meeting</p>
             <table cellpadding="0" cellspacing="0" align="center">
               <tr>
-                <td style="background:#1a73e8;border-radius:12px;box-shadow:0 6px 20px rgba(26,115,232,0.4)">
+                <td style="background:#1a73e8;border-radius:12px;box-shadow:0 8px 24px rgba(26,115,232,0.5)">
                   <a href="${meetLink}" style="display:inline-table;text-decoration:none;padding:16px 36px">
                     <table cellpadding="0" cellspacing="0">
                       <tr>
@@ -318,18 +307,18 @@ function clientEmailHtml(record: any, meetLink: string): string {
                 </td>
               </tr>
             </table>
-            <p style="margin:10px 0 0;color:#94A3B8;font-size:12px">${meetCode}</p>
+            <p style="margin:10px 0 0;color:#64748B;font-size:12px">${meetCode}</p>
           </td>
         </tr>` : ""}
 
         <!-- Info Box -->
         <tr>
           <td style="padding:24px 32px">
-            <table cellpadding="0" cellspacing="0" width="100%" style="background:#EFF6FF;border-radius:10px;border:1px solid #BFDBFE">
+            <table cellpadding="0" cellspacing="0" width="100%" style="background:rgba(14,165,233,0.08);border-radius:10px;border:1px solid rgba(14,165,233,0.2)">
               <tr>
-                <td style="padding:14px 16px">
-                  <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#1D4ED8">💡 Before the meeting</p>
-                  <p style="margin:0;font-size:13px;color:#3B82F6;line-height:1.6">Save the Google Meet link above. You can join from any device — computer, tablet or phone. No download required.</p>
+                <td style="padding:16px 20px">
+                  <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#0EA5E9">💡 Before the meeting</p>
+                  <p style="margin:0;font-size:13px;color:#94A3B8;line-height:1.6">Save the Google Meet link above. You can join from any device — computer, tablet or phone. No download required.</p>
                 </td>
               </tr>
             </table>
@@ -338,8 +327,8 @@ function clientEmailHtml(record: any, meetLink: string): string {
 
         <!-- Contact -->
         <tr>
-          <td style="padding:0 32px 28px;border-top:1px solid #F1F3F4">
-            <p style="margin:16px 0 0;font-size:13px;color:#6B7280">Questions? Reply to this email or contact us at <a href="mailto:contact@klyronconsulting.com" style="color:#0EA5E9;text-decoration:none;font-weight:500">contact@klyronconsulting.com</a></p>
+          <td style="padding:0 32px 28px;border-top:1px solid #334155">
+            <p style="margin:16px 0 0;font-size:13px;color:#64748B">Questions? Contact us at <a href="mailto:contact@klyronconsulting.com" style="color:#0EA5E9;text-decoration:none;font-weight:500">contact@klyronconsulting.com</a></p>
           </td>
         </tr>
 
@@ -349,7 +338,7 @@ function clientEmailHtml(record: any, meetLink: string): string {
     <!-- Footer -->
     <tr>
       <td style="padding:20px 0 0;text-align:center">
-        <p style="margin:0;font-size:12px;color:#94A3B8">Klyron Consulting · <a href="https://klyronconsulting.com" style="color:#94A3B8">klyronconsulting.com</a></p>
+        <p style="margin:0;font-size:12px;color:#475569">Klyron Consulting · <a href="https://klyronconsulting.com" style="color:#475569">klyronconsulting.com</a></p>
       </td>
     </tr>
 
