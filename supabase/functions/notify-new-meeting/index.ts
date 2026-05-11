@@ -177,8 +177,8 @@ function ownerEmailHtml(record: any, meetLink: string, calendarLink: string): st
 <body bgcolor="#0F172A" style="margin:0;padding:0;background:#0F172A;background-color:#0F172A;min-height:100%;width:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
 <div style="display:none;font-size:1px;color:#0F172A;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">New booking from ${record.name} — ${fullDate} at ${record.time}</div>
 
-<table class="wrap" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="background:#0F172A;background-color:#0F172A;padding:14px 10px">
-<tr><td align="center">
+<table class="wrap" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="background:#0F172A;background-color:#0F172A;padding:14px 10px">
+<tr><td align="center" bgcolor="#0F172A" style="background-color:#0F172A">
 <table cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
 
   ${topBar()}
@@ -292,8 +292,8 @@ function clientEmailHtml(record: any, meetLink: string): string {
 <body bgcolor="#0F172A" style="margin:0;padding:0;background:#0F172A;background-color:#0F172A;min-height:100%;width:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
 <div style="display:none;font-size:1px;color:#0F172A;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">Your BIM consultation with Klyron Consulting is confirmed for ${fullDate} at ${record.time}. We look forward to speaking with you!</div>
 
-<table class="wrap" width="100%" cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="background:#0F172A;background-color:#0F172A;padding:14px 10px">
-<tr><td align="center">
+<table class="wrap" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#0F172A" style="background:#0F172A;background-color:#0F172A;padding:14px 10px">
+<tr><td align="center" bgcolor="#0F172A" style="background-color:#0F172A">
 <table cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
 
   ${topBar()}
