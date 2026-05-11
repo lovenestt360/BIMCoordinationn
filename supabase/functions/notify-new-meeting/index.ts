@@ -6,6 +6,8 @@ const GOOGLE_CLIENT_ID = Deno.env.get("GOOGLE_CLIENT_ID");
 const GOOGLE_CLIENT_SECRET = Deno.env.get("GOOGLE_CLIENT_SECRET");
 const GOOGLE_REFRESH_TOKEN = Deno.env.get("GOOGLE_REFRESH_TOKEN");
 
+const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
 async function getAccessToken(): Promise<string> {
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
@@ -64,155 +66,200 @@ function formatDate(dateStr: string): string {
 
 function endTime(time: string): string {
   const [h, m] = time.split(":").map(Number);
-  const endH = h + 1;
-  return `${String(endH).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  return `${String(h + 1).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+const BASE_CSS = `
+  body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+  table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
+  img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none}
+  a{text-decoration:none}
+  @media only screen and (max-width:600px){
+    .wrap{padding:10px 8px!important}
+    .card-pad{padding:22px 16px!important}
+    .hero-pad{padding:30px 16px!important}
+    .btn-wrap{width:100%!important}
+    .btn-cell{width:100%!important;display:block!important}
+    .btn-a{display:block!important;padding:15px 16px!important;text-align:center!important;box-sizing:border-box!important}
+    .stack{display:block!important;width:100%!important;padding:3px 0!important;border-left:none!important}
+    .cal-icon{display:block!important;width:100%!important;text-align:center!important;padding:0 0 12px!important}
+    .cal-info{display:block!important;width:100%!important;text-align:center!important}
+    .fl{display:block!important;width:100%!important;text-align:center!important;padding:0 0 14px!important;border-right:none!important}
+    .fr{display:block!important;width:100%!important;text-align:center!important;padding-left:0!important}
+    .h1{font-size:22px!important;line-height:1.3!important}
+    .h1g{font-size:22px!important;line-height:1.3!important}
+  }
+`;
+
+function topBar(): string {
+  return `<tr><td style="padding:0 0 12px">
+    <table width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td style="font-size:11px;color:#475569;font-family:Arial,sans-serif">Official&nbsp;|&nbsp;Klyron Consulting</td>
+      <td align="right"><a href="#" style="font-size:11px;color:#475569;text-decoration:none;font-family:Arial,sans-serif">View in browser</a></td>
+    </tr></table>
+  </td></tr>`;
+}
+
+function logoRow(): string {
+  return `<tr><td style="padding:0 0 18px;text-align:center">
+    <p style="margin:0;font-size:24px;font-weight:800;letter-spacing:3px;color:#F8FAFC;line-height:1;font-family:Arial,sans-serif">KLYRON<span style="color:#22D3EE">.</span></p>
+    <p style="margin:2px 0 0;font-size:9px;font-weight:700;letter-spacing:4px;color:#64748B;text-transform:uppercase;font-family:Arial,sans-serif">CONSULTING</p>
+  </td></tr>`;
+}
+
+function footerCard(): string {
+  return `<tr><td style="padding:18px 0 6px">
+    <table cellpadding="0" cellspacing="0" width="100%" style="background:#1E293B;border-radius:12px;border:1px solid #334155">
+      <tr><td style="padding:18px 22px">
+        <table cellpadding="0" cellspacing="0" width="100%"><tr>
+          <td class="fl" style="vertical-align:middle;padding-right:18px;border-right:1px solid #334155;width:1%;white-space:nowrap">
+            <p style="margin:0;font-size:19px;font-weight:800;color:#F8FAFC;letter-spacing:2px;line-height:1;font-family:Arial,sans-serif">KLYRON<span style="color:#22D3EE">.</span></p>
+            <p style="margin:2px 0 0;font-size:9px;font-weight:700;letter-spacing:3px;color:#64748B;text-transform:uppercase;font-family:Arial,sans-serif">CONSULTING</p>
+          </td>
+          <td class="fr" style="vertical-align:middle;padding-left:18px">
+            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#9993; <a href="mailto:contact@klyronconsulting.com" style="color:#64748B;text-decoration:none">contact@klyronconsulting.com</a></p>
+            <p style="margin:0 0 4px;font-size:12px;color:#64748B;font-family:Arial,sans-serif">&#127758; <a href="https://klyronconsulting.com" style="color:#64748B;text-decoration:none">klyronconsulting.com</a></p>
+            <p style="margin:0;font-size:12px;color:#64748B;font-family:Arial,sans-serif">in&nbsp;LinkedIn: Klyron Consulting</p>
+          </td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:10px 22px 14px;border-top:1px solid #334155;text-align:center">
+        <p style="margin:0;font-size:12px;font-weight:600;color:#22C55E;font-family:Arial,sans-serif">Precision Before, During &amp; Beyond Construction.</p>
+      </td></tr>
+    </table>
+  </td></tr>`;
+}
+
+function meetBtn(meetLink: string, meetCode: string, center = false): string {
+  if (!meetLink) return "";
+  const align = center ? "center" : "left";
+  return `<table cellpadding="0" cellspacing="0" class="btn-wrap" align="${align}" style="margin:0 ${center ? "auto" : "0"}">
+    <tr>
+      <td class="btn-cell" style="background:#1a73e8;border-radius:10px;box-shadow:0 4px 16px rgba(26,115,232,0.4)">
+        <a href="${meetLink}" class="btn-a" style="display:inline-table;text-decoration:none;padding:14px 28px">
+          <table cellpadding="0" cellspacing="0"><tr>
+            <td style="vertical-align:middle;padding-right:10px">
+              <img src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png" width="22" height="22" alt="Meet" style="display:block">
+            </td>
+            <td style="vertical-align:middle">
+              <span style="color:#fff;font-size:15px;font-weight:700;font-family:Arial,sans-serif">Join with Google Meet</span>
+            </td>
+          </tr></table>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <p style="margin:8px 0 0;font-size:12px;color:#22D3EE;font-family:Arial,sans-serif">${meetCode}</p>`;
 }
 
 function ownerEmailHtml(record: any, meetLink: string, calendarLink: string): string {
   const meetCode = meetLink ? meetLink.replace("https://", "") : "";
+  const fullDate = formatDate(record.date);
+  const tz = record.timezone || "UTC";
+
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>New Meeting Request</title>
+<meta name="x-apple-disable-message-reformatting">
+<title>New Meeting Booking</title>
+<style>${BASE_CSS}</style>
 </head>
-<body style="margin:0;padding:0;background:#F1F3F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#F1F3F4;padding:24px 16px">
-  <tr><td align="center">
-  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">
+<body style="margin:0;padding:0;background:#0F172A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
+<div style="display:none;font-size:1px;color:#0F172A;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">New booking from ${record.name} — ${fullDate} at ${record.time}</div>
 
-    <!-- Logo / Brand -->
-    <tr>
-      <td style="padding:0 0 16px">
-        <table cellpadding="0" cellspacing="0">
-          <tr>
-            <td style="background:#0F172A;border-radius:8px;padding:10px 18px">
-              <span style="color:#0EA5E9;font-size:18px;font-weight:700;letter-spacing:1px">KLYRON</span><span style="color:#22D3EE;font-size:18px;font-weight:700">.</span>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+<table class="wrap" width="100%" cellpadding="0" cellspacing="0" style="background:#0F172A;padding:14px 10px">
+<tr><td align="center">
+<table cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
 
-    <!-- Main Card -->
-    <tr>
-      <td style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+  ${topBar()}
+  ${logoRow()}
 
-        <!-- Header Banner -->
+  <!-- Main Card -->
+  <tr><td style="background:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr><td class="card-pad" style="padding:28px 30px">
+
+      <!-- Badge -->
+      <div style="display:inline-block;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.25);border-radius:20px;padding:4px 12px;margin-bottom:14px">
+        <span style="color:#22D3EE;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif">New Booking</span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="h1" style="margin:0 0 16px;color:#F8FAFC;font-size:24px;font-weight:700;line-height:1.3;font-family:Arial,sans-serif">${record.name} booked a consultation</h1>
+
+      <!-- Date / Time / Timezone row -->
+      <table cellpadding="0" cellspacing="0" style="margin-bottom:22px">
         <tr>
-          <td style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 100%);padding:32px 32px 28px">
-            <table cellpadding="0" cellspacing="0" width="100%">
-              <tr>
-                <td>
-                  <div style="display:inline-block;background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);border-radius:20px;padding:4px 12px;margin-bottom:12px">
-                    <span style="color:#0EA5E9;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">New Booking</span>
-                  </div>
-                  <h1 style="margin:0;color:#F8FAFC;font-size:24px;font-weight:700;line-height:1.3">📅 ${record.name} booked a consultation</h1>
-                  <p style="margin:8px 0 0;color:#94A3B8;font-size:14px">${formatDate(record.date)} · ${record.time} – ${endTime(record.time)}</p>
-                </td>
-              </tr>
-            </table>
+          <td class="stack" style="padding-right:14px;white-space:nowrap">
+            <span style="font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">&#128197; ${fullDate}</span>
+          </td>
+          <td class="stack" style="padding:0 14px;border-left:1px solid #334155;white-space:nowrap">
+            <span style="font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">&#128336; ${record.time} &#8211; ${endTime(record.time)}</span>
+          </td>
+          <td class="stack" style="padding-left:14px;border-left:1px solid #334155;white-space:nowrap">
+            <span style="font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">&#127758; ${tz}</span>
           </td>
         </tr>
+      </table>
 
-        <!-- Meet Button Section -->
-        ${meetLink ? `
+      <!-- Meet button -->
+      ${meetLink ? `${meetBtn(meetLink, meetCode)}<div style="height:1px;background:#334155;margin:22px 0"></div>` : `<div style="height:1px;background:#334155;margin:0 0 22px"></div>`}
+
+      <!-- Guests -->
+      <table cellpadding="0" cellspacing="0" style="margin-bottom:6px">
         <tr>
-          <td style="padding:28px 32px 0">
-            <table cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="background:#1a73e8;border-radius:10px;box-shadow:0 4px 12px rgba(26,115,232,0.35)">
-                  <a href="${meetLink}" style="display:inline-table;text-decoration:none;padding:14px 28px">
-                    <table cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td style="vertical-align:middle;padding-right:10px">
-                          <img src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png" width="22" height="22" alt="Meet" style="display:block">
-                        </td>
-                        <td style="vertical-align:middle">
-                          <span style="color:#ffffff;font-size:15px;font-weight:600">Join with Google Meet</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </a>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:8px 0 0;color:#94A3B8;font-size:12px">${meetCode}</p>
+          <td style="padding-right:10px;vertical-align:top;padding-top:2px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </td>
-        </tr>` : ""}
-
-        <!-- Divider -->
-        <tr><td style="padding:24px 32px 0"><div style="height:1px;background:#F1F3F4"></div></td></tr>
-
-        <!-- Guest Info -->
-        <tr>
-          <td style="padding:20px 32px 0">
-            <table cellpadding="0" cellspacing="0" width="100%">
-              <tr>
-                <td style="padding-right:12px;vertical-align:top;padding-top:2px;width:20px">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </td>
-                <td>
-                  <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#374151">2 guests</p>
-                  <p style="margin:0 0 2px;font-size:13px;color:#6B7280">contact@klyronconsulting.com <span style="color:#0EA5E9;font-weight:500">organiser</span></p>
-                  <p style="margin:0;font-size:13px;color:#6B7280">${record.email} <span style="color:#F59E0B;font-weight:500">awaiting</span></p>
-                </td>
-              </tr>
-            </table>
+          <td>
+            <p style="margin:0 0 7px;font-size:13px;font-weight:600;color:#CBD5E1;font-family:Arial,sans-serif">2 guests</p>
+            <p style="margin:0 0 5px;font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">
+              contact@klyronconsulting.com&nbsp;
+              <span style="display:inline-block;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.28);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700;color:#22D3EE;letter-spacing:0.5px;text-transform:uppercase">Organiser</span>
+            </p>
+            <p style="margin:0;font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">
+              ${record.email}&nbsp;
+              <span style="display:inline-block;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.28);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700;color:#F59E0B;letter-spacing:0.5px;text-transform:uppercase">Awaiting</span>
+            </p>
           </td>
         </tr>
+      </table>
 
-        <!-- Divider -->
-        <tr><td style="padding:20px 32px 0"><div style="height:1px;background:#F1F3F4"></div></td></tr>
+      <div style="height:1px;background:#334155;margin:20px 0"></div>
 
-        <!-- Client Details -->
-        <tr>
-          <td style="padding:20px 32px">
-            <p style="margin:0 0 12px;font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:1.5px;text-transform:uppercase">Client Details</p>
-            <table cellpadding="0" cellspacing="0" width="100%" style="background:#F8FAFC;border-radius:10px;border:1px solid #E2E8F0;overflow:hidden">
-              <tr style="border-bottom:1px solid #E2E8F0">
-                <td style="padding:10px 16px;font-size:13px;color:#64748B;width:90px">Name</td>
-                <td style="padding:10px 16px;font-size:13px;font-weight:600;color:#1E293B">${record.name}</td>
-              </tr>
-              <tr style="border-bottom:1px solid #E2E8F0">
-                <td style="padding:10px 16px;font-size:13px;color:#64748B">Email</td>
-                <td style="padding:10px 16px;font-size:13px"><a href="mailto:${record.email}" style="color:#0EA5E9;text-decoration:none;font-weight:500">${record.email}</a></td>
-              </tr>
-              <tr style="border-bottom:1px solid #E2E8F0">
-                <td style="padding:10px 16px;font-size:13px;color:#64748B">Company</td>
-                <td style="padding:10px 16px;font-size:13px;color:#1E293B">${record.company || "—"}</td>
-              </tr>
-              <tr>
-                <td style="padding:10px 16px;font-size:13px;color:#64748B;vertical-align:top">Notes</td>
-                <td style="padding:10px 16px;font-size:13px;color:#1E293B;line-height:1.5">${record.notes || "—"}</td>
-              </tr>
-            </table>
-          </td>
+      <!-- Client Details -->
+      <p style="margin:0 0 12px;font-size:10px;font-weight:700;color:#475569;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">Client Details</p>
+      <table cellpadding="0" cellspacing="0" width="100%" style="background:#0F172A;border-radius:10px;border:1px solid #334155;overflow:hidden;margin-bottom:20px">
+        <tr style="border-bottom:1px solid #334155">
+          <td style="padding:10px 14px;font-size:13px;color:#64748B;width:85px;font-family:Arial,sans-serif">Name</td>
+          <td style="padding:10px 14px;font-size:13px;font-weight:600;color:#F8FAFC;font-family:Arial,sans-serif">${record.name}</td>
         </tr>
-
-        <!-- Calendar Link -->
-        ${calendarLink ? `
+        <tr style="border-bottom:1px solid #334155">
+          <td style="padding:10px 14px;font-size:13px;color:#64748B;font-family:Arial,sans-serif">Email</td>
+          <td style="padding:10px 14px;font-size:13px;font-family:Arial,sans-serif"><a href="mailto:${record.email}" style="color:#22D3EE;text-decoration:none;font-weight:500">${record.email}</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid #334155">
+          <td style="padding:10px 14px;font-size:13px;color:#64748B;font-family:Arial,sans-serif">Company</td>
+          <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;font-family:Arial,sans-serif">${record.company || "&#8212;"}</td>
+        </tr>
         <tr>
-          <td style="padding:0 32px 28px">
-            <a href="${calendarLink}" style="display:inline-flex;align-items:center;gap:6px;color:#0EA5E9;font-size:13px;font-weight:500;text-decoration:none;border:1px solid #E0F2FE;border-radius:8px;padding:8px 14px;background:#F0F9FF">
-              <span>📆</span> Open in Google Calendar
-            </a>
-          </td>
-        </tr>` : ""}
+          <td style="padding:10px 14px;font-size:13px;color:#64748B;vertical-align:top;font-family:Arial,sans-serif">Notes</td>
+          <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;line-height:1.5;font-family:Arial,sans-serif">${record.notes || "&#8212;"}</td>
+        </tr>
+      </table>
 
-      </td>
-    </tr>
+      ${calendarLink ? `<a href="${calendarLink}" style="display:inline-block;font-size:13px;color:#22D3EE;text-decoration:none;font-weight:500;font-family:Arial,sans-serif">&#128198; Open in Google Calendar</a>` : ""}
 
-    <!-- Footer -->
-    <tr>
-      <td style="padding:20px 0 0;text-align:center">
-        <p style="margin:0;font-size:12px;color:#94A3B8">Klyron Consulting · <a href="https://klyronconsulting.com" style="color:#94A3B8">klyronconsulting.com</a></p>
-      </td>
-    </tr>
-
+    </td></tr>
   </table>
   </td></tr>
+
+  ${footerCard()}
+
+</table>
+</td></tr>
 </table>
 </body>
 </html>`;
@@ -220,130 +267,113 @@ function ownerEmailHtml(record: any, meetLink: string, calendarLink: string): st
 
 function clientEmailHtml(record: any, meetLink: string): string {
   const meetCode = meetLink ? meetLink.replace("https://", "") : "";
+  const [,month, day] = record.date.split("-").map(Number);
+  const monthStr = MONTHS[month - 1];
+  const fullDate = formatDate(record.date);
+  const tz = record.timezone || "UTC";
+
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
 <title>Consultation Confirmed</title>
+<style>${BASE_CSS}</style>
 </head>
 <body style="margin:0;padding:0;background:#0F172A;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#0F172A;padding:24px 16px">
-  <tr><td align="center">
-  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">
+<div style="display:none;font-size:1px;color:#0F172A;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">Your BIM consultation with Klyron Consulting is confirmed for ${fullDate} at ${record.time}. We look forward to speaking with you!</div>
 
-    <!-- Brand -->
-    <tr>
-      <td style="padding:0 0 20px;text-align:center">
-        <span style="color:#0EA5E9;font-size:22px;font-weight:700;letter-spacing:2px">KLYRON</span><span style="color:#22D3EE;font-size:22px;font-weight:700">.</span>
-      </td>
-    </tr>
+<table class="wrap" width="100%" cellpadding="0" cellspacing="0" style="background:#0F172A;padding:14px 10px">
+<tr><td align="center">
+<table cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
 
-    <!-- Main Card -->
-    <tr>
-      <td style="background:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
+  ${topBar()}
+  ${logoRow()}
 
-        <!-- Header -->
+  <!-- Main Card -->
+  <tr><td style="background:#1E293B;border-radius:16px;overflow:hidden;border:1px solid #334155">
+  <table width="100%" cellpadding="0" cellspacing="0">
+
+    <!-- Hero -->
+    <tr><td class="hero-pad" style="background:linear-gradient(160deg,#0a1628 0%,#062318 50%,#0a1628 100%);padding:38px 30px;text-align:center;border-bottom:1px solid #334155">
+      <!-- Checkmark circle -->
+      <table cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 18px">
         <tr>
-          <td style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 100%);padding:32px;text-align:center;border-bottom:1px solid #334155">
-            <div style="width:60px;height:60px;background:rgba(34,211,238,0.1);border:2px solid rgba(34,211,238,0.3);border-radius:50%;margin:0 auto 16px;line-height:60px;font-size:28px;text-align:center">✅</div>
-            <div style="display:inline-block;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.3);border-radius:20px;padding:4px 14px;margin-bottom:12px">
-              <span style="color:#22D3EE;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">Confirmed</span>
-            </div>
-            <h1 style="margin:0;color:#F8FAFC;font-size:24px;font-weight:700">Consultation Confirmed!</h1>
-            <p style="margin:8px 0 0;color:#94A3B8;font-size:14px">We look forward to speaking with you, ${record.name}</p>
-          </td>
+          <td style="width:62px;height:62px;background:rgba(34,197,94,0.12);border:2px solid rgba(34,197,94,0.35);border-radius:50%;text-align:center;vertical-align:middle;font-size:30px;line-height:62px;color:#22C55E">&#10003;</td>
         </tr>
+      </table>
+      <h1 class="h1" style="margin:0;font-size:28px;font-weight:700;color:#F8FAFC;line-height:1.2;font-family:Arial,sans-serif">Consultation</h1>
+      <h1 class="h1g" style="margin:2px 0 14px;font-size:28px;font-weight:700;color:#22C55E;line-height:1.2;font-family:Arial,sans-serif">Confirmed!</h1>
+      <div style="width:36px;height:2px;background:#1E3A2F;margin:0 auto 14px"></div>
+      <p style="margin:0;font-size:14px;color:#94A3B8;font-family:Arial,sans-serif">We look forward to speaking with you.</p>
+    </td></tr>
 
-        <!-- Event Card -->
-        <tr>
-          <td style="padding:28px 32px 0">
-            <table cellpadding="0" cellspacing="0" width="100%" style="background:#0F172A;border-radius:12px;border:1px solid #334155;overflow:hidden">
-              <tr>
-                <td style="padding:20px;border-bottom:1px solid #334155">
-                  <table cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="padding-right:14px;font-size:32px;vertical-align:top;line-height:1">📅</td>
-                      <td>
-                        <p style="margin:0;font-size:16px;font-weight:700;color:#F8FAFC">BIM Consultation</p>
-                        <p style="margin:4px 0 0;font-size:13px;color:#0EA5E9;font-weight:500">${formatDate(record.date)}</p>
-                        <p style="margin:2px 0 0;font-size:13px;color:#94A3B8">${record.time} – ${endTime(record.time)} · ${record.timezone}</p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              ${record.notes ? `
-              <tr>
-                <td style="padding:14px 20px">
-                  <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#64748B;letter-spacing:1px;text-transform:uppercase">Your Notes</p>
-                  <p style="margin:0;font-size:13px;color:#CBD5E1;line-height:1.6">${record.notes}</p>
-                </td>
-              </tr>` : ""}
-            </table>
-          </td>
-        </tr>
+    <!-- Greeting + Meeting Card -->
+    <tr><td class="card-pad" style="padding:26px 30px;background:#1E293B">
+      <p style="margin:0 0 8px;font-size:16px;color:#94A3B8;font-family:Arial,sans-serif">Hi <span style="color:#22D3EE;font-weight:600">${record.name}</span>,</p>
+      <p style="margin:0 0 6px;font-size:14px;color:#CBD5E1;line-height:1.6;font-family:Arial,sans-serif">Your BIM consultation with Klyron Consulting has been scheduled.</p>
+      <p style="margin:0 0 18px;font-size:14px;color:#94A3B8;font-family:Arial,sans-serif">Here are your meeting details:</p>
 
-        <!-- Meet Button -->
-        ${meetLink ? `
-        <tr>
-          <td style="padding:28px 32px 0;text-align:center">
-            <p style="margin:0 0 16px;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:1.5px">Join Your Meeting</p>
-            <table cellpadding="0" cellspacing="0" align="center">
-              <tr>
-                <td style="background:#1a73e8;border-radius:12px;box-shadow:0 8px 24px rgba(26,115,232,0.5)">
-                  <a href="${meetLink}" style="display:inline-table;text-decoration:none;padding:16px 36px">
-                    <table cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td style="vertical-align:middle;padding-right:10px">
-                          <img src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png" width="24" height="24" alt="Meet" style="display:block">
-                        </td>
-                        <td style="vertical-align:middle">
-                          <span style="color:#ffffff;font-size:16px;font-weight:700">Join with Google Meet</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </a>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:10px 0 0;color:#64748B;font-size:12px">${meetCode}</p>
-          </td>
-        </tr>` : ""}
+      <!-- Meeting card -->
+      <table cellpadding="0" cellspacing="0" width="100%" style="background:#0F172A;border-radius:12px;border:1px solid #334155;overflow:hidden">
+        <tr><td style="padding:18px 18px;${record.notes ? "border-bottom:1px solid #334155" : ""}">
+          <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <!-- Calendar icon -->
+              <td class="cal-icon" style="width:56px;padding-right:14px;vertical-align:top">
+                <table cellpadding="0" cellspacing="0" style="background:#1a2744;border-radius:8px;overflow:hidden;width:52px">
+                  <tr><td style="background:#0EA5E9;padding:3px 4px;text-align:center;font-size:9px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.5px;font-family:Arial,sans-serif">${monthStr}</td></tr>
+                  <tr><td style="padding:4px 4px 7px;text-align:center;font-size:26px;font-weight:700;color:#F8FAFC;line-height:1;font-family:Arial,sans-serif">${day}</td></tr>
+                </table>
+              </td>
+              <!-- Details -->
+              <td class="cal-info" style="vertical-align:top">
+                <p style="margin:0 0 8px;font-size:15px;font-weight:700;color:#F8FAFC;font-family:Arial,sans-serif">BIM Consultation</p>
+                <p style="margin:0 0 4px;font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">&#128197; ${fullDate}</p>
+                <p style="margin:0 0 4px;font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">&#128336; ${record.time} &#8211; ${endTime(record.time)}</p>
+                <p style="margin:0;font-size:13px;color:#94A3B8;font-family:Arial,sans-serif">&#127758; ${tz}</p>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+        ${record.notes ? `
+        <tr><td style="padding:14px 18px">
+          <p style="margin:0 0 5px;font-size:10px;font-weight:700;color:#475569;letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif">Your Notes</p>
+          <p style="margin:0;font-size:13px;color:#CBD5E1;line-height:1.6;font-family:Arial,sans-serif">${record.notes}</p>
+        </td></tr>` : ""}
+      </table>
+    </td></tr>
 
-        <!-- Info Box -->
-        <tr>
-          <td style="padding:24px 32px">
-            <table cellpadding="0" cellspacing="0" width="100%" style="background:rgba(14,165,233,0.08);border-radius:10px;border:1px solid rgba(14,165,233,0.2)">
-              <tr>
-                <td style="padding:16px 20px">
-                  <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#0EA5E9">💡 Before the meeting</p>
-                  <p style="margin:0;font-size:13px;color:#94A3B8;line-height:1.6">Save the Google Meet link above. You can join from any device — computer, tablet or phone. No download required.</p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+    <!-- Meet Button -->
+    ${meetLink ? `
+    <tr><td class="card-pad" style="padding:0 30px 24px;text-align:center">
+      <p style="margin:0 0 14px;font-size:10px;font-weight:700;color:#475569;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif">Join Your Meeting</p>
+      ${meetBtn(meetLink, meetCode, true)}
+    </td></tr>` : ""}
 
-        <!-- Contact -->
-        <tr>
-          <td style="padding:0 32px 28px;border-top:1px solid #334155">
-            <p style="margin:16px 0 0;font-size:13px;color:#64748B">Questions? Contact us at <a href="mailto:contact@klyronconsulting.com" style="color:#0EA5E9;text-decoration:none;font-weight:500">contact@klyronconsulting.com</a></p>
-          </td>
-        </tr>
+    <!-- Info box -->
+    <tr><td class="card-pad" style="padding:0 30px 24px">
+      <table cellpadding="0" cellspacing="0" width="100%" style="background:rgba(14,165,233,0.07);border-radius:10px;border:1px solid rgba(14,165,233,0.2)">
+        <tr><td style="padding:14px 16px">
+          <p style="margin:0 0 5px;font-size:13px;font-weight:600;color:#0EA5E9;font-family:Arial,sans-serif">&#128161; Before the meeting</p>
+          <p style="margin:0;font-size:13px;color:#94A3B8;line-height:1.6;font-family:Arial,sans-serif">Save the Google Meet link above. You can join from any device &#8212; computer, tablet or phone. No download required.</p>
+        </td></tr>
+      </table>
+    </td></tr>
 
-      </td>
-    </tr>
-
-    <!-- Footer -->
-    <tr>
-      <td style="padding:20px 0 0;text-align:center">
-        <p style="margin:0;font-size:12px;color:#475569">Klyron Consulting · <a href="https://klyronconsulting.com" style="color:#475569">klyronconsulting.com</a></p>
-      </td>
-    </tr>
+    <!-- Questions -->
+    <tr><td style="padding:0 30px 26px;border-top:1px solid #334155">
+      <p style="margin:18px 0 0;font-size:13px;color:#64748B;line-height:1.7;font-family:Arial,sans-serif">Questions? Reply to this email or<br>contact us at <a href="mailto:contact@klyronconsulting.com" style="color:#0EA5E9;text-decoration:none;font-weight:500">contact@klyronconsulting.com</a></p>
+    </td></tr>
 
   </table>
   </td></tr>
+
+  ${footerCard()}
+
+</table>
+</td></tr>
 </table>
 </body>
 </html>`;
