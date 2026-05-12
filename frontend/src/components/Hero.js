@@ -46,9 +46,9 @@ const Hero = () => {
           style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
 
           <span className="text-[#F8FAFC]">Precision </span>
-          <span className="text-[#0EA5E9]">Clash Detection</span>
+          <span className="text-[#0EA5E9]">BIM Coordination</span>
           <br />
-          <span className="text-[#F8FAFC]">for Modern Construction</span>
+          <span className="text-[#F8FAFC]">for Construction-Ready Delivery</span>
         </h1>
 
         {/* Subheading */}
@@ -56,8 +56,7 @@ const Hero = () => {
           data-testid="hero-subtitle"
           className="text-base sm:text-lg text-[#94A3B8] max-w-2xl mx-auto mb-10 animate-fade-in-up stagger-2">
 
-          Streamline your construction workflow with expert BIM coordination services. 
-          We identify and resolve clashes before they become costly on-site problems.
+          Providing BIM coordination and digital delivery support to help project teams improve model reliability, reduce rework, and make better decisions before construction begins.
         </p>
 
         {/* CTA Buttons */}
@@ -90,15 +89,15 @@ const Hero = () => {
           className="grid grid-cols-3 gap-8 max-w-xl mx-auto mt-16 pt-8 border-t border-[#1E293B] animate-fade-in-up stagger-4">
 
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">15+</p>
+            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">8+</p>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Projects Delivered</p>
           </div>
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">95%</p>
+            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">85%</p>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Clash Resolution</p>
           </div>
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">4+</p>
+            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">2+</p>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Years Experience</p>
           </div>
         </div>
