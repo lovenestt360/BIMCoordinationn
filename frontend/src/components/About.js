@@ -32,7 +32,7 @@ const About = () => {
               <div
                 className="w-full h-full bg-cover bg-center border border-[#1E293B] rounded-sm"
                 style={{
-                  backgroundImage: 'url(https://images.unsplash.com/photo-1646227655718-dd721b681d91?crop=entropy&cs=srgb&fm=jpg&q=85)'
+                  backgroundImage: 'url(/mario.jpg)'
                 }} />
 
             </div>
@@ -46,13 +46,8 @@ const About = () => {
 
 
               </h3>
-              <p className="text-[#0EA5E9] font-mono text-sm mb-4">BIM Coordinator & Civil Engineer</p>
-              <p className="text-[#94A3B8] leading-relaxed mb-6">Civil Engineer and founder of Klyron Consulting, specialized in BIM Coordination and Clash Detection, delivering high-level coordination that aligns multidisciplinary teams, ensures seamless integration between disciplines, eliminates costly clashes, and provides fully coordinated, execution-ready models with practical solutions — reducing rework, minimizing delays, and bringing clarity to complex projects.
-
-
-
-
-              </p>
+              <p className="text-[#0EA5E9] font-mono text-sm mb-4">Director & BIM Coordinator</p>
+              <p className="text-[#94A3B8] leading-relaxed mb-6">Civil Engineer and Director of Klyron Consulting, specialized in BIM Coordination, Clash Detection, Model QA/QC, 4D/5D BIM support, and digital delivery workflows. He delivers high-level coordination that aligns multidisciplinary teams, improves model reliability, validates project information, and supports construction-ready BIM delivery with practical solutions — reducing rework, minimizing delays, and bringing clarity to complex projects.</p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
                   <CheckCircle size={16} className="text-[#22D3EE]" />
@@ -66,6 +61,10 @@ const About = () => {
                   <CheckCircle size={16} className="text-[#22D3EE]" />
                   <span>Autodesk Construction Cloud Expert</span>
                 </div>
+                <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
+                  <CheckCircle size={16} className="text-[#22D3EE]" />
+                  <span>Solibri Certified</span>
+                </div>
               </div>
             </div>
           </div>
@@ -77,15 +76,15 @@ const About = () => {
 
             <div className="space-y-8">
               <div>
-                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-experience">4+</p>
+                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-experience">2+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Years of Experience</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="font-mono text-4xl font-bold text-[#22D3EE]" data-testid="stat-projects">15+</p>
+                <p className="font-mono text-4xl font-bold text-[#22D3EE]" data-testid="stat-projects">8+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Projects Completed</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-clashes">45K+</p>
+                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-clashes">20K+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Clashes Resolved</p>
               </div>
             </div>
