@@ -23,7 +23,7 @@ const Hero = () => {
             backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: 0.15,
+            opacity: 0.3,
           }}
         />
       </div>

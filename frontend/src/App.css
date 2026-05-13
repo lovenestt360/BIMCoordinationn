@@ -210,14 +210,14 @@ textarea:-webkit-autofill:focus {
 
 /* Hero background Ken Burns motion */
 @keyframes kenBurns {
-  0%   { transform: scale(1)    translateX(0)     translateY(0); }
-  33%  { transform: scale(1.06) translateX(-1%)   translateY(-1%); }
-  66%  { transform: scale(1.04) translateX(1%)    translateY(-0.5%); }
-  100% { transform: scale(1)    translateX(0)     translateY(0); }
+  0%   { transform: scale(1)    translateX(0)    translateY(0); }
+  33%  { transform: scale(1.14) translateX(-2%)  translateY(-2%); }
+  66%  { transform: scale(1.10) translateX(2.5%) translateY(-1%); }
+  100% { transform: scale(1)    translateX(0)    translateY(0); }
 }
 
 .hero-bg-motion {
-  animation: kenBurns 22s ease-in-out infinite;
+  animation: kenBurns 14s ease-in-out infinite;
   will-change: transform;
 }
 
