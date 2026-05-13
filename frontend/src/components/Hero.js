@@ -30,7 +30,9 @@ const Hero = () => {
 
       
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#020617] via-transparent to-[#020617]" />
+      <div className="absolute inset-0 z-0" style={{
+        background: 'linear-gradient(to bottom, #020617 0%, rgba(2,6,23,0.55) 30%, rgba(2,6,23,0.3) 55%, rgba(2,6,23,0.7) 80%, #020617 100%)',
+      }} />
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">

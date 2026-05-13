@@ -158,10 +158,14 @@ const MeetingScheduler = () => {
             backgroundImage: 'url(https://images.unsplash.com/photo-1766802981801-4b4a9a1d8f1c?crop=entropy&cs=srgb&fm=jpg&q=85)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: 0.28,
+            opacity: 0.32,
           }}
         />
       </div>
+      {/* Same gradient overlay as hero */}
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{
+        background: 'linear-gradient(to bottom, #0F172A 0%, rgba(15,23,42,0.55) 30%, rgba(15,23,42,0.3) 55%, rgba(15,23,42,0.7) 80%, #0F172A 100%)',
+      }} />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
