@@ -1,4 +1,4 @@
-import { ArrowRight, Layers } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import CountUp from './CountUp';
 
 const Hero = () => {
@@ -31,15 +31,6 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
-        {/* Badge */}
-        <div
-          data-testid="hero-badge"
-          className="inline-flex items-center gap-2 glass px-4 py-2 rounded-sm mb-8 animate-fade-in-up">
-
-          <Layers size={16} className="text-[#0EA5E9]" />
-          <span className="text-sm text-[#94A3B8] font-mono">BIM COORDINATION EXPERTS</span>
-        </div>
-
         {/* Main Heading */}
         <h1
           data-testid="hero-title"
