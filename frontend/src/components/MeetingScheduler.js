@@ -151,14 +151,17 @@ const MeetingScheduler = () => {
       className="py-24 lg:py-32 bg-[#0F172A] relative"
     >
       {/* Background Accent */}
-      <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1766802981801-4b4a9a1d8f1c?crop=entropy&cs=srgb&fm=jpg&q=85)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          className="hero-bg-motion absolute inset-0"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1766802981801-4b4a9a1d8f1c?crop=entropy&cs=srgb&fm=jpg&q=85)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.28,
+          }}
+        />
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
