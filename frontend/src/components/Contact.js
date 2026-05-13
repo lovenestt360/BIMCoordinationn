@@ -71,10 +71,10 @@ const Contact = () => {
             className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
-            Get in <span className="text-[#0EA5E9]">Touch</span>
+            Let's Discuss Your <span className="text-[#0EA5E9]">Project</span>
           </h2>
           <p className="text-[#94A3B8] max-w-2xl">
-            Have a project in mind? Send us a message and let's discuss how we can help.
+            Whether you need BIM coordination, clash detection, model validation, or digital delivery support, share your project details and we'll get back to you with the next steps.
           </p>
         </div>
 
@@ -97,10 +97,11 @@ const Contact = () => {
               </h3>
               <a
                 href="mailto:contact@klyronconsulting.com"
-                className="text-[#0EA5E9] hover:text-[#22D3EE] transition-colors text-sm"
+                className="text-[#0EA5E9] hover:text-[#22D3EE] transition-colors text-sm block mb-2"
               >
                 contact@klyronconsulting.com
               </a>
+              <p className="text-[#94A3B8] text-sm">For BIM coordination requests, proposals, and project enquiries.</p>
             </div>
 
             {/* Location Card */}
@@ -119,7 +120,7 @@ const Contact = () => {
               </h3>
               <p className="text-[#94A3B8] text-sm">
                 Operating Worldwide<br />
-                Remote BIM Services
+                Remote BIM coordination and digital delivery support for international project teams.
               </p>
             </div>
 
@@ -139,7 +140,7 @@ const Contact = () => {
               </h3>
               <p className="text-[#94A3B8] text-sm">
                 Usually within 24 hours<br />
-                <span className="text-[#22D3EE]">Priority for scheduled calls</span>
+                <span className="text-[#22D3EE]">Priority response for scheduled calls and urgent project reviews.</span>
               </p>
             </div>
           </div>
