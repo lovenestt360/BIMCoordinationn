@@ -208,6 +208,18 @@ textarea:-webkit-autofill:focus {
   }
 }
 
+/* Scroll reveal animations */
+.sr-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.sr-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Print styles */
 @media print {
   .glass,

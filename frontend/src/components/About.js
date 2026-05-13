@@ -65,6 +65,22 @@ const About = () => {
                   <span>Solibri Certified</span>
                 </div>
               </div>
+
+              {/* Tool badges */}
+              <div className="mt-6 pt-5 border-t border-[#1E293B]">
+                <p className="text-[#475569] text-xs font-mono tracking-widest mb-3">TOOLS & PLATFORMS</p>
+                <div className="flex flex-wrap gap-2">
+                  {['Navisworks', 'Revit', 'Solibri', 'ACC', 'Bexel Manager', 'BCF'].map(tool => (
+                    <span
+                      key={tool}
+                      className="px-3 py-1 rounded-sm text-xs font-mono border"
+                      style={{ background: 'rgba(14,165,233,0.06)', borderColor: 'rgba(14,165,233,0.2)', color: '#7DD3F8' }}
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

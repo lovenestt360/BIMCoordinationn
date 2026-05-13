@@ -59,6 +59,15 @@ const Hero = () => {
           Providing BIM coordination and digital delivery support to help project teams improve model reliability, reduce rework, and make better decisions before construction begins.
         </p>
 
+        {/* Urgency badge */}
+        <div className="inline-flex items-center gap-2 mb-8 animate-fade-in-up stagger-2">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
+          </span>
+          <span className="text-xs text-[#64748B] font-mono tracking-wide">Currently accepting new projects — Q3 2026</span>
+        </div>
+
         {/* CTA Buttons */}
         <div
           data-testid="hero-cta-container"
