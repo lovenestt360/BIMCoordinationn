@@ -58,6 +58,19 @@ async function createCalendarEvent(record: any, accessToken: string) {
   return data;
 }
 
+function parseNotes(raw: string): { service: string; stage: string; focus: string; notes: string } {
+  const get = (key: string) => {
+    const match = raw?.match(new RegExp(`${key}:\\s*([^\\n]+)`));
+    return match ? match[1].trim() : "";
+  };
+  return {
+    service: get("Service Needed"),
+    stage: get("Project Stage"),
+    focus: get("Meeting Focus"),
+    notes: get("Notes"),
+  };
+}
+
 function formatDate(dateStr: string): string {
   const [year, month, day] = dateStr.split("-").map(Number);
   const date = new Date(Date.UTC(year, month - 1, day));
@@ -164,6 +177,7 @@ function ownerEmailHtml(record: any, meetLink: string, calendarLink: string): st
   const meetCode = meetLink ? meetLink.replace("https://", "") : "";
   const fullDate = formatDate(record.date);
   const tz = record.timezone || "UTC";
+  const parsed = parseNotes(record.notes || "");
 
   return `<!DOCTYPE html>
 <html lang="en" bgcolor="#0F172A" style="background-color:#0F172A" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -252,9 +266,21 @@ function ownerEmailHtml(record: any, meetLink: string, calendarLink: string): st
           <td style="padding:10px 14px;font-size:13px;color:#64748B;font-family:Arial,sans-serif">Company</td>
           <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;font-family:Arial,sans-serif">${record.company || "&#8212;"}</td>
         </tr>
+        <tr style="border-bottom:1px solid #334155">
+          <td style="padding:10px 14px;font-size:13px;color:#64748B;white-space:nowrap;font-family:Arial,sans-serif">Service</td>
+          <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;font-family:Arial,sans-serif">${parsed.service || "&#8212;"}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #334155">
+          <td style="padding:10px 14px;font-size:13px;color:#64748B;white-space:nowrap;font-family:Arial,sans-serif">Project Stage</td>
+          <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;font-family:Arial,sans-serif">${parsed.stage || "&#8212;"}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #334155">
+          <td style="padding:10px 14px;font-size:13px;color:#64748B;white-space:nowrap;font-family:Arial,sans-serif">Meeting Focus</td>
+          <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;font-family:Arial,sans-serif">${parsed.focus || "&#8212;"}</td>
+        </tr>
         <tr>
           <td style="padding:10px 14px;font-size:13px;color:#64748B;vertical-align:top;font-family:Arial,sans-serif">Notes</td>
-          <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;line-height:1.5;font-family:Arial,sans-serif">${record.notes || "&#8212;"}</td>
+          <td style="padding:10px 14px;font-size:13px;color:#CBD5E1;line-height:1.5;font-family:Arial,sans-serif">${parsed.notes || "&#8212;"}</td>
         </tr>
       </table>
 
@@ -279,6 +305,7 @@ function clientEmailHtml(record: any, meetLink: string): string {
   const monthStr = MONTHS[month - 1];
   const fullDate = formatDate(record.date);
   const tz = record.timezone || "UTC";
+  const parsed = parseNotes(record.notes || "");
 
   return `<!DOCTYPE html>
 <html lang="en" bgcolor="#0F172A" style="background-color:#0F172A" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -345,10 +372,27 @@ function clientEmailHtml(record: any, meetLink: string): string {
             </tr>
           </table>
         </td></tr>
-        ${record.notes ? `
-        <tr><td style="padding:14px 18px">
-          <p style="margin:0 0 5px;font-size:10px;font-weight:700;color:#475569;letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif">Your Notes</p>
-          <p style="margin:0;font-size:13px;color:#CBD5E1;line-height:1.6;font-family:Arial,sans-serif">${record.notes}</p>
+        ${(parsed.service || parsed.stage || parsed.focus || parsed.notes) ? `
+        <tr><td style="padding:14px 18px;border-top:1px solid #334155">
+          <p style="margin:0 0 10px;font-size:10px;font-weight:700;color:#475569;letter-spacing:1.5px;text-transform:uppercase;font-family:Arial,sans-serif">Your Request Details</p>
+          <table cellpadding="0" cellspacing="0" width="100%" style="background:#0F172A;border-radius:8px;border:1px solid #334155;overflow:hidden">
+            ${parsed.service ? `<tr style="border-bottom:1px solid #334155">
+              <td style="padding:8px 12px;font-size:12px;color:#64748B;width:110px;white-space:nowrap;font-family:Arial,sans-serif">Service</td>
+              <td style="padding:8px 12px;font-size:12px;color:#CBD5E1;font-family:Arial,sans-serif">${parsed.service}</td>
+            </tr>` : ""}
+            ${parsed.stage ? `<tr style="border-bottom:1px solid #334155">
+              <td style="padding:8px 12px;font-size:12px;color:#64748B;white-space:nowrap;font-family:Arial,sans-serif">Project Stage</td>
+              <td style="padding:8px 12px;font-size:12px;color:#CBD5E1;font-family:Arial,sans-serif">${parsed.stage}</td>
+            </tr>` : ""}
+            ${parsed.focus ? `<tr style="border-bottom:1px solid #334155">
+              <td style="padding:8px 12px;font-size:12px;color:#64748B;white-space:nowrap;font-family:Arial,sans-serif">Meeting Focus</td>
+              <td style="padding:8px 12px;font-size:12px;color:#CBD5E1;font-family:Arial,sans-serif">${parsed.focus}</td>
+            </tr>` : ""}
+            ${parsed.notes ? `<tr>
+              <td style="padding:8px 12px;font-size:12px;color:#64748B;vertical-align:top;white-space:nowrap;font-family:Arial,sans-serif">Notes</td>
+              <td style="padding:8px 12px;font-size:12px;color:#CBD5E1;line-height:1.6;font-family:Arial,sans-serif">${parsed.notes}</td>
+            </tr>` : ""}
+          </table>
         </td></tr>` : ""}
       </table>
     </td></tr>
