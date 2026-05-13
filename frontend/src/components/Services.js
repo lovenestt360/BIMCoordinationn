@@ -8,8 +8,7 @@ const services = [
     title: 'BIM Coordination',
     description: 'Coordination of architectural, structural, and MEP BIM models to align disciplines and support construction-ready project delivery.',
     features: ['Federated model setup & review', 'Discipline alignment checks', 'Weekly coordination workflows'],
-    // Real BIM coordination model — MEP, structural, architectural systems
-    image: '/projects/mental-health-unit.jpg',
+    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
   {
     id: '02',
@@ -18,8 +17,7 @@ const services = [
     title: 'Clash Detection & Issue Review',
     description: 'Detection and structured review of model conflicts before construction, helping teams reduce rework and coordination risks on site.',
     features: ['Clash detection in Navisworks', 'Priority clash classification', 'Structured reports with screenshots'],
-    // Complex MEP/structural installation — overlapping systems typical of clash scenarios
-    image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?crop=entropy&cs=srgb&fm=jpg&q=85',
+    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
   {
     id: '03',
@@ -28,8 +26,7 @@ const services = [
     title: 'BIM QA/QC & Model Validation',
     description: 'Model quality review checking accuracy, classification, property sets, and readiness for coordination or project delivery.',
     features: ['Solibri model validation', 'Naming & classification audit', 'QA/QC reports & comments'],
-    // Real project building model — actual QA/QC and validation work performed
-    image: '/projects/school-project.jpg',
+    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
   {
     id: '04',
@@ -38,8 +35,7 @@ const services = [
     title: '4D/5D BIM Support',
     description: 'BIM-based planning connecting model data with construction sequencing, quantity take-off, and cost support using Bexel Manager.',
     features: ['4D construction simulations', 'Quantity take-off from models', 'Cost breakdowns & phasing'],
-    // Real 3D structural BIM model — quantity take-off and sequencing work
-    image: '/projects/water-supply-system.jpg',
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
   {
     id: '05',
@@ -48,8 +44,7 @@ const services = [
     title: 'COBie & Information Management',
     description: 'Structured BIM data delivery support — reviewing asset information, COBie fields, and model data consistency for information requirements.',
     features: ['COBie data field review', 'Asset information check', 'Structured delivery support'],
-    // Technical data/information management — structured asset data and records
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?crop=entropy&cs=srgb&fm=jpg&q=85',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
   {
     id: '06',
@@ -58,8 +53,7 @@ const services = [
     title: 'On-Demand BIM Support',
     description: 'Flexible BIM support for teams needing extra coordination capacity during deadlines, urgent submissions, or peak workload periods.',
     features: ['Urgent clash detection support', 'Fast QA/QC model review', 'Remote BIM coordination'],
-    // Remote professional working — represents flexible remote BIM support
-    image: 'https://images.unsplash.com/photo-1664575602554-2087b04935a5?crop=entropy&cs=srgb&fm=jpg&q=85',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
 ];
 

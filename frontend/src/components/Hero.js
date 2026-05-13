@@ -16,14 +16,17 @@ const Hero = () => {
       className="relative min-h-screen flex items-center justify-center blueprint-bg overflow-hidden">
 
       {/* Background Image Overlay */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.15
-        }} />
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div
+          className="hero-bg-motion absolute inset-0"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.15,
+          }}
+        />
+      </div>
 
       
       {/* Gradient Overlay */}

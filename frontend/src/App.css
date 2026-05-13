@@ -208,6 +208,19 @@ textarea:-webkit-autofill:focus {
   }
 }
 
+/* Hero background Ken Burns motion */
+@keyframes kenBurns {
+  0%   { transform: scale(1)    translateX(0)     translateY(0); }
+  33%  { transform: scale(1.06) translateX(-1%)   translateY(-1%); }
+  66%  { transform: scale(1.04) translateX(1%)    translateY(-0.5%); }
+  100% { transform: scale(1)    translateX(0)     translateY(0); }
+}
+
+.hero-bg-motion {
+  animation: kenBurns 22s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* Animated counter numbers */
 @keyframes countUp {
   from { opacity: 0; transform: translateY(16px) scale(0.85); }
