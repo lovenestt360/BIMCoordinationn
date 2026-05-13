@@ -343,6 +343,89 @@ textarea:-webkit-autofill:focus {
   animation: dotBlink 2.2s ease-in-out infinite;
 }
 
+/* ─── Process section — advanced motion ────────────────────── */
+
+/* Shimmer sweep on card hover */
+@keyframes shimmerSweep {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to   { transform: translateX(380%)  skewX(-18deg); }
+}
+
+.card-shimmer {
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.045) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transform: translateX(-120%) skewX(-18deg);
+  z-index: 5;
+}
+
+.process-card:hover .card-shimmer {
+  animation: shimmerSweep 0.75s ease forwards;
+}
+
+/* Icon orbit ring */
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.icon-orbit {
+  animation: orbitSpin 7s linear infinite;
+  transform-origin: center;
+}
+
+.icon-orbit-reverse {
+  animation: orbitSpin 11s linear infinite reverse;
+  transform-origin: center;
+}
+
+/* Floating background decorations */
+@keyframes floatShape {
+  0%, 100% { transform: translateY(0px)  rotate(0deg)   scale(1); }
+  33%       { transform: translateY(-18px) rotate(6deg)  scale(1.04); }
+  66%       { transform: translateY(-10px) rotate(-4deg) scale(0.97); }
+}
+
+.float-deco { animation: floatShape var(--dur, 9s) ease-in-out infinite; }
+
+/* Step number reveal */
+@keyframes stepReveal {
+  from { opacity: 0; transform: translateY(10px) scale(0.7); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   filter: blur(0); }
+}
+
+.step-reveal {
+  animation: stepReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Output tag animated left border */
+@keyframes tagPulse {
+  0%, 100% { box-shadow: -2px 0 8px rgba(14,165,233,0.3); }
+  50%       { box-shadow: -2px 0 20px rgba(34,211,238,0.7); }
+}
+
+.output-tag-glow {
+  border-left: 2px solid rgba(14,165,233,0.6);
+  animation: tagPulse 3s ease-in-out infinite;
+}
+
+/* Connector dotted line between steps (desktop) */
+@keyframes dashFlow {
+  from { stroke-dashoffset: 24; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.connector-dash {
+  animation: dashFlow 1.2s linear infinite;
+}
+
 /* ─── Service card image motion ────────────────────────────── */
 
 .service-img {

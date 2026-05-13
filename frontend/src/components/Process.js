@@ -4,8 +4,7 @@ const processSteps = [
   {
     number: '01',
     title: 'Consultation & Scope Review',
-    description:
-      'We start by understanding your project, BIM requirements, disciplines involved, timeline, deliverables, and the level of coordination or digital support needed.',
+    description: 'We start by understanding your project, BIM requirements, disciplines involved, timeline, deliverables, and the level of coordination or digital support needed.',
     output: 'Clear BIM support scope',
     icon: MessageCircle,
     color: '#0EA5E9',
@@ -13,8 +12,7 @@ const processSteps = [
   {
     number: '02',
     title: 'Model Intake & Workflow Setup',
-    description:
-      'We receive the project models, review file structure, confirm model versions, set up the federated model environment, and align the coordination workflow with the project team.',
+    description: 'We receive the project models, review file structure, confirm model versions, set up the federated model environment, and align the coordination workflow with the project team.',
     output: 'Ready-to-review BIM environment',
     icon: FolderCog,
     color: '#22D3EE',
@@ -22,8 +20,7 @@ const processSteps = [
   {
     number: '03',
     title: 'Federated Model Review',
-    description:
-      'We combine and review architectural, structural, and MEP models to check discipline alignment, model positioning, coordination zones, and readiness for clash detection.',
+    description: 'We combine and review architectural, structural, and MEP models to check discipline alignment, model positioning, coordination zones, and readiness for clash detection.',
     output: 'Federated model ready for coordination',
     icon: Layers,
     color: '#0EA5E9',
@@ -31,8 +28,7 @@ const processSteps = [
   {
     number: '04',
     title: 'Clash Detection & Coordination',
-    description:
-      'We run clash detection, review hard clashes and clearance issues, classify priorities, separate real issues from low-value clashes, and support resolution tracking through ACC, BCF, or the agreed platform.',
+    description: 'We run clash detection, review hard clashes and clearance issues, classify priorities, separate real issues from low-value clashes, and support resolution tracking through ACC, BCF, or the agreed platform.',
     output: 'Prioritized coordination issues',
     icon: SearchCheck,
     color: '#22D3EE',
@@ -40,8 +36,7 @@ const processSteps = [
   {
     number: '05',
     title: 'BIM QA/QC & Data Validation',
-    description:
-      'We review model quality, element classification, naming, property sets, COBie-related information, and model consistency to improve the reliability of project information.',
+    description: 'We review model quality, element classification, naming, property sets, COBie-related information, and model consistency to improve the reliability of project information.',
     output: 'Validated BIM information',
     icon: ShieldCheck,
     color: '#0EA5E9',
@@ -49,13 +44,29 @@ const processSteps = [
   {
     number: '06',
     title: 'Digital Delivery & Reporting',
-    description:
-      'We deliver structured clash reports, QA/QC comments, validation summaries, issue logs, 4D/5D support outputs, and coordination feedback ready for project review and action.',
+    description: 'We deliver structured clash reports, QA/QC comments, validation summaries, issue logs, 4D/5D support outputs, and coordination feedback ready for project review and action.',
     output: 'Clear deliverables for decision-making',
     icon: FileCheck,
     color: '#22D3EE',
   },
 ];
+
+/* SVG connector arrow between two consecutive steps */
+const StepConnector = ({ color }) => (
+  <div className="hidden lg:flex items-center justify-center w-full px-1 mt-8" style={{ height: '56px' }}>
+    <svg width="100%" height="28" viewBox="0 0 120 28" preserveAspectRatio="none" fill="none">
+      <path
+        d="M4 14 L112 14"
+        stroke={color}
+        strokeWidth="1.2"
+        strokeDasharray="6 5"
+        className="connector-dash"
+        opacity="0.45"
+      />
+      <polygon points="116,14 108,10 108,18" fill={color} opacity="0.6" />
+    </svg>
+  </div>
+);
 
 const Process = () => {
   const scrollToSchedule = (e) => {
@@ -66,21 +77,49 @@ const Process = () => {
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden" style={{ background: '#020617' }}>
 
-      {/* Grid background */}
+      {/* ── Grid background ── */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: 'linear-gradient(rgba(14,165,233,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.035) 1px, transparent 1px)',
         backgroundSize: '50px 50px',
       }} />
 
-      {/* Ambient glow blobs */}
+      {/* ── Ambient glows ── */}
       <div className="absolute pointer-events-none" style={{
-        top: '-80px', right: '-80px', width: '480px', height: '480px',
+        top: '-80px', right: '-80px', width: '500px', height: '500px',
         background: 'radial-gradient(circle, rgba(14,165,233,0.09) 0%, transparent 65%)',
       }} />
       <div className="absolute pointer-events-none" style={{
-        bottom: '0', left: '-60px', width: '360px', height: '360px',
+        bottom: '0', left: '-60px', width: '400px', height: '400px',
         background: 'radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 65%)',
       }} />
+
+      {/* ── Floating geometric decorations ── */}
+      <div className="float-deco absolute pointer-events-none select-none" style={{ '--dur': '11s', top: '12%', left: '4%', opacity: 0.35 }}>
+        <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+          <circle cx="36" cy="36" r="34" stroke="rgba(14,165,233,0.35)" strokeWidth="1" strokeDasharray="5 8" />
+          <circle cx="36" cy="36" r="22" stroke="rgba(34,211,238,0.2)"  strokeWidth="1" strokeDasharray="3 6" />
+          <circle cx="36" cy="36" r="5"  fill="rgba(14,165,233,0.4)" />
+        </svg>
+      </div>
+
+      <div className="float-deco absolute pointer-events-none select-none" style={{ '--dur': '14s', top: '55%', right: '3%', opacity: 0.28 }}>
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <rect x="4" y="4" width="48" height="48" rx="6" stroke="rgba(34,211,238,0.3)" strokeWidth="1" strokeDasharray="4 7" transform="rotate(15 28 28)" />
+          <rect x="14" y="14" width="28" height="28" rx="3" stroke="rgba(14,165,233,0.2)" strokeWidth="1" transform="rotate(30 28 28)" />
+        </svg>
+      </div>
+
+      <div className="float-deco absolute pointer-events-none select-none" style={{ '--dur': '8s', bottom: '18%', left: '42%', opacity: 0.2 }}>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <polygon points="20,2 38,32 2,32" stroke="rgba(14,165,233,0.4)" strokeWidth="1" fill="none" />
+        </svg>
+      </div>
+
+      <div className="float-deco absolute pointer-events-none select-none" style={{ '--dur': '16s', top: '35%', right: '18%', opacity: 0.15 }}>
+        <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+          <circle cx="45" cy="45" r="42" stroke="rgba(34,211,238,0.25)" strokeWidth="1" strokeDasharray="2 10" />
+        </svg>
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
@@ -112,66 +151,87 @@ const Process = () => {
           </div>
         </div>
 
+        {/* ── Step flow header (desktop) ── */}
+        <div className="hidden lg:grid grid-cols-3 gap-0 mb-2 relative">
+          {/* Row 1 connector line */}
+          <div className="col-span-3 absolute top-4 left-[16.5%] right-[16.5%] h-px pointer-events-none"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.2) 20%, rgba(34,211,238,0.3) 50%, rgba(14,165,233,0.2) 80%, transparent)' }} />
+        </div>
+
         {/* ── Cards grid ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {processSteps.map((step, i) => {
             const Icon = step.icon;
+            const isSecondRow = i >= 3;
+
             return (
               <div
                 key={step.number}
-                className="sr-hidden process-card p-6 flex flex-col"
-                style={{ transitionDelay: `${i * 75}ms` }}
+                className="sr-hidden process-card flex flex-col"
+                style={{
+                  transitionDelay: `${i * 90}ms`,
+                  marginTop: isSecondRow ? '0' : (i % 2 === 1 ? '12px' : '0'),
+                }}
               >
+                {/* Shimmer sweep */}
+                <div className="card-shimmer" />
+
                 {/* Ghost number watermark */}
-                <span
-                  className="absolute select-none pointer-events-none font-black"
+                <span className="absolute select-none pointer-events-none font-black"
                   style={{
-                    top: '-16px',
-                    right: '12px',
-                    fontSize: '110px',
-                    lineHeight: 1,
+                    top: '-12px', right: '10px',
+                    fontSize: '100px', lineHeight: 1,
                     fontFamily: 'Space Grotesk, sans-serif',
-                    color: 'rgba(14,165,233,0.04)',
+                    color: `${step.color}08`,
                     zIndex: 0,
-                  }}
-                >
+                  }}>
                   {step.number}
                 </span>
 
-                {/* Content sits above ghost */}
-                <div className="relative z-10 flex flex-col flex-1">
+                <div className="relative z-10 flex flex-col flex-1 p-6">
 
-                  {/* Top row: step badge + icon */}
+                  {/* Top row: step pill + icon with orbit ring */}
                   <div className="flex items-start justify-between mb-6">
+
                     {/* Step badge */}
-                    <div
-                      className="px-3 py-1 rounded-full font-mono text-xs font-bold tracking-widest"
+                    <div className="step-reveal px-3 py-1 rounded-full font-mono text-xs font-bold tracking-widest"
                       style={{
                         background: `rgba(14,165,233,0.08)`,
-                        border: `1px solid ${step.color}45`,
+                        border: `1px solid ${step.color}50`,
                         color: step.color,
-                      }}
-                    >
+                        animationDelay: `${i * 90 + 200}ms`,
+                      }}>
                       STEP {step.number}
                     </div>
 
-                    {/* Icon */}
-                    <div
-                      className="process-icon-wrap w-11 h-11 rounded-xl flex items-center justify-center"
-                      style={{
-                        background: `linear-gradient(135deg, rgba(14,165,233,0.18) 0%, rgba(34,211,238,0.06) 100%)`,
-                        border: `1px solid ${step.color}35`,
-                      }}
-                    >
-                      <Icon size={20} style={{ color: step.color }} />
+                    {/* Icon with orbit ring */}
+                    <div className="relative w-12 h-12 flex-shrink-0">
+                      {/* Outer orbit ring */}
+                      <svg className="icon-orbit absolute inset-0" width="48" height="48" viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="22" fill="none"
+                          stroke={step.color} strokeWidth="1"
+                          strokeDasharray="4 7" opacity="0.45" />
+                      </svg>
+                      {/* Inner reverse ring */}
+                      <svg className="icon-orbit-reverse absolute inset-0" width="48" height="48" viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="16" fill="none"
+                          stroke={step.color} strokeWidth="0.8"
+                          strokeDasharray="2 8" opacity="0.25" />
+                      </svg>
+                      {/* Icon container */}
+                      <div className="absolute inset-[7px] rounded-xl flex items-center justify-center process-icon-wrap"
+                        style={{
+                          background: `linear-gradient(135deg, rgba(14,165,233,0.18) 0%, rgba(34,211,238,0.06) 100%)`,
+                          border: `1px solid ${step.color}40`,
+                        }}>
+                        <Icon size={15} style={{ color: step.color }} />
+                      </div>
                     </div>
                   </div>
 
                   {/* Title */}
-                  <h3
-                    className="text-[15px] font-bold text-[#F1F5F9] mb-3 leading-snug"
-                    style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-                  >
+                  <h3 className="text-[15px] font-bold text-[#F1F5F9] mb-3 leading-snug"
+                    style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
                     {step.title}
                   </h3>
 
@@ -181,21 +241,18 @@ const Process = () => {
                   </p>
 
                   {/* Output tag */}
-                  <div
-                    className="flex items-center gap-2 px-3 py-2 rounded-md"
+                  <div className="output-tag-glow flex items-center gap-2 px-3 py-2 rounded-sm rounded-l-none"
                     style={{
-                      background: `linear-gradient(90deg, rgba(14,165,233,0.07), rgba(34,211,238,0.03))`,
-                      border: `1px solid ${step.color}25`,
-                    }}
-                  >
-                    <div
-                      className="output-dot w-1.5 h-1.5 rounded-full flex-shrink-0"
-                      style={{ background: step.color }}
-                    />
+                      background: `linear-gradient(90deg, rgba(14,165,233,0.08), rgba(34,211,238,0.03))`,
+                      border: `1px solid ${step.color}22`,
+                      borderLeft: 'none',
+                    }}>
+                    <div className="output-dot w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: step.color }} />
                     <span className="text-xs font-mono" style={{ color: step.color, opacity: 0.85 }}>
                       Output:&nbsp;<span className="text-[#CBD5E1] font-sans">{step.output}</span>
                     </span>
                   </div>
+
                 </div>
               </div>
             );
@@ -203,39 +260,25 @@ const Process = () => {
         </div>
 
         {/* ── CTA ── */}
-        <div
-          className="sr-hidden mt-16 rounded-xl p-8 lg:p-12 text-center relative overflow-hidden"
+        <div className="sr-hidden mt-16 rounded-xl p-8 lg:p-12 text-center relative overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, rgba(14,165,233,0.07) 0%, rgba(34,211,238,0.04) 50%, rgba(14,165,233,0.07) 100%)',
             border: '1px solid rgba(14,165,233,0.2)',
-          }}
-        >
-          {/* Background glow inside CTA */}
+          }}>
           <div className="absolute inset-0 pointer-events-none" style={{
             background: 'radial-gradient(ellipse at 50% 0%, rgba(14,165,233,0.1) 0%, transparent 60%)',
           }} />
-
           <div className="relative z-10">
-            <span className="inline-block text-xs text-[#0EA5E9] font-mono tracking-[3px] mb-4 uppercase">
-              Next Step
-            </span>
-
-            <h3
-              className="text-2xl sm:text-3xl font-bold text-[#F8FAFC] mb-4"
-              style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-            >
+            <span className="inline-block text-xs text-[#0EA5E9] font-mono tracking-[3px] mb-4 uppercase">Next Step</span>
+            <h3 className="text-2xl sm:text-3xl font-bold text-[#F8FAFC] mb-4"
+              style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
               Need BIM support for an active project?
             </h3>
-
             <p className="text-[#94A3B8] max-w-xl mx-auto mb-8 text-sm leading-relaxed">
               Book a consultation and share your project scope, models, timeline, and required deliverables. We'll review how Klyron Consulting can support your team with coordination, validation, reporting, and digital delivery.
             </p>
-
-            <a
-              href="#schedule"
-              onClick={scrollToSchedule}
-              className="btn-primary inline-flex items-center gap-2 px-8 py-3 rounded-sm font-semibold text-sm"
-            >
+            <a href="#schedule" onClick={scrollToSchedule}
+              className="btn-primary inline-flex items-center gap-2 px-8 py-3 rounded-sm font-semibold text-sm">
               Book a Consultation
               <ArrowRight size={17} />
             </a>
