@@ -28,13 +28,12 @@ const About = () => {
             className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-8 flex flex-col md:flex-row gap-8">
 
             {/* Profile Image */}
-            <div className="w-full md:w-64 h-64 md:h-auto flex-shrink-0">
-              <div
-                className="w-full h-full bg-cover bg-center border border-[#1E293B] rounded-sm"
-                style={{
-                  backgroundImage: 'url(/mario.jpg)'
-                }} />
-
+            <div className="w-full md:w-64 flex-shrink-0">
+              <img
+                src="/mario.jpg"
+                alt="Mário Quissico Júnior"
+                className="w-full h-auto border border-[#1E293B] rounded-sm object-contain"
+              />
             </div>
             
             {/* Bio */}
