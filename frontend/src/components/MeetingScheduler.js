@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, User, Mail, Building2, FileText, CheckCircle, AlertCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, User, Mail, Building2, FileText, CheckCircle, AlertCircle, Briefcase, Layers } from 'lucide-react';
 import { Calendar } from '../components/ui/calendar';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -9,6 +9,39 @@ import { supabase } from '../lib/supabase';
 import { format, addDays, isBefore, startOfToday } from 'date-fns';
 
 const ALL_SLOTS = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
+
+const SERVICE_OPTIONS = [
+  'BIM Coordination',
+  'Clash Detection & Issue Review',
+  'BIM QA/QC & Model Validation',
+  '4D/5D BIM Support',
+  'COBie & Information Management',
+  'On-Demand BIM Support',
+  'Not Sure Yet',
+];
+
+const PROJECT_STAGE_OPTIONS = [
+  'Design Stage',
+  'Pre-Construction',
+  'Construction',
+  'Tender / Proposal Stage',
+  'Existing Model Review',
+  'Urgent Coordination Support',
+  'Not Sure Yet',
+];
+
+const MEETING_FOCUS_OPTIONS = [
+  'Review project requirements',
+  'Discuss BIM coordination support',
+  'Discuss clash detection workflow',
+  'Discuss model QA/QC or validation',
+  'Discuss 4D/5D or quantity support',
+  'Discuss urgent project support',
+  'General introduction call',
+];
+
+const selectClass = 'w-full bg-[#1E293B] border border-[#334155] text-[#F8FAFC] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent appearance-none';
+const selectEmptyClass = 'w-full bg-[#1E293B] border border-[#334155] text-[#64748B] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent appearance-none';
 
 const MeetingScheduler = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -21,6 +54,9 @@ const MeetingScheduler = () => {
     name: '',
     email: '',
     company: '',
+    service: '',
+    projectStage: '',
+    meetingFocus: '',
     notes: '',
   });
 
@@ -56,20 +92,27 @@ const MeetingScheduler = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedDate || !selectedTime || !formData.name || !formData.email) {
-      setSubmitStatus({ type: 'error', message: 'Please fill in all required fields' });
+    if (!selectedDate || !selectedTime || !formData.name || !formData.email || !formData.service || !formData.notes) {
+      setSubmitStatus({ type: 'error', message: 'Please fill in all required fields and select a date and time.' });
       return;
     }
 
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    const enrichedNotes = [
+      formData.service ? `Service Needed: ${formData.service}` : '',
+      formData.projectStage ? `Project Stage: ${formData.projectStage}` : '',
+      formData.meetingFocus ? `Meeting Focus: ${formData.meetingFocus}` : '',
+      formData.notes ? `Notes: ${formData.notes}` : '',
+    ].filter(Boolean).join('\n');
+
     try {
       const { error } = await supabase.from('meeting_requests').insert([{
         name: formData.name,
         email: formData.email,
         company: formData.company || null,
-        notes: formData.notes || null,
+        notes: enrichedNotes,
         date: format(selectedDate, 'yyyy-MM-dd'),
         time: selectedTime,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -82,7 +125,7 @@ const MeetingScheduler = () => {
         type: 'success',
         message: 'Meeting scheduled successfully! You will receive a confirmation email shortly.',
       });
-      setFormData({ name: '', email: '', company: '', notes: '' });
+      setFormData({ name: '', email: '', company: '', service: '', projectStage: '', meetingFocus: '', notes: '' });
       setSelectedDate(null);
       setSelectedTime('');
     } catch (error) {
@@ -147,7 +190,7 @@ const MeetingScheduler = () => {
                   className="font-bold"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                 >
-                  Select a Date
+                  Select a Consultation Date
                 </h3>
               </div>
 
@@ -212,6 +255,7 @@ const MeetingScheduler = () => {
               </div>
 
               <form onSubmit={handleSubmit} data-testid="meeting-form" className="space-y-4">
+                {/* Name */}
                 <div>
                   <Label htmlFor="name" className="text-[#94A3B8] text-sm mb-2 flex items-center gap-2">
                     <User size={14} /> Name *
@@ -228,6 +272,7 @@ const MeetingScheduler = () => {
                   />
                 </div>
 
+                {/* Email */}
                 <div>
                   <Label htmlFor="email" className="text-[#94A3B8] text-sm mb-2 flex items-center gap-2">
                     <Mail size={14} /> Email *
@@ -239,12 +284,13 @@ const MeetingScheduler = () => {
                     data-testid="meeting-email-input"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="your@email.com"
+                    placeholder="you@email.com"
                     required
                     className="bg-[#1E293B] border-[#334155] text-[#F8FAFC] placeholder:text-[#64748B]"
                   />
                 </div>
 
+                {/* Company */}
                 <div>
                   <Label htmlFor="company" className="text-[#94A3B8] text-sm mb-2 flex items-center gap-2">
                     <Building2 size={14} /> Company
@@ -260,9 +306,71 @@ const MeetingScheduler = () => {
                   />
                 </div>
 
+                {/* Service Needed */}
+                <div>
+                  <Label htmlFor="service" className="text-[#94A3B8] text-sm mb-2 flex items-center gap-2">
+                    <Briefcase size={14} /> Service Needed *
+                  </Label>
+                  <select
+                    id="service"
+                    name="service"
+                    data-testid="meeting-service-input"
+                    value={formData.service}
+                    onChange={handleInputChange}
+                    required
+                    className={formData.service ? selectClass : selectEmptyClass}
+                  >
+                    <option value="" disabled>Select a service</option>
+                    {SERVICE_OPTIONS.map(opt => (
+                      <option key={opt} value={opt} className="text-[#F8FAFC] bg-[#1E293B]">{opt}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Project Stage */}
+                <div>
+                  <Label htmlFor="projectStage" className="text-[#94A3B8] text-sm mb-2 flex items-center gap-2">
+                    <Layers size={14} /> Project Stage
+                  </Label>
+                  <select
+                    id="projectStage"
+                    name="projectStage"
+                    data-testid="meeting-stage-input"
+                    value={formData.projectStage}
+                    onChange={handleInputChange}
+                    className={formData.projectStage ? selectClass : selectEmptyClass}
+                  >
+                    <option value="">Select project stage</option>
+                    {PROJECT_STAGE_OPTIONS.map(opt => (
+                      <option key={opt} value={opt} className="text-[#F8FAFC] bg-[#1E293B]">{opt}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Meeting Focus */}
+                <div>
+                  <Label htmlFor="meetingFocus" className="text-[#94A3B8] text-sm mb-2 flex items-center gap-2">
+                    <CalendarIcon size={14} /> Meeting Focus
+                  </Label>
+                  <select
+                    id="meetingFocus"
+                    name="meetingFocus"
+                    data-testid="meeting-focus-input"
+                    value={formData.meetingFocus}
+                    onChange={handleInputChange}
+                    className={formData.meetingFocus ? selectClass : selectEmptyClass}
+                  >
+                    <option value="">Select meeting focus</option>
+                    {MEETING_FOCUS_OPTIONS.map(opt => (
+                      <option key={opt} value={opt} className="text-[#F8FAFC] bg-[#1E293B]">{opt}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Project Notes */}
                 <div>
                   <Label htmlFor="notes" className="text-[#94A3B8] text-sm mb-2 flex items-center gap-2">
-                    <FileText size={14} /> Project Notes
+                    <FileText size={14} /> Project Notes *
                   </Label>
                   <Textarea
                     id="notes"
@@ -270,8 +378,9 @@ const MeetingScheduler = () => {
                     data-testid="meeting-notes-input"
                     value={formData.notes}
                     onChange={handleInputChange}
-                    placeholder="Briefly describe your project or questions..."
+                    placeholder="Tell us about your project, BIM scope, disciplines involved, timeline, and required support..."
                     rows={3}
+                    required
                     className="bg-[#1E293B] border-[#334155] text-[#F8FAFC] placeholder:text-[#64748B] resize-none"
                   />
                 </div>
