@@ -1,152 +1,202 @@
-import { Layers, Box, Ruler, FileCheck, Zap, Target } from 'lucide-react';
+import { Layers, Target, FileCheck, Box, Ruler, Zap } from 'lucide-react';
+
+const services = [
+  {
+    id: '01',
+    icon: Layers,
+    color: '#0EA5E9',
+    title: 'BIM Coordination',
+    description: 'Coordination of architectural, structural, and MEP BIM models to align disciplines and support construction-ready project delivery.',
+    features: ['Federated model setup & review', 'Discipline alignment checks', 'Weekly coordination workflows'],
+    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+  {
+    id: '02',
+    icon: Target,
+    color: '#22D3EE',
+    title: 'Clash Detection & Issue Review',
+    description: 'Detection and structured review of model conflicts before construction, helping teams reduce rework and coordination risks on site.',
+    features: ['Clash detection in Navisworks', 'Priority clash classification', 'Structured reports with screenshots'],
+    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+  {
+    id: '03',
+    icon: FileCheck,
+    color: '#0EA5E9',
+    title: 'BIM QA/QC & Model Validation',
+    description: 'Model quality review checking accuracy, classification, property sets, and readiness for coordination or project delivery.',
+    features: ['Solibri model validation', 'Naming & classification audit', 'QA/QC reports & comments'],
+    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+  {
+    id: '04',
+    icon: Box,
+    color: '#22D3EE',
+    title: '4D/5D BIM Support',
+    description: 'BIM-based planning connecting model data with construction sequencing, quantity take-off, and cost support using Bexel Manager.',
+    features: ['4D construction simulations', 'Quantity take-off from models', 'Cost breakdowns & phasing'],
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+  {
+    id: '05',
+    icon: Ruler,
+    color: '#0EA5E9',
+    title: 'COBie & Information Management',
+    description: 'Structured BIM data delivery support — reviewing asset information, COBie fields, and model data consistency for information requirements.',
+    features: ['COBie data field review', 'Asset information check', 'Structured delivery support'],
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+  {
+    id: '06',
+    icon: Zap,
+    color: '#22D3EE',
+    title: 'On-Demand BIM Support',
+    description: 'Flexible BIM support for teams needing extra coordination capacity during deadlines, urgent submissions, or peak workload periods.',
+    features: ['Urgent clash detection support', 'Fast QA/QC model review', 'Remote BIM coordination'],
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+];
 
 const Services = () => {
-  const services = [
-    {
-      id: '01',
-      icon: Layers,
-      title: 'BIM Coordination',
-      description: 'Coordination of architectural, structural, and MEP BIM models to improve model alignment, reduce design conflicts, and support construction-ready project delivery.',
-      features: [
-        'Review architectural, structural, and MEP models',
-        'Create and manage federated models',
-        'Check model alignment between disciplines',
-        'Review coordination issues with project teams',
-        'Support weekly or periodic coordination workflows',
-      ],
-    },
-    {
-      id: '02',
-      icon: Target,
-      title: 'Clash Detection & Issue Review',
-      description: 'Detection and review of model conflicts before construction begins, helping project teams reduce rework, delays, and coordination risks on site.',
-      features: [
-        'Run clash detection in Navisworks',
-        'Review hard clashes and clearance issues',
-        'Separate real clashes from false or low-priority clashes',
-        'Group clash results by discipline, zone, or priority',
-        'Prepare clash reports with screenshots and comments',
-      ],
-    },
-    {
-      id: '03',
-      icon: FileCheck,
-      title: 'BIM QA/QC & Model Validation',
-      description: 'Model quality review focused on checking whether BIM models are accurate, consistent, properly classified, and ready for coordination or project delivery.',
-      features: [
-        'Check model naming, classification, and element organization',
-        'Review property sets and model information',
-        'Validate model quality using Solibri',
-        'Identify missing or inconsistent information',
-        'Prepare QA/QC reports and validation comments',
-      ],
-    },
-    {
-      id: '04',
-      icon: Box,
-      title: '4D/5D BIM Support',
-      description: 'BIM-based planning and cost support that connects model information with construction sequencing, quantity take-off, and cost understanding.',
-      features: [
-        'Link model elements to construction activities',
-        'Create 4D construction simulations',
-        'Review project sequence and phasing',
-        'Extract quantities from BIM models',
-        'Prepare quantity and cost breakdowns using Bexel Manager',
-      ],
-    },
-    {
-      id: '05',
-      icon: Ruler,
-      title: 'COBie & Information Management',
-      description: 'Support for structured BIM data delivery by reviewing asset information, model data, and information requirements where applicable.',
-      features: [
-        'Review asset information in BIM models',
-        'Check COBie-related data fields',
-        'Identify missing or incomplete asset information',
-        'Support structured information delivery',
-        'Review model data consistency',
-      ],
-    },
-    {
-      id: '06',
-      icon: Zap,
-      title: 'On-Demand BIM Support',
-      description: 'Flexible BIM support for teams that need additional coordination capacity during deadlines, urgent submissions, or peak project workload.',
-      features: [
-        'Urgent clash detection support',
-        'Short-term model review assistance',
-        'Remote BIM coordination support',
-        'Fast QA/QC review of submitted models',
-        'Support during peak project workload',
-      ],
-    },
-  ];
-
   return (
     <section
       id="services"
       data-testid="services-section"
-      className="py-24 lg:py-32 bg-[#0F172A] relative"
+      className="py-24 lg:py-32 relative"
+      style={{ background: '#0B1220' }}
     >
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="mb-16">
-          <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="services-label">// SERVICES</p>
-          <h2 
+      {/* Subtle grid */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
+        backgroundSize: '50px 50px',
+      }} />
+      {/* Ambient top glow */}
+      <div className="absolute pointer-events-none" style={{
+        top: 0, left: '30%', width: '500px', height: '300px',
+        background: 'radial-gradient(ellipse, rgba(14,165,233,0.07) 0%, transparent 70%)',
+      }} />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+
+        {/* Header */}
+        <div className="sr-hidden mb-14">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-[#0EA5E9] font-mono text-sm" data-testid="services-label">// SERVICES</span>
+            <div className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg, rgba(14,165,233,0.5), transparent)' }} />
+          </div>
+          <h2
             data-testid="services-title"
             className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
-            What We <span className="text-[#0EA5E9]">Deliver</span>
+            What We <span style={{
+              background: 'linear-gradient(90deg, #0EA5E9, #22D3EE)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Deliver</span>
           </h2>
           <p className="text-[#94A3B8] max-w-2xl">
-            Comprehensive BIM coordination services designed to eliminate costly construction conflicts 
-            and ensure project success.
+            Six core BIM services — from coordination and clash detection to QA/QC, 4D/5D, and digital delivery — designed to reduce risk and improve model quality before construction begins.
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div 
+        {/* Grid */}
+        <div
           data-testid="services-grid"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
-          {services.map((service) => {
+          {services.map((service, i) => {
             const Icon = service.icon;
             return (
               <div
                 key={service.id}
                 data-testid={`service-card-${service.id}`}
-                className="sr-hidden tech-card-hover rounded-sm bg-[#020617] p-6"
+                className="sr-hidden process-card flex flex-col"
+                style={{ transitionDelay: `${i * 80}ms` }}
               >
-                {/* Service ID */}
-                <span className="font-mono text-xs text-[#22D3EE] mb-4 block opacity-60">
-                  {service.id}
-                </span>
+                {/* ── Image area ── */}
+                <div className="relative h-48 overflow-hidden flex-shrink-0">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="service-img w-full h-full object-cover"
+                    loading="lazy"
+                  />
 
-                {/* Icon */}
-                <div className="card-icon w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4 transition-all duration-300">
-                  <Icon size={24} className="text-[#0EA5E9] transition-colors duration-300" />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0" style={{
+                    background: 'linear-gradient(to bottom, rgba(7,19,32,0.15) 0%, rgba(7,19,32,0.92) 100%)',
+                  }} />
+
+                  {/* Ghost number watermark */}
+                  <span
+                    className="absolute bottom-[-8px] right-2 font-black select-none pointer-events-none"
+                    style={{
+                      fontSize: '96px',
+                      lineHeight: 1,
+                      fontFamily: 'Space Grotesk, sans-serif',
+                      color: 'rgba(255,255,255,0.05)',
+                      letterSpacing: '-4px',
+                    }}
+                  >
+                    {service.id}
+                  </span>
+
+                  {/* Step badge – top left */}
+                  <div className="absolute top-4 left-4">
+                    <span
+                      className="font-mono text-xs px-2 py-1 rounded-full font-bold tracking-wider"
+                      style={{
+                        background: `rgba(14,165,233,0.18)`,
+                        border: `1px solid ${service.color}55`,
+                        color: service.color,
+                      }}
+                    >
+                      {service.id}
+                    </span>
+                  </div>
+
+                  {/* Icon – top right */}
+                  <div
+                    className="service-icon-wrap absolute top-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{
+                      background: 'rgba(14,165,233,0.12)',
+                      border: `1px solid ${service.color}40`,
+                    }}
+                  >
+                    <Icon size={18} style={{ color: service.color }} />
+                  </div>
+
+                  {/* Bottom title strip */}
+                  <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+                    <h3
+                      className="text-base font-bold text-[#F1F5F9] leading-tight"
+                      style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+                    >
+                      {service.title}
+                    </h3>
+                  </div>
                 </div>
 
-                {/* Content */}
-                <h3
-                  className="text-lg font-bold mb-2"
-                  style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-                >
-                  {service.title}
-                </h3>
-                <p className="text-[#94A3B8] text-sm mb-4 leading-relaxed">
-                  {service.description}
-                </p>
+                {/* ── Content area ── */}
+                <div className="p-5 flex flex-col flex-1 relative z-10">
+                  <p className="text-[#94A3B8] text-sm leading-relaxed mb-5 flex-1">
+                    {service.description}
+                  </p>
 
-                {/* Features */}
-                <div className="space-y-2 pt-4 border-t border-[#1E293B]">
-                  {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 bg-[#22D3EE] rounded-full flex-shrink-0" />
-                      <span className="text-xs text-[#94A3B8]">{feature}</span>
-                    </div>
-                  ))}
+                  {/* 3 features */}
+                  <div className="space-y-2 pt-3" style={{ borderTop: '1px solid rgba(14,165,233,0.1)' }}>
+                    {service.features.map((feat, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <div
+                          className="feat-dot w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          style={{ background: service.color }}
+                        />
+                        <span className="text-xs text-[#94A3B8]">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             );
@@ -154,13 +204,8 @@ const Services = () => {
         </div>
 
         {/* CTA */}
-        <div 
-          data-testid="services-cta"
-          className="mt-16 text-center"
-        >
-          <p className="text-[#94A3B8] mb-6">
-            Need a custom solution for your project?
-          </p>
+        <div data-testid="services-cta" className="sr-hidden mt-14 text-center">
+          <p className="text-[#64748B] mb-5 text-sm">Need a specific BIM service for your project?</p>
           <a
             href="#contact"
             data-testid="services-contact-btn"
