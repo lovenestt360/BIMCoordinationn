@@ -1,4 +1,5 @@
 import { Award, Building2, CheckCircle } from 'lucide-react';
+import CountUp from './CountUp';
 
 const About = () => {
   return (
@@ -91,15 +92,15 @@ const About = () => {
 
             <div className="space-y-8">
               <div>
-                <p className="sr-hidden stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-experience" style={{ animationDelay: '0.2s' }}>2+</p>
+                <CountUp target={2} suffix="+" duration={1200} className="stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" />
                 <p className="text-[#94A3B8] text-sm mt-1">Years of Experience</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="sr-hidden stat-number-glow font-mono text-4xl font-bold text-[#22D3EE]" data-testid="stat-projects" style={{ animationDelay: '0.4s' }}>8+</p>
+                <CountUp target={8} suffix="+" duration={1600} className="stat-number-glow font-mono text-4xl font-bold text-[#22D3EE]" />
                 <p className="text-[#94A3B8] text-sm mt-1">Projects Completed</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="sr-hidden stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-clashes" style={{ animationDelay: '0.6s' }}>20K+</p>
+                <CountUp target={20} suffix="K+" duration={2000} className="stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" />
                 <p className="text-[#94A3B8] text-sm mt-1">Clashes Resolved</p>
               </div>
             </div>

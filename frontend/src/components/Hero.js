@@ -1,4 +1,5 @@
 import { ArrowRight, Layers } from 'lucide-react';
+import CountUp from './CountUp';
 
 const Hero = () => {
   const scrollToSection = (e, href) => {
@@ -98,15 +99,15 @@ const Hero = () => {
           className="grid grid-cols-3 gap-8 max-w-xl mx-auto mt-16 pt-8 border-t border-[#1E293B] animate-fade-in-up stagger-4">
 
           <div>
-            <p className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" style={{ animationDelay: '0.5s' }}>8+</p>
+            <CountUp target={8} suffix="+" duration={1600} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" />
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Projects Delivered</p>
           </div>
           <div>
-            <p className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#22D3EE] font-mono" style={{ animationDelay: '0.7s' }}>85%</p>
+            <CountUp target={85} suffix="%" duration={1800} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#22D3EE] font-mono" />
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Clash Resolution</p>
           </div>
           <div>
-            <p className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" style={{ animationDelay: '0.9s' }}>2+</p>
+            <CountUp target={2} suffix="+" duration={1200} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" />
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Years Experience</p>
           </div>
         </div>
