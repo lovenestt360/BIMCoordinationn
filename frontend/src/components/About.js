@@ -87,19 +87,19 @@ const About = () => {
           {/* Stats Card */}
           <div
             data-testid="about-stats-card"
-            className="tech-card rounded-sm bg-[#0F172A] p-8 flex flex-col justify-center">
+            className="tech-card-hover rounded-sm bg-[#0F172A] p-8 flex flex-col justify-center">
 
             <div className="space-y-8">
               <div>
-                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-experience">2+</p>
+                <p className="sr-hidden stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-experience" style={{ animationDelay: '0.2s' }}>2+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Years of Experience</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="font-mono text-4xl font-bold text-[#22D3EE]" data-testid="stat-projects">8+</p>
+                <p className="sr-hidden stat-number-glow font-mono text-4xl font-bold text-[#22D3EE]" data-testid="stat-projects" style={{ animationDelay: '0.4s' }}>8+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Projects Completed</p>
               </div>
               <div className="border-t border-[#1E293B] pt-8">
-                <p className="font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-clashes">20K+</p>
+                <p className="sr-hidden stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" data-testid="stat-clashes" style={{ animationDelay: '0.6s' }}>20K+</p>
                 <p className="text-[#94A3B8] text-sm mt-1">Clashes Resolved</p>
               </div>
             </div>

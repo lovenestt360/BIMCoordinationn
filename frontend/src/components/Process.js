@@ -58,7 +58,7 @@ const Process = () => {
               className="sr-hidden"
               style={{ transitionDelay: `${i * 100}ms` }}
             >
-              <div className="tech-card rounded-sm bg-[#0F172A] p-6 m-2 h-full">
+              <div className="tech-card-hover rounded-sm bg-[#0F172A] p-6 m-2 h-full">
                 <div
                   className="w-14 h-14 rounded-sm flex items-center justify-center mb-5 font-mono font-bold text-xl"
                   style={{

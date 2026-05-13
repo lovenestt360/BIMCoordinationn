@@ -116,23 +116,20 @@ const Services = () => {
               <div
                 key={service.id}
                 data-testid={`service-card-${service.id}`}
-                className="tech-card rounded-sm bg-[#020617] p-6 group"
+                className="sr-hidden tech-card-hover rounded-sm bg-[#020617] p-6"
               >
                 {/* Service ID */}
-                <span className="font-mono text-xs text-[#334155] mb-4 block">
+                <span className="font-mono text-xs text-[#22D3EE] mb-4 block opacity-60">
                   {service.id}
                 </span>
 
                 {/* Icon */}
-                <div className="w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4 group-hover:bg-[#0EA5E9] transition-colors duration-300">
-                  <Icon 
-                    size={24} 
-                    className="text-[#0EA5E9] group-hover:text-[#0F172A] transition-colors duration-300" 
-                  />
+                <div className="card-icon w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4 transition-all duration-300">
+                  <Icon size={24} className="text-[#0EA5E9] transition-colors duration-300" />
                 </div>
 
                 {/* Content */}
-                <h3 
+                <h3
                   className="text-lg font-bold mb-2"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                 >
@@ -146,7 +143,7 @@ const Services = () => {
                 <div className="space-y-2 pt-4 border-t border-[#1E293B]">
                   {service.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center gap-2">
-                      <div className="w-1 h-1 bg-[#22D3EE] rounded-full" />
+                      <div className="w-1.5 h-1.5 bg-[#22D3EE] rounded-full flex-shrink-0" />
                       <span className="text-xs text-[#94A3B8]">{feature}</span>
                     </div>
                   ))}

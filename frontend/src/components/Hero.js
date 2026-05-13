@@ -98,15 +98,15 @@ const Hero = () => {
           className="grid grid-cols-3 gap-8 max-w-xl mx-auto mt-16 pt-8 border-t border-[#1E293B] animate-fade-in-up stagger-4">
 
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">8+</p>
+            <p className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" style={{ animationDelay: '0.5s' }}>8+</p>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Projects Delivered</p>
           </div>
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">85%</p>
+            <p className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#22D3EE] font-mono" style={{ animationDelay: '0.7s' }}>85%</p>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Clash Resolution</p>
           </div>
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono">2+</p>
+            <p className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" style={{ animationDelay: '0.9s' }}>2+</p>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Years Experience</p>
           </div>
         </div>

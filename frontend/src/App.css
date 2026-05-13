@@ -208,6 +208,75 @@ textarea:-webkit-autofill:focus {
   }
 }
 
+/* Animated counter numbers */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(16px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.stat-number {
+  display: inline-block;
+  animation: countUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes numberGlow {
+  0%, 100% { text-shadow: 0 0 8px rgba(14,165,233,0.4); }
+  50%       { text-shadow: 0 0 24px rgba(14,165,233,0.9), 0 0 48px rgba(34,211,238,0.4); }
+}
+
+.stat-number-glow {
+  animation: countUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both,
+             numberGlow 3s ease-in-out 0.8s infinite;
+}
+
+/* Enhanced card hover effects */
+.tech-card-hover {
+  background-color: #0F172A;
+  border: 1px solid #1E293B;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-card-hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(14,165,233,0.06) 0%,
+    transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tech-card-hover:hover::before {
+  opacity: 1;
+}
+
+.tech-card-hover:hover {
+  border-color: rgba(34,211,238,0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px -10px rgba(14,165,233,0.2),
+              0 0 0 1px rgba(34,211,238,0.1);
+}
+
+.tech-card-hover > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Icon glow on card hover */
+.tech-card-hover:hover .card-icon {
+  background-color: #0EA5E9 !important;
+  box-shadow: 0 0 20px rgba(14,165,233,0.5);
+}
+
+.tech-card-hover:hover .card-icon svg {
+  color: #0F172A !important;
+}
+
 /* Scroll reveal animations */
 .sr-hidden {
   opacity: 0;

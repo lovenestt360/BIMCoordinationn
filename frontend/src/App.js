@@ -7,7 +7,6 @@ import About from "./components/About";
 import Services from "./components/Services";
 import Process from "./components/Process";
 import Portfolio from "./components/Portfolio";
-import Testimonials from "./components/Testimonials";
 import MeetingScheduler from "./components/MeetingScheduler";
 import FAQ from "./components/FAQ";
 import Contact from "./components/Contact";
@@ -27,7 +26,6 @@ const LandingPage = () => {
         <Services />
         <Process />
         <Portfolio />
-        <Testimonials />
         <MeetingScheduler />
         <FAQ />
         <Contact />
