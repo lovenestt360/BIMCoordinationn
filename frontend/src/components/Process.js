@@ -1,5 +1,3 @@
-import { useScrollReveal } from '../hooks/useScrollReveal';
-
 const steps = [
   {
     number: '01',
@@ -27,42 +25,7 @@ const steps = [
   },
 ];
 
-const StepCard = ({ step, index }) => {
-  const ref = useScrollReveal({ threshold: 0.1 });
-  return (
-    <div
-      ref={ref}
-      className="sr-hidden relative"
-      style={{ transitionDelay: `${index * 100}ms` }}
-    >
-      <div className="tech-card rounded-sm bg-[#0F172A] p-6 m-2 h-full">
-        <div
-          className="w-14 h-14 rounded-sm flex items-center justify-center mb-5 font-mono font-bold text-xl"
-          style={{
-            background: 'rgba(14,165,233,0.08)',
-            border: `1px solid ${step.accent}40`,
-            color: step.accent,
-          }}
-        >
-          {step.number}
-        </div>
-        <h3
-          className="text-base font-bold mb-3 text-[#F8FAFC]"
-          style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-        >
-          {step.title}
-        </h3>
-        <p className="text-[#94A3B8] text-sm leading-relaxed">
-          {step.description}
-        </p>
-      </div>
-    </div>
-  );
-};
-
 const Process = () => {
-  const headerRef = useScrollReveal();
-
   return (
     <section className="py-24 lg:py-32 bg-[#020617] relative overflow-hidden">
       <div
@@ -75,7 +38,7 @@ const Process = () => {
       />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div ref={headerRef} className="sr-hidden mb-16">
+        <div className="sr-hidden mb-16">
           <p className="text-[#0EA5E9] font-mono text-sm mb-2">// PROCESS</p>
           <h2
             className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
@@ -90,7 +53,33 @@ const Process = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
           {steps.map((step, i) => (
-            <StepCard key={step.number} step={step} index={i} />
+            <div
+              key={step.number}
+              className="sr-hidden"
+              style={{ transitionDelay: `${i * 100}ms` }}
+            >
+              <div className="tech-card rounded-sm bg-[#0F172A] p-6 m-2 h-full">
+                <div
+                  className="w-14 h-14 rounded-sm flex items-center justify-center mb-5 font-mono font-bold text-xl"
+                  style={{
+                    background: 'rgba(14,165,233,0.08)',
+                    border: `1px solid ${step.accent}40`,
+                    color: step.accent,
+                  }}
+                >
+                  {step.number}
+                </div>
+                <h3
+                  className="text-base font-bold mb-3 text-[#F8FAFC]"
+                  style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+                >
+                  {step.title}
+                </h3>
+                <p className="text-[#94A3B8] text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

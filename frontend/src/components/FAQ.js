@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const faqs = [
   {
@@ -13,7 +12,7 @@ const faqs = [
   },
   {
     question: 'How long does a typical BIM coordination review take?',
-    answer: 'It depends on project size and scope. A standard clash detection report for a single discipline package can be delivered within 48–72 hours. Full multidisciplinary coordination for larger projects is typically scoped per phase or milestone.',
+    answer: 'It depends on project size and scope. A standard clash detection report for a single discipline package can be delivered within 48-72 hours. Full multidisciplinary coordination for larger projects is typically scoped per phase or milestone.',
   },
   {
     question: 'Can you work with models from any BIM authoring tool?',
@@ -31,12 +30,10 @@ const faqs = [
 
 const FAQItem = ({ faq, index }) => {
   const [open, setOpen] = useState(false);
-  const ref = useScrollReveal({ threshold: 0.1 });
 
   return (
     <div
-      ref={ref}
-      className="sr-hidden border border-[#1E293B] rounded-sm overflow-hidden transition-all duration-300"
+      className="sr-hidden border border-[#1E293B] rounded-sm overflow-hidden"
       style={{ transitionDelay: `${index * 60}ms` }}
     >
       <button
@@ -69,13 +66,10 @@ const FAQItem = ({ faq, index }) => {
 };
 
 const FAQ = () => {
-  const headerRef = useScrollReveal();
-
   return (
     <section className="py-24 lg:py-32 bg-[#020617] relative">
       <div className="max-w-3xl mx-auto px-6">
-        {/* Header */}
-        <div ref={headerRef} className="sr-hidden mb-12 text-center">
+        <div className="sr-hidden mb-12 text-center">
           <p className="text-[#0EA5E9] font-mono text-sm mb-2">// FAQ</p>
           <h2
             className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
@@ -88,19 +82,20 @@ const FAQ = () => {
           </p>
         </div>
 
-        {/* FAQ items */}
         <div className="space-y-3">
           {faqs.map((faq, i) => (
             <FAQItem key={i} faq={faq} index={i} />
           ))}
         </div>
 
-        {/* Bottom CTA */}
         <div className="text-center mt-12">
           <p className="text-[#64748B] text-sm mb-4">Still have questions?</p>
           <a
             href="#contact"
-            onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
+            onClick={(e) => {
+              e.preventDefault();
+              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="btn-outline px-6 py-2 rounded-sm text-sm inline-block"
           >
             Send us a message

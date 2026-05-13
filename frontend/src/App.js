@@ -1,5 +1,6 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useGlobalScrollReveal } from "./hooks/useScrollReveal";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -15,6 +16,8 @@ import FloatingContact from "./components/FloatingContact";
 import { Toaster } from "./components/ui/sonner";
 
 const LandingPage = () => {
+  useGlobalScrollReveal();
+
   return (
     <div data-testid="landing-page" className="min-h-screen bg-[#020617]">
       <Navbar />

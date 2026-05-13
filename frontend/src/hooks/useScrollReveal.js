@@ -1,25 +1,23 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
-export function useScrollReveal(options = {}) {
-  const ref = useRef(null);
-
+export function useGlobalScrollReveal() {
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const elements = document.querySelectorAll('.sr-hidden');
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('sr-visible');
-          observer.unobserve(el);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('sr-visible');
+            observer.unobserve(entry.target);
+          }
+        });
       },
-      { threshold: options.threshold || 0.12, rootMargin: options.rootMargin || '0px' }
+      { threshold: 0.1 }
     );
 
-    observer.observe(el);
+    elements.forEach((el) => observer.observe(el));
+
     return () => observer.disconnect();
   }, []);
-
-  return ref;
 }
