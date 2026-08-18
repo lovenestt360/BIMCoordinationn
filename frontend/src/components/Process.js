@@ -1,5 +1,11 @@
 import { ArrowRight, MessageCircle, FolderCog, Layers, SearchCheck, ShieldCheck, FileCheck } from 'lucide-react';
 
+const handleCardMouseMove = (e) => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+  e.currentTarget.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+};
+
 const processSteps = [
   {
     number: '01',
@@ -121,7 +127,9 @@ const Process = () => {
                 key={step.number}
                 className="sr-hidden process-card p-6 flex flex-col"
                 style={{ transitionDelay: `${i * 75}ms` }}
+                onMouseMove={handleCardMouseMove}
               >
+                <div className="card-spotlight" />
                 {/* Ghost number watermark */}
                 <span
                   className="absolute select-none pointer-events-none font-black"

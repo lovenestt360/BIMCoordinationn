@@ -1,7 +1,20 @@
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import CountUp from './CountUp';
 
 const Hero = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '28%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.93]);
+
   const scrollToSection = (e, href) => {
     e.preventDefault();
     const element = document.querySelector(href);
@@ -12,11 +25,12 @@ const Hero = () => {
 
   return (
     <section
+      ref={sectionRef}
       data-testid="hero-section"
       className="relative min-h-screen flex items-center justify-center blueprint-bg overflow-hidden">
 
-      {/* Background Image Overlay */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Background Image Overlay — scroll parallax */}
+      <motion.div className="absolute inset-0 z-0 overflow-hidden" style={{ y: bgY }}>
         <div
           className="hero-bg-motion absolute inset-0"
           style={{
@@ -26,16 +40,18 @@ const Hero = () => {
             opacity: 0.3,
           }}
         />
-      </div>
+      </motion.div>
 
-      
+
       {/* Gradient Overlay */}
       <div className="absolute inset-0 z-0" style={{
         background: 'linear-gradient(to bottom, #020617 0%, rgba(2,6,23,0.55) 30%, rgba(2,6,23,0.3) 55%, rgba(2,6,23,0.7) 80%, #020617 100%)',
       }} />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
+      {/* Content — fades, lifts and scales down as you scroll past */}
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
+        className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
         {/* Main Heading */}
         <h1
           data-testid="hero-title"
@@ -107,7 +123,7 @@ const Hero = () => {
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Years Experience</p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">

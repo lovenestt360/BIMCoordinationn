@@ -1,6 +1,7 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useGlobalScrollReveal } from "./hooks/useScrollReveal";
+import ScrollProgress from "./components/ScrollProgress";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -19,6 +20,7 @@ const LandingPage = () => {
 
   return (
     <div data-testid="landing-page" className="min-h-screen bg-[#020617]">
+      <ScrollProgress />
       <Navbar />
       <main>
         <Hero />

@@ -1,5 +1,11 @@
 import { Layers, Target, FileCheck, Box, Ruler, Zap } from 'lucide-react';
 
+const handleCardMouseMove = (e) => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+  e.currentTarget.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+};
+
 const services = [
   {
     id: '01',
@@ -114,9 +120,11 @@ const Services = () => {
                 data-testid={`service-card-${service.id}`}
                 className="sr-hidden process-card flex flex-col"
                 style={{ transitionDelay: `${i * 80}ms` }}
+                onMouseMove={handleCardMouseMove}
               >
+                <div className="card-spotlight" />
                 {/* ── Image area ── */}
-                <div className="relative h-48 overflow-hidden flex-shrink-0">
+                <div className="relative z-10 h-48 overflow-hidden flex-shrink-0">
                   <img
                     src={service.image}
                     alt={service.title}
