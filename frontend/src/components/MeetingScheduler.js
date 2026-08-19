@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, User, Mail, Building2, FileText, CheckCircle, AlertCircle, Briefcase, Layers } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, User, Mail, Building2, FileText, CheckCircle, AlertCircle, Briefcase, Layers, Loader2, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar } from '../components/ui/calendar';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -42,6 +43,13 @@ const MEETING_FOCUS_OPTIONS = [
 
 const selectClass = 'w-full bg-[#1E293B] border border-[#334155] text-[#F8FAFC] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent appearance-none';
 const selectEmptyClass = 'w-full bg-[#1E293B] border border-[#334155] text-[#64748B] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent appearance-none';
+
+const STEPS = ['Date & Time', 'Your Details', 'Confirmed'];
+
+const fieldVariants = {
+  hidden: { opacity: 0, y: 10 },
+  show: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] } }),
+};
 
 const MeetingScheduler = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -144,6 +152,8 @@ const MeetingScheduler = () => {
     return isBefore(date, today) || date > maxDate || date.getDay() === 0 || date.getDay() === 6;
   };
 
+  const currentStep = submitStatus?.type === 'success' ? 2 : selectedDate && selectedTime ? 1 : 0;
+
   return (
     <section
       id="schedule"
@@ -169,7 +179,13 @@ const MeetingScheduler = () => {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className="mb-16 text-center">
+        <motion.div
+          className="mb-12 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="schedule-label">// SCHEDULE</p>
           <h2
             data-testid="schedule-title"
@@ -181,13 +197,72 @@ const MeetingScheduler = () => {
           <p className="text-[#94A3B8] max-w-2xl mx-auto">
             Schedule a free consultation to discuss your project needs and how we can help optimize your BIM workflow.
           </p>
-        </div>
+        </motion.div>
+
+        {/* Step Indicator */}
+        <motion.div
+          className="flex items-center justify-center gap-2 sm:gap-3 mb-10"
+          data-testid="schedule-steps"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          {STEPS.map((label, i) => {
+            const isDone = i < currentStep;
+            const isActive = i === currentStep;
+            return (
+              <div key={label} className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    animate={{
+                      backgroundColor: isDone || isActive ? 'rgba(14,165,233,0.15)' : 'rgba(30,41,59,0.6)',
+                      borderColor: isDone || isActive ? '#0EA5E9' : '#334155',
+                      scale: isActive ? 1.08 : 1,
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="w-7 h-7 rounded-full border flex items-center justify-center font-mono text-xs font-bold flex-shrink-0"
+                    style={{ color: isDone || isActive ? '#22D3EE' : '#64748B' }}
+                  >
+                    {isDone ? <Check size={13} /> : i + 1}
+                  </motion.div>
+                  <span
+                    className="hidden sm:inline text-xs font-mono"
+                    style={{ color: isDone || isActive ? '#CBD5E1' : '#64748B' }}
+                  >
+                    {label}
+                  </span>
+                </div>
+                {i < STEPS.length - 1 && (
+                  <div className="w-6 sm:w-10 h-px relative overflow-hidden bg-[#1E293B]">
+                    <motion.div
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(90deg, #0EA5E9, #22D3EE)' }}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: isDone ? 1 : 0 }}
+                      transition={{ duration: 0.4 }}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </motion.div>
 
         {/* Scheduler Card */}
-        <div
+        <motion.div
           data-testid="scheduler-card"
-          className="glass rounded-sm max-w-4xl mx-auto overflow-hidden"
+          className="glass rounded-sm max-w-4xl mx-auto overflow-hidden relative"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
+          {/* Ambient corner glow for extra depth */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full pointer-events-none" style={{
+            background: 'radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%)',
+          }} />
+
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Calendar Side */}
             <div className="p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-[#1E293B]">
@@ -212,41 +287,59 @@ const MeetingScheduler = () => {
               </div>
 
               {/* Time Slots */}
-              {selectedDate && (
-                <div className="mt-6" data-testid="time-slots-container">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Clock size={16} className="text-[#0EA5E9]" />
-                    <span className="text-sm text-[#94A3B8]">
-                      Available times for {format(selectedDate, 'MMM dd, yyyy')}
-                    </span>
-                  </div>
-
-                  {isLoading ? (
-                    <div className="text-center text-[#94A3B8] py-4">Loading...</div>
-                  ) : availableSlots.length > 0 ? (
-                    <div className="grid grid-cols-3 gap-2">
-                      {availableSlots.map((slot) => (
-                        <button
-                          key={slot}
-                          data-testid={`time-slot-${slot}`}
-                          onClick={() => setSelectedTime(slot)}
-                          className={`py-2 px-3 rounded-sm text-sm font-mono transition-all duration-200 ${
-                            selectedTime === slot
-                              ? 'bg-[#0EA5E9] text-[#0F172A]'
-                              : 'bg-[#1E293B] text-[#94A3B8] hover:bg-[#334155]'
-                          }`}
-                        >
-                          {slot}
-                        </button>
-                      ))}
+              <AnimatePresence>
+                {selectedDate && (
+                  <motion.div
+                    className="mt-6"
+                    data-testid="time-slots-container"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div className="flex items-center gap-2 mb-4 pt-1">
+                      <Clock size={16} className="text-[#0EA5E9]" />
+                      <span className="text-sm text-[#94A3B8]">
+                        Available times for {format(selectedDate, 'MMM dd, yyyy')}
+                      </span>
                     </div>
-                  ) : (
-                    <p className="text-sm text-[#94A3B8] text-center py-4">
-                      No available slots for this date
-                    </p>
-                  )}
-                </div>
-              )}
+
+                    {isLoading ? (
+                      <div className="flex items-center justify-center gap-2 text-[#94A3B8] py-4">
+                        <Loader2 size={16} className="animate-spin" />
+                        Loading...
+                      </div>
+                    ) : availableSlots.length > 0 ? (
+                      <div className="grid grid-cols-3 gap-2">
+                        {availableSlots.map((slot, i) => (
+                          <motion.button
+                            key={slot}
+                            data-testid={`time-slot-${slot}`}
+                            onClick={() => setSelectedTime(slot)}
+                            custom={i}
+                            variants={fieldVariants}
+                            initial="hidden"
+                            animate="show"
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.96 }}
+                            className={`py-2 px-3 rounded-sm text-sm font-mono transition-colors duration-200 ${
+                              selectedTime === slot
+                                ? 'bg-[#0EA5E9] text-[#0F172A]'
+                                : 'bg-[#1E293B] text-[#94A3B8] hover:bg-[#334155]'
+                            }`}
+                          >
+                            {slot}
+                          </motion.button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-[#94A3B8] text-center py-4">
+                        No available slots for this date
+                      </p>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Form Side */}
@@ -412,30 +505,51 @@ const MeetingScheduler = () => {
                 )}
 
                 {/* Selected Summary */}
-                {selectedDate && selectedTime && (
-                  <div
-                    data-testid="booking-summary"
-                    className="p-3 bg-[#1E293B] rounded-sm border border-[#334155]"
-                  >
-                    <p className="text-xs text-[#94A3B8] mb-1">Selected Time:</p>
-                    <p className="font-mono text-[#0EA5E9]">
-                      {format(selectedDate, 'EEEE, MMMM dd, yyyy')} at {selectedTime}
-                    </p>
-                  </div>
-                )}
+                <AnimatePresence>
+                  {selectedDate && selectedTime && (
+                    <motion.div
+                      data-testid="booking-summary"
+                      initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex items-center gap-3 p-3 rounded-sm border border-[#0EA5E9]/40"
+                      style={{ background: 'linear-gradient(90deg, rgba(14,165,233,0.1), rgba(34,211,238,0.04))' }}
+                    >
+                      <div className="w-8 h-8 rounded-full bg-[#0EA5E9]/15 border border-[#0EA5E9]/40 flex items-center justify-center flex-shrink-0">
+                        <Check size={14} className="text-[#22D3EE]" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#94A3B8] mb-0.5">Selected Time:</p>
+                        <p className="font-mono text-[#0EA5E9] text-sm">
+                          {format(selectedDate, 'EEEE, MMMM dd, yyyy')} at {selectedTime}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                <Button
-                  type="submit"
-                  data-testid="schedule-submit-btn"
-                  disabled={!selectedDate || !selectedTime || isSubmitting}
-                  className="w-full btn-primary py-3 rounded-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Scheduling...' : 'Schedule Meeting'}
-                </Button>
+                <motion.div whileHover={{ scale: selectedDate && selectedTime ? 1.01 : 1 }} whileTap={{ scale: selectedDate && selectedTime ? 0.98 : 1 }}>
+                  <Button
+                    type="submit"
+                    data-testid="schedule-submit-btn"
+                    disabled={!selectedDate || !selectedTime || isSubmitting}
+                    className="w-full btn-primary py-3 rounded-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Scheduling...
+                      </>
+                    ) : (
+                      'Schedule Meeting'
+                    )}
+                  </Button>
+                </motion.div>
               </form>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

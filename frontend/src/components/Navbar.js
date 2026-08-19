@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,12 +34,25 @@ const Navbar = () => {
   };
 
   return (
-    <nav
+    <motion.nav
       data-testid="navbar"
+      initial={{ y: -40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'glass py-3' : 'bg-transparent py-5'
       }`}
     >
+      {/* Scroll progress indicator */}
+      <motion.div
+        data-testid="navbar-scroll-progress"
+        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+        style={{
+          scaleX,
+          background: 'linear-gradient(90deg, #0EA5E9, #22D3EE)',
+        }}
+      />
+
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <a 
           href="#" 
@@ -112,7 +128,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-    </nav>
+    </motion.nav>
   );
 };
 

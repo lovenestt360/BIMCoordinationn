@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import { Layers, Target, FileCheck, Box, Ruler, Zap } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const services = [
   {
@@ -58,11 +60,16 @@ const services = [
 ];
 
 const Services = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const glowY = useTransform(scrollYProgress, [0, 1], [-80, 80]);
+
   return (
     <section
+      ref={sectionRef}
       id="services"
       data-testid="services-section"
-      className="py-24 lg:py-32 relative"
+      className="py-24 lg:py-32 relative overflow-hidden"
       style={{ background: '#0B1220' }}
     >
       {/* Subtle grid */}
@@ -70,9 +77,9 @@ const Services = () => {
         backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
         backgroundSize: '50px 50px',
       }} />
-      {/* Ambient top glow */}
-      <div className="absolute pointer-events-none" style={{
-        top: 0, left: '30%', width: '500px', height: '300px',
+      {/* Ambient top glow, drifts with scroll */}
+      <motion.div className="absolute pointer-events-none" style={{
+        top: 0, left: '30%', width: '500px', height: '300px', y: glowY,
         background: 'radial-gradient(ellipse, rgba(14,165,233,0.07) 0%, transparent 70%)',
       }} />
 
@@ -109,11 +116,13 @@ const Services = () => {
           {services.map((service, i) => {
             const Icon = service.icon;
             return (
-              <div
+              <motion.div
                 key={service.id}
                 data-testid={`service-card-${service.id}`}
                 className="sr-hidden process-card flex flex-col"
                 style={{ transitionDelay: `${i * 80}ms` }}
+                whileHover={{ y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               >
                 {/* ── Image area ── */}
                 <div className="relative h-48 overflow-hidden flex-shrink-0">
@@ -198,7 +207,7 @@ const Services = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

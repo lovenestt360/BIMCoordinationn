@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 
 const faqs = [
   {
@@ -31,6 +32,9 @@ const faqs = [
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const glowY = useTransform(scrollYProgress, [0, 1], [-60, 60]);
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
 
@@ -40,15 +44,15 @@ const FAQ = () => {
   };
 
   return (
-    <section className="py-24 lg:py-32 bg-[#020617] relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#020617] relative overflow-hidden">
       {/* Subtle grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
         backgroundSize: '50px 50px',
       }} />
-      {/* Ambient glow */}
-      <div className="absolute pointer-events-none" style={{
-        top: '10%', left: '50%', transform: 'translateX(-50%)',
+      {/* Ambient glow, drifts gently as you scroll through the section */}
+      <motion.div className="absolute pointer-events-none" style={{
+        top: '10%', left: '50%', translateX: '-50%', y: glowY,
         width: '600px', height: '300px',
         background: 'radial-gradient(ellipse, rgba(14,165,233,0.06) 0%, transparent 70%)',
       }} />
@@ -85,21 +89,25 @@ const FAQ = () => {
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
-              <div
+              <motion.div
                 key={i}
-                className="sr-hidden rounded-sm overflow-hidden transition-all duration-300"
+                className="sr-hidden rounded-sm overflow-hidden"
                 style={{
                   transitionDelay: `${i * 60}ms`,
                   border: isOpen
                     ? '1px solid rgba(14,165,233,0.4)'
                     : '1px solid rgba(30,41,59,1)',
+                }}
+                animate={{
                   boxShadow: isOpen
                     ? '0 0 24px -6px rgba(14,165,233,0.18)'
-                    : 'none',
+                    : '0 0 0px 0px rgba(14,165,233,0)',
                   background: isOpen
                     ? 'linear-gradient(135deg, #0d1f35 0%, #091525 100%)'
-                    : '#0F172A',
+                    : 'linear-gradient(135deg, #0F172A 0%, #0F172A 100%)',
                 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ y: -2 }}
               >
                 {/* Question row */}
                 <button
@@ -133,28 +141,35 @@ const FAQ = () => {
                   </div>
 
                   {/* Chevron */}
-                  <ChevronDown
-                    size={18}
-                    className="flex-shrink-0 transition-all duration-300"
-                    style={{
-                      color: isOpen ? '#22D3EE' : '#475569',
-                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                    }}
-                  />
+                  <motion.span
+                    className="flex-shrink-0"
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <ChevronDown size={18} style={{ color: isOpen ? '#22D3EE' : '#475569' }} />
+                  </motion.span>
                 </button>
 
                 {/* Answer */}
-                <div
-                  className="overflow-hidden transition-all duration-400"
-                  style={{ maxHeight: isOpen ? '500px' : '0px', opacity: isOpen ? 1 : 0, transition: 'max-height 0.4s ease, opacity 0.3s ease' }}
-                >
-                  <div className="px-5 pb-5 pt-1" style={{ borderTop: '1px solid rgba(14,165,233,0.12)' }}>
-                    <p className="text-[#94A3B8] text-sm leading-relaxed pt-3">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25 } }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div className="px-5 pb-5 pt-1" style={{ borderTop: '1px solid rgba(14,165,233,0.12)' }}>
+                        <p className="text-[#94A3B8] text-sm leading-relaxed pt-3">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>

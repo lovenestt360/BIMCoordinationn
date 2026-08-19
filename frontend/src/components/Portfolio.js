@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ExternalLink, MapPin, Users, CheckCircle, Wrench, Tag } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const projects = [
   {
@@ -110,72 +111,88 @@ const Portfolio = () => {
             data-testid="portfolio-main-display"
             className="tech-card rounded-sm overflow-hidden bg-[#0F172A]"
           >
-            {/* Image */}
-            <div
-              className="h-64 lg:h-80 bg-cover bg-center relative"
-              style={{ backgroundImage: `url(${project.image})` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] to-transparent" />
-              <div className="absolute bottom-4 left-4">
-                <span className="px-3 py-1 bg-[#0EA5E9] text-[#0F172A] text-xs font-mono rounded-sm">
-                  {project.category}
-                </span>
-              </div>
-              <div className="absolute top-4 right-4">
-                <span className="px-2 py-1 bg-[#1E293B] border border-[#334155] text-[#22D3EE] text-xs font-mono rounded-sm">
-                  {project.status}
-                </span>
-              </div>
-            </div>
-
-            <div className="p-6">
-              <h3
-                data-testid="portfolio-project-title"
-                className="text-xl font-bold mb-1"
-                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
-                {project.title}
-              </h3>
-
-              <div className="flex items-center gap-2 text-sm mb-4">
-                <MapPin size={14} className="text-[#0EA5E9]" />
-                <span className="text-[#94A3B8]">{project.location}</span>
-              </div>
-
-              <p className="text-[#94A3B8] text-sm mb-5 leading-relaxed">
-                {project.description}
-              </p>
-
-              {/* Project Meta */}
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="bg-[#1E293B] rounded-sm p-3">
-                  <p className="text-[#475569] text-xs font-mono mb-1">CLIENT</p>
-                  <p className="text-[#CBD5E1] text-sm font-medium">{project.client}</p>
-                </div>
-                <div className="bg-[#1E293B] rounded-sm p-3">
-                  <p className="text-[#475569] text-xs font-mono mb-1">SECTOR</p>
-                  <p className="text-[#CBD5E1] text-sm font-medium">{project.sector}</p>
-                </div>
-                <div className="bg-[#1E293B] rounded-sm p-3 col-span-2">
-                  <p className="text-[#475569] text-xs font-mono mb-1">SERVICES</p>
-                  <p className="text-[#CBD5E1] text-sm">{project.services}</p>
-                </div>
-                <div className="bg-[#1E293B] rounded-sm p-3 col-span-2">
-                  <p className="text-[#475569] text-xs font-mono mb-1">TOOLS</p>
-                  <p className="text-[#CBD5E1] text-sm">{project.tools}</p>
-                </div>
-              </div>
-
-              {/* Highlights */}
-              <div className="flex flex-wrap gap-2">
-                {project.highlights.map((h, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 px-2 py-1 border border-[#334155] rounded-sm">
-                    <CheckCircle size={12} className="text-[#22D3EE]" />
-                    <span className="text-xs text-[#94A3B8]">{h}</span>
+                {/* Image */}
+                <div
+                  className="h-64 lg:h-80 bg-cover bg-center relative"
+                  style={{ backgroundImage: `url(${project.image})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <span className="px-3 py-1 bg-[#0EA5E9] text-[#0F172A] text-xs font-mono rounded-sm">
+                      {project.category}
+                    </span>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="absolute top-4 right-4">
+                    <span className="px-2 py-1 bg-[#1E293B] border border-[#334155] text-[#22D3EE] text-xs font-mono rounded-sm">
+                      {project.status}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <h3
+                    data-testid="portfolio-project-title"
+                    className="text-xl font-bold mb-1"
+                    style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+                  >
+                    {project.title}
+                  </h3>
+
+                  <div className="flex items-center gap-2 text-sm mb-4">
+                    <MapPin size={14} className="text-[#0EA5E9]" />
+                    <span className="text-[#94A3B8]">{project.location}</span>
+                  </div>
+
+                  <p className="text-[#94A3B8] text-sm mb-5 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  {/* Project Meta */}
+                  <div className="grid grid-cols-2 gap-3 mb-5">
+                    <div className="bg-[#1E293B] rounded-sm p-3">
+                      <p className="text-[#475569] text-xs font-mono mb-1">CLIENT</p>
+                      <p className="text-[#CBD5E1] text-sm font-medium">{project.client}</p>
+                    </div>
+                    <div className="bg-[#1E293B] rounded-sm p-3">
+                      <p className="text-[#475569] text-xs font-mono mb-1">SECTOR</p>
+                      <p className="text-[#CBD5E1] text-sm font-medium">{project.sector}</p>
+                    </div>
+                    <div className="bg-[#1E293B] rounded-sm p-3 col-span-2">
+                      <p className="text-[#475569] text-xs font-mono mb-1">SERVICES</p>
+                      <p className="text-[#CBD5E1] text-sm">{project.services}</p>
+                    </div>
+                    <div className="bg-[#1E293B] rounded-sm p-3 col-span-2">
+                      <p className="text-[#475569] text-xs font-mono mb-1">TOOLS</p>
+                      <p className="text-[#CBD5E1] text-sm">{project.tools}</p>
+                    </div>
+                  </div>
+
+                  {/* Highlights */}
+                  <div className="flex flex-wrap gap-2">
+                    {project.highlights.map((h, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.15 + idx * 0.05 }}
+                        className="flex items-center gap-1.5 px-2 py-1 border border-[#334155] rounded-sm"
+                      >
+                        <CheckCircle size={12} className="text-[#22D3EE]" />
+                        <span className="text-xs text-[#94A3B8]">{h}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Project List */}
@@ -184,16 +201,26 @@ const Portfolio = () => {
             className="space-y-4"
           >
             {projects.map((p, index) => (
-              <button
+              <motion.button
                 key={p.id}
                 data-testid={`portfolio-project-${p.id}`}
                 onClick={() => setActiveProject(index)}
-                className={`w-full tech-card rounded-sm p-4 flex gap-4 text-left transition-all duration-300 ${
+                whileHover={{ x: 4 }}
+                whileTap={{ scale: 0.98 }}
+                className={`relative w-full tech-card rounded-sm p-4 flex gap-4 text-left overflow-hidden transition-colors duration-300 ${
                   activeProject === index
                     ? 'border-[#0EA5E9] bg-[#0F172A]'
                     : 'bg-[#0F172A] hover:border-[#334155]'
                 }`}
               >
+                {activeProject === index && (
+                  <motion.div
+                    layoutId="portfolioActiveBar"
+                    className="absolute left-0 top-0 bottom-0 w-[3px]"
+                    style={{ background: 'linear-gradient(180deg, #0EA5E9, #22D3EE)' }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                  />
+                )}
                 <div
                   className="w-20 h-20 flex-shrink-0 rounded-sm bg-cover bg-center"
                   style={{ backgroundImage: `url(${p.image})` }}
@@ -214,7 +241,7 @@ const Portfolio = () => {
                 <div className={`flex items-center ${activeProject === index ? 'text-[#0EA5E9]' : 'text-[#334155]'}`}>
                   <ExternalLink size={18} />
                 </div>
-              </button>
+              </motion.button>
             ))}
 
             {/* More Projects CTA */}
