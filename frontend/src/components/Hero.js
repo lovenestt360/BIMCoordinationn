@@ -1,5 +1,18 @@
 import { ArrowRight } from 'lucide-react';
 import CountUp from './CountUp';
+import CanvasWrapper from './3d/CanvasWrapper';
+
+const HeroStaticFallback = () => (
+  <div
+    className="hero-bg-motion absolute inset-0"
+    style={{
+      backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      opacity: 0.3,
+    }}
+  />
+);
 
 const Hero = () => {
   const scrollToSection = (e, href) => {
@@ -15,16 +28,13 @@ const Hero = () => {
       data-testid="hero-section"
       className="relative min-h-screen flex items-center justify-center blueprint-bg overflow-hidden">
 
-      {/* Background Image Overlay */}
+      {/* 3D Background Scene (falls back to the static Ken-Burns image on low-end/no-WebGL/reduced-motion) */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div
-          className="hero-bg-motion absolute inset-0"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.3,
-          }}
+        <CanvasWrapper
+          className="absolute inset-0"
+          sceneImport={() => import('./3d/HeroScene')}
+          fallback={<HeroStaticFallback />}
+          canvasProps={{ camera: { position: [0, 1, 7], fov: 45 } }}
         />
       </div>
 

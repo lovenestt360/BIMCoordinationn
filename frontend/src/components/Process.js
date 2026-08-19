@@ -1,4 +1,7 @@
+import { useRef } from 'react';
 import { ArrowRight, MessageCircle, FolderCog, Layers, SearchCheck, ShieldCheck, FileCheck } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import ClashDetectionShowcase from './ClashDetectionShowcase';
 
 const processSteps = [
   {
@@ -57,14 +60,105 @@ const processSteps = [
   },
 ];
 
+const ProcessStepCard = ({ step, delay }) => {
+  const Icon = step.icon;
+  return (
+    <div
+      className="sr-hidden process-card p-6 flex flex-col"
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {/* Ghost number watermark */}
+      <span
+        className="absolute select-none pointer-events-none font-black"
+        style={{
+          top: '-16px',
+          right: '12px',
+          fontSize: '110px',
+          lineHeight: 1,
+          fontFamily: 'Space Grotesk, sans-serif',
+          color: 'rgba(14,165,233,0.04)',
+          zIndex: 0,
+        }}
+      >
+        {step.number}
+      </span>
+
+      {/* Content sits above ghost */}
+      <div className="relative z-10 flex flex-col flex-1">
+
+        {/* Top row: step badge + icon */}
+        <div className="flex items-start justify-between mb-6">
+          {/* Step badge */}
+          <div
+            className="px-3 py-1 rounded-full font-mono text-xs font-bold tracking-widest"
+            style={{
+              background: `rgba(14,165,233,0.08)`,
+              border: `1px solid ${step.color}45`,
+              color: step.color,
+            }}
+          >
+            STEP {step.number}
+          </div>
+
+          {/* Icon */}
+          <div
+            className="process-icon-wrap w-11 h-11 rounded-xl flex items-center justify-center"
+            style={{
+              background: `linear-gradient(135deg, rgba(14,165,233,0.18) 0%, rgba(34,211,238,0.06) 100%)`,
+              border: `1px solid ${step.color}35`,
+            }}
+          >
+            <Icon size={20} style={{ color: step.color }} />
+          </div>
+        </div>
+
+        {/* Title */}
+        <h3
+          className="text-[15px] font-bold text-[#F1F5F9] mb-3 leading-snug"
+          style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+        >
+          {step.title}
+        </h3>
+
+        {/* Description */}
+        <p className="text-[#94A3B8] text-sm leading-relaxed flex-1 mb-5">
+          {step.description}
+        </p>
+
+        {/* Output tag */}
+        <div
+          className="flex items-center gap-2 px-3 py-2 rounded-md"
+          style={{
+            background: `linear-gradient(90deg, rgba(14,165,233,0.07), rgba(34,211,238,0.03))`,
+            border: `1px solid ${step.color}25`,
+          }}
+        >
+          <div
+            className="output-dot w-1.5 h-1.5 rounded-full flex-shrink-0"
+            style={{ background: step.color }}
+          />
+          <span className="text-xs font-mono" style={{ color: step.color, opacity: 0.85 }}>
+            Output:&nbsp;<span className="text-[#CBD5E1] font-sans">{step.output}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Process = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const glowY1 = useTransform(scrollYProgress, [0, 1], [-60, 100]);
+  const glowY2 = useTransform(scrollYProgress, [0, 1], [60, -100]);
+
   const scrollToSchedule = (e) => {
     e.preventDefault();
     document.querySelector('#schedule')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section className="py-24 lg:py-32 relative overflow-hidden" style={{ background: '#020617' }}>
+    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden" style={{ background: '#020617' }}>
 
       {/* Grid background */}
       <div className="absolute inset-0 pointer-events-none" style={{
@@ -72,13 +166,13 @@ const Process = () => {
         backgroundSize: '50px 50px',
       }} />
 
-      {/* Ambient glow blobs */}
-      <div className="absolute pointer-events-none" style={{
-        top: '-80px', right: '-80px', width: '480px', height: '480px',
+      {/* Ambient glow blobs, drift in opposite directions as you scroll */}
+      <motion.div className="absolute pointer-events-none" style={{
+        top: '-80px', right: '-80px', width: '480px', height: '480px', y: glowY1,
         background: 'radial-gradient(circle, rgba(14,165,233,0.09) 0%, transparent 65%)',
       }} />
-      <div className="absolute pointer-events-none" style={{
-        bottom: '0', left: '-60px', width: '360px', height: '360px',
+      <motion.div className="absolute pointer-events-none" style={{
+        bottom: '0', left: '-60px', width: '360px', height: '360px', y: glowY2,
         background: 'radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 65%)',
       }} />
 
@@ -112,94 +206,23 @@ const Process = () => {
           </div>
         </div>
 
-        {/* ── Cards grid ── */}
+        {/* ── Cards grid: steps 01-03 ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {processSteps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <div
-                key={step.number}
-                className="sr-hidden process-card p-6 flex flex-col"
-                style={{ transitionDelay: `${i * 75}ms` }}
-              >
-                {/* Ghost number watermark */}
-                <span
-                  className="absolute select-none pointer-events-none font-black"
-                  style={{
-                    top: '-16px',
-                    right: '12px',
-                    fontSize: '110px',
-                    lineHeight: 1,
-                    fontFamily: 'Space Grotesk, sans-serif',
-                    color: 'rgba(14,165,233,0.04)',
-                    zIndex: 0,
-                  }}
-                >
-                  {step.number}
-                </span>
+          {processSteps.slice(0, 3).map((step, i) => (
+            <ProcessStepCard key={step.number} step={step} delay={i * 75} />
+          ))}
+        </div>
 
-                {/* Content sits above ghost */}
-                <div className="relative z-10 flex flex-col flex-1">
+        {/* ── Step 04 — Clash Detection scroll-scrubbed 3D showcase ── */}
+        <div className="my-5">
+          <ClashDetectionShowcase step={processSteps[3]} />
+        </div>
 
-                  {/* Top row: step badge + icon */}
-                  <div className="flex items-start justify-between mb-6">
-                    {/* Step badge */}
-                    <div
-                      className="px-3 py-1 rounded-full font-mono text-xs font-bold tracking-widest"
-                      style={{
-                        background: `rgba(14,165,233,0.08)`,
-                        border: `1px solid ${step.color}45`,
-                        color: step.color,
-                      }}
-                    >
-                      STEP {step.number}
-                    </div>
-
-                    {/* Icon */}
-                    <div
-                      className="process-icon-wrap w-11 h-11 rounded-xl flex items-center justify-center"
-                      style={{
-                        background: `linear-gradient(135deg, rgba(14,165,233,0.18) 0%, rgba(34,211,238,0.06) 100%)`,
-                        border: `1px solid ${step.color}35`,
-                      }}
-                    >
-                      <Icon size={20} style={{ color: step.color }} />
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3
-                    className="text-[15px] font-bold text-[#F1F5F9] mb-3 leading-snug"
-                    style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-                  >
-                    {step.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-[#94A3B8] text-sm leading-relaxed flex-1 mb-5">
-                    {step.description}
-                  </p>
-
-                  {/* Output tag */}
-                  <div
-                    className="flex items-center gap-2 px-3 py-2 rounded-md"
-                    style={{
-                      background: `linear-gradient(90deg, rgba(14,165,233,0.07), rgba(34,211,238,0.03))`,
-                      border: `1px solid ${step.color}25`,
-                    }}
-                  >
-                    <div
-                      className="output-dot w-1.5 h-1.5 rounded-full flex-shrink-0"
-                      style={{ background: step.color }}
-                    />
-                    <span className="text-xs font-mono" style={{ color: step.color, opacity: 0.85 }}>
-                      Output:&nbsp;<span className="text-[#CBD5E1] font-sans">{step.output}</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        {/* ── Cards grid: steps 05-06 ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {processSteps.slice(4).map((step, i) => (
+            <ProcessStepCard key={step.number} step={step} delay={(i + 4) * 75} />
+          ))}
         </div>
 
         {/* ── CTA ── */}
