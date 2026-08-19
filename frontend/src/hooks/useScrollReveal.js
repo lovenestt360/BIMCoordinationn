@@ -13,7 +13,7 @@ export function useGlobalScrollReveal() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.01, rootMargin: '300px 0px 300px 0px' }
     );
 
     elements.forEach((el) => observer.observe(el));

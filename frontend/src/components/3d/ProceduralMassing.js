@@ -41,11 +41,11 @@ export default function ProceduralMassing({ onClashTarget }) {
       {/* Duct intersecting beam at the clash point */}
       <mesh position={[CLASH_POINT.x, CLASH_POINT.y, CLASH_POINT.z]} rotation={[0, 0, Math.PI / 2]}>
         <cylinderGeometry args={[0.12, 0.12, 2.4, 16]} />
-        <meshStandardMaterial color="#94A3B8" roughness={0.5} metalness={0.3} />
+        <meshStandardMaterial color="#475569" roughness={0.5} metalness={0.3} />
       </mesh>
       <mesh position={[CLASH_POINT.x, CLASH_POINT.y, CLASH_POINT.z]}>
         <boxGeometry args={[0.3, 0.3, 2.6]} />
-        <meshStandardMaterial color="#475569" roughness={0.6} metalness={0.2} />
+        <meshStandardMaterial color="#94A3B8" roughness={0.6} metalness={0.2} />
       </mesh>
 
       {/* Ambient coordination indicators + dashed connector lines (hero "data flowing" look) */}

@@ -34,7 +34,7 @@ const Testimonials = () => {
           >
             What Clients <span className="text-[#0EA5E9]">Say</span>
           </h2>
-          <p className="text-[#94A3B8] max-w-xl mx-auto">
+          <p className="text-[#475569] max-w-xl mx-auto">
             Feedback from project teams who have worked with Klyron Consulting on BIM coordination, clash detection, and model validation.
           </p>
         </div>
@@ -43,7 +43,7 @@ const Testimonials = () => {
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="sr-hidden tech-card rounded-sm bg-[#0F172A] p-6 flex flex-col"
+              className="sr-hidden tech-card rounded-sm bg-[#FFFFFF] p-6 flex flex-col"
               style={{ transitionDelay: `${i * 120}ms` }}
             >
               <div
@@ -52,10 +52,10 @@ const Testimonials = () => {
               >
                 &ldquo;
               </div>
-              <p className="text-[#CBD5E1] text-sm leading-relaxed flex-1 mb-6 italic">
+              <p className="text-[#334155] text-sm leading-relaxed flex-1 mb-6 italic">
                 {t.quote}
               </p>
-              <div className="h-px bg-[#1E293B] mb-4" />
+              <div className="h-px bg-[#F1F5F9] mb-4" />
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 rounded-sm flex items-center justify-center font-bold text-sm flex-shrink-0"
@@ -69,7 +69,7 @@ const Testimonials = () => {
                 </div>
                 <div>
                   <p
-                    className="text-[#F8FAFC] text-sm font-semibold"
+                    className="text-[#0F172A] text-sm font-semibold"
                     style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                   >
                     {t.author}

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,16 +41,6 @@ const Navbar = () => {
         isScrolled ? 'glass py-3' : 'bg-transparent py-5'
       }`}
     >
-      {/* Scroll progress indicator */}
-      <motion.div
-        data-testid="navbar-scroll-progress"
-        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
-        style={{
-          scaleX,
-          background: 'linear-gradient(90deg, #0EA5E9, #22D3EE)',
-        }}
-      />
-
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <a 
           href="#" 
@@ -60,7 +48,7 @@ const Navbar = () => {
           className="font-bold text-xl tracking-tight"
           style={{ fontFamily: 'Space Grotesk, sans-serif' }}
         >
-          <span className="text-[#F8FAFC]">KLYRON</span>
+          <span className="text-[#0F172A]">KLYRON</span>
           <span className="text-[#0EA5E9]">.</span>
         </a>
 
@@ -72,7 +60,7 @@ const Navbar = () => {
               href={link.href}
               data-testid={`nav-link-${link.label.toLowerCase()}`}
               onClick={(e) => scrollToSection(e, link.href)}
-              className="text-sm text-[#94A3B8] hover:text-[#0EA5E9] transition-colors duration-200"
+              className="text-sm text-[#475569] hover:text-[#0EA5E9] transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -90,7 +78,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           data-testid="mobile-menu-button"
-          className="md:hidden text-[#F8FAFC] p-2"
+          className="md:hidden text-[#0F172A] p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -110,7 +98,7 @@ const Navbar = () => {
                 href={link.href}
                 data-testid={`mobile-nav-link-${link.label.toLowerCase()}`}
                 onClick={(e) => scrollToSection(e, link.href)}
-                className="px-6 py-3 text-[#94A3B8] hover:text-[#0EA5E9] hover:bg-[#1E293B] transition-colors duration-200"
+                className="px-6 py-3 text-[#475569] hover:text-[#0EA5E9] hover:bg-[#F1F5F9] transition-colors duration-200"
               >
                 {link.label}
               </a>

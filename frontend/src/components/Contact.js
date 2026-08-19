@@ -73,7 +73,7 @@ const Contact = () => {
           >
             Let's Discuss Your <span className="text-[#0EA5E9]">Project</span>
           </h2>
-          <p className="text-[#94A3B8] max-w-2xl">
+          <p className="text-[#475569] max-w-2xl">
             Whether you need BIM coordination, clash detection, model validation, or digital delivery support, share your project details and we'll get back to you with the next steps.
           </p>
         </div>
@@ -84,9 +84,9 @@ const Contact = () => {
             {/* Email Card */}
             <div
               data-testid="contact-email-card"
-              className="tech-card rounded-sm bg-[#0F172A] p-6"
+              className="tech-card rounded-sm bg-[#FFFFFF] p-6"
             >
-              <div className="w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-sm bg-[#F1F5F9] flex items-center justify-center mb-4">
                 <Mail size={24} className="text-[#0EA5E9]" />
               </div>
               <h3
@@ -101,15 +101,15 @@ const Contact = () => {
               >
                 contact@klyronconsulting.com
               </a>
-              <p className="text-[#94A3B8] text-sm">For BIM coordination requests, proposals, and project enquiries.</p>
+              <p className="text-[#475569] text-sm">For BIM coordination requests, proposals, and project enquiries.</p>
             </div>
 
             {/* Location Card */}
             <div
               data-testid="contact-location-card"
-              className="tech-card rounded-sm bg-[#0F172A] p-6"
+              className="tech-card rounded-sm bg-[#FFFFFF] p-6"
             >
-              <div className="w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-sm bg-[#F1F5F9] flex items-center justify-center mb-4">
                 <MapPin size={24} className="text-[#22D3EE]" />
               </div>
               <h3
@@ -118,7 +118,7 @@ const Contact = () => {
               >
                 Location
               </h3>
-              <p className="text-[#94A3B8] text-sm">
+              <p className="text-[#475569] text-sm">
                 Operating Worldwide<br />
                 Remote BIM coordination and digital delivery support for international project teams.
               </p>
@@ -127,9 +127,9 @@ const Contact = () => {
             {/* Response Time */}
             <div
               data-testid="contact-response-card"
-              className="tech-card rounded-sm bg-[#0F172A] p-6"
+              className="tech-card rounded-sm bg-[#FFFFFF] p-6"
             >
-              <div className="w-12 h-12 rounded-sm bg-[#1E293B] flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-sm bg-[#F1F5F9] flex items-center justify-center mb-4">
                 <Phone size={24} className="text-[#0EA5E9]" />
               </div>
               <h3
@@ -138,7 +138,7 @@ const Contact = () => {
               >
                 Response Time
               </h3>
-              <p className="text-[#94A3B8] text-sm">
+              <p className="text-[#475569] text-sm">
                 Usually within 24 hours<br />
                 <span className="text-[#22D3EE]">Priority response for scheduled calls and urgent project reviews.</span>
               </p>
@@ -148,7 +148,7 @@ const Contact = () => {
           {/* Contact Form */}
           <div
             data-testid="contact-form-container"
-            className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-6 lg:p-8"
+            className="lg:col-span-2 tech-card rounded-sm bg-[#FFFFFF] p-6 lg:p-8"
           >
             <h3
               className="text-xl font-bold mb-6"
@@ -160,7 +160,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <Label htmlFor="contact-name" className="text-[#94A3B8] text-sm mb-2 block">
+                  <Label htmlFor="contact-name" className="text-[#475569] text-sm mb-2 block">
                     Name *
                   </Label>
                   <Input
@@ -171,12 +171,12 @@ const Contact = () => {
                     onChange={handleInputChange}
                     placeholder="Your full name"
                     required
-                    className="bg-[#1E293B] border-[#334155] text-[#F8FAFC] placeholder:text-[#64748B]"
+                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="contact-email" className="text-[#94A3B8] text-sm mb-2 block">
+                  <Label htmlFor="contact-email" className="text-[#475569] text-sm mb-2 block">
                     Email *
                   </Label>
                   <Input
@@ -188,13 +188,13 @@ const Contact = () => {
                     onChange={handleInputChange}
                     placeholder="your@email.com"
                     required
-                    className="bg-[#1E293B] border-[#334155] text-[#F8FAFC] placeholder:text-[#64748B]"
+                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
                   />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="contact-company" className="text-[#94A3B8] text-sm mb-2 block">
+                <Label htmlFor="contact-company" className="text-[#475569] text-sm mb-2 block">
                   Company
                 </Label>
                 <Input
@@ -204,12 +204,12 @@ const Contact = () => {
                   value={formData.company}
                   onChange={handleInputChange}
                   placeholder="Your company name"
-                  className="bg-[#1E293B] border-[#334155] text-[#F8FAFC] placeholder:text-[#64748B]"
+                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
                 />
               </div>
 
               <div>
-                <Label htmlFor="contact-message" className="text-[#94A3B8] text-sm mb-2 block">
+                <Label htmlFor="contact-message" className="text-[#475569] text-sm mb-2 block">
                   Message *
                 </Label>
                 <Textarea
@@ -221,7 +221,7 @@ const Contact = () => {
                   placeholder="Tell us about your project, timeline, and any specific requirements..."
                   rows={5}
                   required
-                  className="bg-[#1E293B] border-[#334155] text-[#F8FAFC] placeholder:text-[#64748B] resize-none"
+                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B] resize-none"
                 />
               </div>
 

@@ -1,6 +1,4 @@
-import { useRef } from 'react';
 import { ArrowRight, MessageCircle, FolderCog, Layers, SearchCheck, ShieldCheck, FileCheck } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import ClashDetectionShowcase from './ClashDetectionShowcase';
 
 const processSteps = [
@@ -114,14 +112,14 @@ const ProcessStepCard = ({ step, delay }) => {
 
         {/* Title */}
         <h3
-          className="text-[15px] font-bold text-[#F1F5F9] mb-3 leading-snug"
+          className="text-[15px] font-bold text-[#1E293B] mb-3 leading-snug"
           style={{ fontFamily: 'Space Grotesk, sans-serif' }}
         >
           {step.title}
         </h3>
 
         {/* Description */}
-        <p className="text-[#94A3B8] text-sm leading-relaxed flex-1 mb-5">
+        <p className="text-[#475569] text-sm leading-relaxed flex-1 mb-5">
           {step.description}
         </p>
 
@@ -138,7 +136,7 @@ const ProcessStepCard = ({ step, delay }) => {
             style={{ background: step.color }}
           />
           <span className="text-xs font-mono" style={{ color: step.color, opacity: 0.85 }}>
-            Output:&nbsp;<span className="text-[#CBD5E1] font-sans">{step.output}</span>
+            Output:&nbsp;<span className="text-[#334155] font-sans">{step.output}</span>
           </span>
         </div>
       </div>
@@ -147,18 +145,13 @@ const ProcessStepCard = ({ step, delay }) => {
 };
 
 const Process = () => {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
-  const glowY1 = useTransform(scrollYProgress, [0, 1], [-60, 100]);
-  const glowY2 = useTransform(scrollYProgress, [0, 1], [60, -100]);
-
   const scrollToSchedule = (e) => {
     e.preventDefault();
     document.querySelector('#schedule')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden" style={{ background: '#020617' }}>
+    <section className="py-24 lg:py-32 relative overflow-hidden" style={{ background: '#F8FAFC' }}>
 
       {/* Grid background */}
       <div className="absolute inset-0 pointer-events-none" style={{
@@ -166,13 +159,13 @@ const Process = () => {
         backgroundSize: '50px 50px',
       }} />
 
-      {/* Ambient glow blobs, drift in opposite directions as you scroll */}
-      <motion.div className="absolute pointer-events-none" style={{
-        top: '-80px', right: '-80px', width: '480px', height: '480px', y: glowY1,
+      {/* Ambient glow blobs */}
+      <div className="absolute pointer-events-none" style={{
+        top: '-80px', right: '-80px', width: '480px', height: '480px',
         background: 'radial-gradient(circle, rgba(14,165,233,0.09) 0%, transparent 65%)',
       }} />
-      <motion.div className="absolute pointer-events-none" style={{
-        bottom: '0', left: '-60px', width: '360px', height: '360px', y: glowY2,
+      <div className="absolute pointer-events-none" style={{
+        bottom: '0', left: '-60px', width: '360px', height: '360px',
         background: 'radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 65%)',
       }} />
 
@@ -195,7 +188,7 @@ const Process = () => {
             }}>Work</span>
           </h2>
 
-          <p className="text-[#94A3B8] max-w-2xl leading-relaxed mb-5">
+          <p className="text-[#475569] max-w-2xl leading-relaxed mb-5">
             A complete BIM coordination and digital delivery workflow designed to help project teams reduce clashes, validate model quality, improve project information, and move forward with confidence before construction begins.
           </p>
 
@@ -244,13 +237,13 @@ const Process = () => {
             </span>
 
             <h3
-              className="text-2xl sm:text-3xl font-bold text-[#F8FAFC] mb-4"
+              className="text-2xl sm:text-3xl font-bold text-[#0F172A] mb-4"
               style={{ fontFamily: 'Space Grotesk, sans-serif' }}
             >
               Need BIM support for an active project?
             </h3>
 
-            <p className="text-[#94A3B8] max-w-xl mx-auto mb-8 text-sm leading-relaxed">
+            <p className="text-[#475569] max-w-xl mx-auto mb-8 text-sm leading-relaxed">
               Book a consultation and share your project scope, models, timeline, and required deliverables. We'll review how Klyron Consulting can support your team with coordination, validation, reporting, and digital delivery.
             </p>
 

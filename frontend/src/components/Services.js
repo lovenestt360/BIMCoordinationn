@@ -1,6 +1,5 @@
-import { useRef } from 'react';
 import { Layers, Target, FileCheck, Box, Ruler, Zap } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const services = [
   {
@@ -60,26 +59,21 @@ const services = [
 ];
 
 const Services = () => {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
-  const glowY = useTransform(scrollYProgress, [0, 1], [-80, 80]);
-
   return (
     <section
-      ref={sectionRef}
       id="services"
       data-testid="services-section"
       className="py-24 lg:py-32 relative overflow-hidden"
-      style={{ background: '#0B1220' }}
+      style={{ background: '#F1F5F9' }}
     >
       {/* Subtle grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
         backgroundSize: '50px 50px',
       }} />
-      {/* Ambient top glow, drifts with scroll */}
-      <motion.div className="absolute pointer-events-none" style={{
-        top: 0, left: '30%', width: '500px', height: '300px', y: glowY,
+      {/* Ambient top glow */}
+      <div className="absolute pointer-events-none" style={{
+        top: 0, left: '30%', width: '500px', height: '300px',
         background: 'radial-gradient(ellipse, rgba(14,165,233,0.07) 0%, transparent 70%)',
       }} />
 
@@ -103,7 +97,7 @@ const Services = () => {
               backgroundClip: 'text',
             }}>Deliver</span>
           </h2>
-          <p className="text-[#94A3B8] max-w-2xl">
+          <p className="text-[#475569] max-w-2xl">
             Six core BIM services — from coordination and clash detection to QA/QC, 4D/5D, and digital delivery — designed to reduce risk and improve model quality before construction begins.
           </p>
         </div>
@@ -180,7 +174,7 @@ const Services = () => {
                   {/* Bottom title strip */}
                   <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
                     <h3
-                      className="text-base font-bold text-[#F1F5F9] leading-tight"
+                      className="text-base font-bold text-[#1E293B] leading-tight"
                       style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                     >
                       {service.title}
@@ -190,7 +184,7 @@ const Services = () => {
 
                 {/* ── Content area ── */}
                 <div className="p-5 flex flex-col flex-1 relative z-10">
-                  <p className="text-[#94A3B8] text-sm leading-relaxed mb-5 flex-1">
+                  <p className="text-[#475569] text-sm leading-relaxed mb-5 flex-1">
                     {service.description}
                   </p>
 
@@ -202,7 +196,7 @@ const Services = () => {
                           className="feat-dot w-1.5 h-1.5 rounded-full flex-shrink-0"
                           style={{ background: service.color }}
                         />
-                        <span className="text-xs text-[#94A3B8]">{feat}</span>
+                        <span className="text-xs text-[#475569]">{feat}</span>
                       </div>
                     ))}
                   </div>

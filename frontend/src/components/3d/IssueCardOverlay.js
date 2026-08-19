@@ -28,7 +28,7 @@ export default function IssueCardOverlay({ position, scrollYProgress }) {
     <Html transform={false} center distanceFactor={8} position={position} style={{ pointerEvents: 'none' }}>
       <motion.div
         style={{ opacity: cardOpacity, y: cardY }}
-        className="w-56 rounded-lg border border-[#334155] bg-[#0F172A]/95 backdrop-blur-sm px-4 py-3 shadow-xl"
+        className="w-56 rounded-lg border border-[#E2E8F0] bg-[#FFFFFF]/95 backdrop-blur-sm px-4 py-3 shadow-xl"
       >
         <div className="flex items-center justify-between mb-2">
           <span className="text-[10px] font-mono tracking-widest text-[#64748B]">CLASH-0142</span>
@@ -45,9 +45,9 @@ export default function IssueCardOverlay({ position, scrollYProgress }) {
           ) : (
             <AlertTriangle size={14} className="text-[#EF4444]" />
           )}
-          <span className="text-xs font-semibold text-[#F1F5F9]">MEP ↔ Structural</span>
+          <span className="text-xs font-semibold text-[#1E293B]">MEP ↔ Structural</span>
         </div>
-        <p className="text-[11px] text-[#94A3B8] leading-snug">
+        <p className="text-[11px] text-[#475569] leading-snug">
           Duct routing intersects primary beam — Level 3, Gridline C-4.
         </p>
       </motion.div>

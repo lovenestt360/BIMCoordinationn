@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useWebGLSupport } from '../../hooks/useWebGLSupport';
 
+// Runtime 3D is temporarily disabled site-wide (performance pass, 2026-08) —
+// it was causing jank/flicker on real machines. The full pipeline (capability
+// detection, lazy-loading, the scenes themselves) is left intact below so it
+// can be re-enabled by flipping this flag once a lighter 3D approach lands.
+const FORCE_DISABLE_3D = true;
+
 // Deliberately imports NOTHING from 'three'/'@react-three/fiber'/'@react-three/drei' —
 // those only exist inside the modules loaded via `sceneImport()`, so the ~600KB+ 3D
 // runtime never enters the main bundle. Each lazy-loaded scene owns its own <Canvas>.
@@ -10,7 +16,7 @@ export default function CanvasWrapper({ sceneImport, fallback, className, canvas
   const [isNear, setIsNear] = useState(false);
   const [SceneComponent, setSceneComponent] = useState(null);
 
-  const canRender3D = ready && supported && !reducedMotion;
+  const canRender3D = !FORCE_DISABLE_3D && ready && supported && !reducedMotion;
 
   useEffect(() => {
     if (!canRender3D || !containerRef.current) return undefined;

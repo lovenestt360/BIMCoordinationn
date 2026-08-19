@@ -3,15 +3,17 @@ import CountUp from './CountUp';
 import CanvasWrapper from './3d/CanvasWrapper';
 
 const HeroStaticFallback = () => (
-  <div
-    className="hero-bg-motion absolute inset-0"
-    style={{
-      backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      opacity: 0.3,
-    }}
-  />
+  <div className="absolute inset-0 overflow-hidden">
+    <div
+      className="hero-bg-motion absolute inset-0"
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.65,
+      }}
+    />
+  </div>
 );
 
 const Hero = () => {
@@ -39,9 +41,9 @@ const Hero = () => {
       </div>
 
       
-      {/* Gradient Overlay */}
+      {/* Gradient Overlay — fades the photo into the page background at the edges, keeps it visible in the middle */}
       <div className="absolute inset-0 z-0" style={{
-        background: 'linear-gradient(to bottom, #020617 0%, rgba(2,6,23,0.55) 30%, rgba(2,6,23,0.3) 55%, rgba(2,6,23,0.7) 80%, #020617 100%)',
+        background: 'linear-gradient(to bottom, #F8FAFC 0%, rgba(248,250,252,0) 22%, rgba(248,250,252,0) 45%, rgba(248,250,252,0.2) 80%, #F8FAFC 100%)',
       }} />
 
       {/* Content */}
@@ -52,16 +54,16 @@ const Hero = () => {
           className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up stagger-1"
           style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
 
-          <span className="text-[#F8FAFC]">Precision </span>
+          <span className="text-[#0F172A]">Precision </span>
           <span className="text-[#0EA5E9]">BIM Coordination</span>
           <br />
-          <span className="text-[#F8FAFC]">for Construction-Ready Delivery</span>
+          <span className="text-[#0F172A]">for Construction-Ready Delivery</span>
         </h1>
 
         {/* Subheading */}
         <p
           data-testid="hero-subtitle"
-          className="text-base sm:text-lg text-[#94A3B8] max-w-2xl mx-auto mb-10 animate-fade-in-up stagger-2">
+          className="text-base sm:text-lg text-[#475569] max-w-2xl mx-auto mb-10 animate-fade-in-up stagger-2">
 
           Providing BIM coordination and digital delivery support to help project teams improve model reliability, reduce rework, and make better decisions before construction begins.
         </p>
@@ -84,7 +86,7 @@ const Hero = () => {
             href="#schedule"
             data-testid="hero-cta-primary"
             onClick={(e) => scrollToSection(e, '#schedule')}
-            className="btn-primary px-8 py-3 rounded-sm font-medium flex items-center gap-2 animate-pulse-glow">
+            className="btn-primary px-8 py-3 rounded-sm font-medium flex items-center gap-2">
 
             Schedule a Meeting
             <ArrowRight size={18} />
@@ -102,26 +104,26 @@ const Hero = () => {
         {/* Stats */}
         <div
           data-testid="hero-stats"
-          className="grid grid-cols-3 gap-8 max-w-xl mx-auto mt-16 pt-8 border-t border-[#1E293B] animate-fade-in-up stagger-4">
+          className="grid grid-cols-3 gap-8 max-w-xl mx-auto mt-16 pt-8 border-t border-[#F1F5F9] animate-fade-in-up stagger-4">
 
           <div>
             <CountUp target={8} suffix="+" duration={1600} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" />
-            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Projects Delivered</p>
+            <p className="text-xs sm:text-sm text-[#475569] mt-1">Projects Delivered</p>
           </div>
           <div>
             <CountUp target={85} suffix="%" duration={1800} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#22D3EE] font-mono" />
-            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Clash Resolution</p>
+            <p className="text-xs sm:text-sm text-[#475569] mt-1">Clash Resolution</p>
           </div>
           <div>
             <CountUp target={2} suffix="+" duration={1200} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" />
-            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">Years Experience</p>
+            <p className="text-xs sm:text-sm text-[#475569] mt-1">Years Experience</p>
           </div>
         </div>
       </div>
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="w-6 h-10 border-2 border-[#334155] rounded-full flex justify-center pt-2">
+        <div className="w-6 h-10 border-2 border-[#E2E8F0] rounded-full flex justify-center pt-2">
           <div className="w-1 h-3 bg-[#0EA5E9] rounded-full animate-bounce" />
         </div>
       </div>

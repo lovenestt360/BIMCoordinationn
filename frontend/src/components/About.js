@@ -26,14 +26,14 @@ const About = () => {
           {/* Profile Card - Spans 2 columns */}
           <div
             data-testid="about-profile-card"
-            className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-8 flex flex-col md:flex-row gap-8">
+            className="lg:col-span-2 tech-card rounded-sm bg-[#FFFFFF] p-8 flex flex-col md:flex-row gap-8">
 
             {/* Profile Image */}
             <div className="w-full md:w-64 flex-shrink-0">
               <img
                 src="/mario.jpg"
                 alt="Mário Quissico Júnior"
-                className="w-full h-auto border border-[#1E293B] rounded-sm object-contain"
+                className="w-full h-auto border border-[#F1F5F9] rounded-sm object-contain"
               />
             </div>
             
@@ -47,35 +47,35 @@ const About = () => {
 
               </h3>
               <p className="text-[#0EA5E9] font-mono text-sm mb-4">Director & BIM Coordinator</p>
-              <p className="text-[#94A3B8] leading-relaxed mb-6">Civil Engineer and Director of Klyron Consulting, specialized in BIM Coordination, Clash Detection, Model QA/QC, 4D/5D BIM support, and digital delivery workflows. He delivers high-level coordination that aligns multidisciplinary teams, improves model reliability, validates project information, and supports construction-ready BIM delivery with practical solutions — reducing rework, minimizing delays, and bringing clarity to complex projects.</p>
+              <p className="text-[#475569] leading-relaxed mb-6">Civil Engineer and Director of Klyron Consulting, specialized in BIM Coordination, Clash Detection, Model QA/QC, 4D/5D BIM support, and digital delivery workflows. He delivers high-level coordination that aligns multidisciplinary teams, improves model reliability, validates project information, and supports construction-ready BIM delivery with practical solutions — reducing rework, minimizing delays, and bringing clarity to complex projects.</p>
               <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
+                <div className="flex items-center gap-2 text-sm text-[#475569]">
                   <CheckCircle size={16} className="text-[#22D3EE]" />
                   <span>Navisworks Expert</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
+                <div className="flex items-center gap-2 text-sm text-[#475569]">
                   <CheckCircle size={16} className="text-[#22D3EE]" />
                   <span>Revit Certified</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
+                <div className="flex items-center gap-2 text-sm text-[#475569]">
                   <CheckCircle size={16} className="text-[#22D3EE]" />
                   <span>Autodesk Construction Cloud Expert</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
+                <div className="flex items-center gap-2 text-sm text-[#475569]">
                   <CheckCircle size={16} className="text-[#22D3EE]" />
                   <span>Solibri Certified</span>
                 </div>
               </div>
 
               {/* Tool badges */}
-              <div className="mt-6 pt-5 border-t border-[#1E293B]">
-                <p className="text-[#475569] text-xs font-mono tracking-widest mb-3">TOOLS & PLATFORMS</p>
+              <div className="mt-6 pt-5 border-t border-[#F1F5F9]">
+                <p className="text-[#94A3B8] text-xs font-mono tracking-widest mb-3">TOOLS & PLATFORMS</p>
                 <div className="flex flex-wrap gap-2">
                   {['Navisworks', 'Revit', 'Solibri', 'ACC', 'Bexel Manager', 'BCF'].map(tool => (
                     <span
                       key={tool}
                       className="px-3 py-1 rounded-sm text-xs font-mono border"
-                      style={{ background: 'rgba(14,165,233,0.06)', borderColor: 'rgba(14,165,233,0.2)', color: '#7DD3F8' }}
+                      style={{ background: 'rgba(14,165,233,0.06)', borderColor: 'rgba(14,165,233,0.2)', color: '#0369A1' }}
                     >
                       {tool}
                     </span>
@@ -88,20 +88,20 @@ const About = () => {
           {/* Stats Card */}
           <div
             data-testid="about-stats-card"
-            className="tech-card-hover rounded-sm bg-[#0F172A] p-8 flex flex-col justify-center">
+            className="tech-card-hover rounded-sm bg-[#FFFFFF] p-8 flex flex-col justify-center">
 
             <div className="space-y-8">
               <div>
                 <CountUp target={2} suffix="+" duration={1200} className="stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" />
-                <p className="text-[#94A3B8] text-sm mt-1">Years of Experience</p>
+                <p className="text-[#475569] text-sm mt-1">Years of Experience</p>
               </div>
-              <div className="border-t border-[#1E293B] pt-8">
+              <div className="border-t border-[#F1F5F9] pt-8">
                 <CountUp target={8} suffix="+" duration={1600} className="stat-number-glow font-mono text-4xl font-bold text-[#22D3EE]" />
-                <p className="text-[#94A3B8] text-sm mt-1">Projects Completed</p>
+                <p className="text-[#475569] text-sm mt-1">Projects Completed</p>
               </div>
-              <div className="border-t border-[#1E293B] pt-8">
+              <div className="border-t border-[#F1F5F9] pt-8">
                 <CountUp target={20} suffix="K+" duration={2000} className="stat-number-glow font-mono text-4xl font-bold text-[#0EA5E9]" />
-                <p className="text-[#94A3B8] text-sm mt-1">Clashes Resolved</p>
+                <p className="text-[#475569] text-sm mt-1">Clashes Resolved</p>
               </div>
             </div>
           </div>
@@ -109,13 +109,13 @@ const About = () => {
           {/* Mission Card */}
           <div
             data-testid="about-mission-card"
-            className="tech-card rounded-sm bg-[#0F172A] p-8">
+            className="tech-card rounded-sm bg-[#FFFFFF] p-8">
 
             <Award size={32} className="text-[#0EA5E9] mb-4" />
             <h4 className="text-lg font-bold mb-3" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
               Our Mission
             </h4>
-            <p className="text-[#94A3B8] text-sm leading-relaxed">
+            <p className="text-[#475569] text-sm leading-relaxed">
               To deliver exceptional BIM coordination services that prevent construction conflicts, 
               reduce costs, and ensure project success through digital precision.
             </p>
@@ -124,13 +124,13 @@ const About = () => {
           {/* Company Card */}
           <div
             data-testid="about-company-card"
-            className="lg:col-span-2 tech-card rounded-sm bg-[#0F172A] p-8">
+            className="lg:col-span-2 tech-card rounded-sm bg-[#FFFFFF] p-8">
 
             <Building2 size={32} className="text-[#22D3EE] mb-4" />
             <h4 className="text-lg font-bold mb-3" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
               Klyron Consulting
             </h4>
-            <p className="text-[#94A3B8] text-sm leading-relaxed mb-4">
+            <p className="text-[#475569] text-sm leading-relaxed mb-4">
               We partner with architects, engineers, and contractors to ensure seamless 
               project coordination. Our expertise spans residential, commercial, and industrial 
               construction, delivering comprehensive clash detection and BIM coordination services 
@@ -140,7 +140,7 @@ const About = () => {
               {['Residential', 'Commercial', 'Industrial', 'Healthcare', 'Education'].map((tag) =>
               <span
                 key={tag}
-                className="px-3 py-1 bg-[#1E293B] rounded-sm text-xs font-mono text-[#94A3B8]">
+                className="px-3 py-1 bg-[#F1F5F9] rounded-sm text-xs font-mono text-[#475569]">
 
                   {tag}
                 </span>

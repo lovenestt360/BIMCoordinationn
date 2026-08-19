@@ -5,18 +5,18 @@
 @tailwind utilities;
 
 :root {
-  --primary: #0F172A;
-  --primary-foreground: #F8FAFC;
-  --secondary: #334155;
-  --secondary-foreground: #F8FAFC;
+  --primary: #FFFFFF;
+  --primary-foreground: #0F172A;
+  --secondary: #E2E8F0;
+  --secondary-foreground: #0F172A;
   --accent: #0EA5E9;
   --accent-foreground: #0F172A;
   --highlight: #22D3EE;
   --highlight-foreground: #0F172A;
-  --muted: #94A3B8;
-  --background: #020617;
-  --surface: #1E293B;
-  --border-color: #1E293B;
+  --muted: #475569;
+  --background: #F8FAFC;
+  --surface: #F1F5F9;
+  --border-color: #F1F5F9;
 }
 
 * {
@@ -53,17 +53,17 @@ code {
 
 /* Blueprint grid background */
 .blueprint-bg {
-  background-image: 
-    linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(14, 165, 233, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px);
   background-size: 50px 50px;
 }
 
 /* Glassmorphism effect */
 .glass {
-  background: rgba(30, 41, 59, 0.8);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 /* Glow effect */
@@ -121,7 +121,7 @@ code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--secondary);
+  background: #CBD5E1;
   border-radius: 4px;
 }
 
@@ -166,24 +166,24 @@ code {
 
 @layer base {
   :root {
-    --background: 222 47% 3%;
-    --foreground: 210 40% 98%;
-    --card: 217 33% 17%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 6%;
-    --popover-foreground: 210 40% 98%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
     --primary: 199 89% 48%;
     --primary-foreground: 222 47% 11%;
-    --secondary: 217 33% 27%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 199 89% 48%;
     --accent-foreground: 222 47% 11%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 199 89% 48%;
     --radius: 0.375rem;
   }

@@ -99,7 +99,7 @@ const Portfolio = () => {
           >
             Featured <span className="text-[#0EA5E9]">Projects</span>
           </h2>
-          <p className="text-[#94A3B8] max-w-2xl">
+          <p className="text-[#475569] max-w-2xl">
             A selection of BIM coordination, QA/QC, and digital delivery projects showcasing practical model review, clash detection, validation, and 4D/5D support across construction and infrastructure workflows.
           </p>
         </div>
@@ -109,7 +109,7 @@ const Portfolio = () => {
           {/* Main Project Display */}
           <div
             data-testid="portfolio-main-display"
-            className="tech-card rounded-sm overflow-hidden bg-[#0F172A]"
+            className="tech-card rounded-sm overflow-hidden bg-[#FFFFFF]"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -124,14 +124,14 @@ const Portfolio = () => {
                   className="h-64 lg:h-80 bg-cover bg-center relative"
                   style={{ backgroundImage: `url(${project.image})` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/70 to-transparent" />
                   <div className="absolute bottom-4 left-4">
                     <span className="px-3 py-1 bg-[#0EA5E9] text-[#0F172A] text-xs font-mono rounded-sm">
                       {project.category}
                     </span>
                   </div>
                   <div className="absolute top-4 right-4">
-                    <span className="px-2 py-1 bg-[#1E293B] border border-[#334155] text-[#22D3EE] text-xs font-mono rounded-sm">
+                    <span className="px-2 py-1 bg-[#F1F5F9] border border-[#E2E8F0] text-[#22D3EE] text-xs font-mono rounded-sm">
                       {project.status}
                     </span>
                   </div>
@@ -148,30 +148,30 @@ const Portfolio = () => {
 
                   <div className="flex items-center gap-2 text-sm mb-4">
                     <MapPin size={14} className="text-[#0EA5E9]" />
-                    <span className="text-[#94A3B8]">{project.location}</span>
+                    <span className="text-[#475569]">{project.location}</span>
                   </div>
 
-                  <p className="text-[#94A3B8] text-sm mb-5 leading-relaxed">
+                  <p className="text-[#475569] text-sm mb-5 leading-relaxed">
                     {project.description}
                   </p>
 
                   {/* Project Meta */}
                   <div className="grid grid-cols-2 gap-3 mb-5">
-                    <div className="bg-[#1E293B] rounded-sm p-3">
-                      <p className="text-[#475569] text-xs font-mono mb-1">CLIENT</p>
-                      <p className="text-[#CBD5E1] text-sm font-medium">{project.client}</p>
+                    <div className="bg-[#F1F5F9] rounded-sm p-3">
+                      <p className="text-[#94A3B8] text-xs font-mono mb-1">CLIENT</p>
+                      <p className="text-[#334155] text-sm font-medium">{project.client}</p>
                     </div>
-                    <div className="bg-[#1E293B] rounded-sm p-3">
-                      <p className="text-[#475569] text-xs font-mono mb-1">SECTOR</p>
-                      <p className="text-[#CBD5E1] text-sm font-medium">{project.sector}</p>
+                    <div className="bg-[#F1F5F9] rounded-sm p-3">
+                      <p className="text-[#94A3B8] text-xs font-mono mb-1">SECTOR</p>
+                      <p className="text-[#334155] text-sm font-medium">{project.sector}</p>
                     </div>
-                    <div className="bg-[#1E293B] rounded-sm p-3 col-span-2">
-                      <p className="text-[#475569] text-xs font-mono mb-1">SERVICES</p>
-                      <p className="text-[#CBD5E1] text-sm">{project.services}</p>
+                    <div className="bg-[#F1F5F9] rounded-sm p-3 col-span-2">
+                      <p className="text-[#94A3B8] text-xs font-mono mb-1">SERVICES</p>
+                      <p className="text-[#334155] text-sm">{project.services}</p>
                     </div>
-                    <div className="bg-[#1E293B] rounded-sm p-3 col-span-2">
-                      <p className="text-[#475569] text-xs font-mono mb-1">TOOLS</p>
-                      <p className="text-[#CBD5E1] text-sm">{project.tools}</p>
+                    <div className="bg-[#F1F5F9] rounded-sm p-3 col-span-2">
+                      <p className="text-[#94A3B8] text-xs font-mono mb-1">TOOLS</p>
+                      <p className="text-[#334155] text-sm">{project.tools}</p>
                     </div>
                   </div>
 
@@ -183,10 +183,10 @@ const Portfolio = () => {
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: 0.15 + idx * 0.05 }}
-                        className="flex items-center gap-1.5 px-2 py-1 border border-[#334155] rounded-sm"
+                        className="flex items-center gap-1.5 px-2 py-1 border border-[#E2E8F0] rounded-sm"
                       >
                         <CheckCircle size={12} className="text-[#22D3EE]" />
-                        <span className="text-xs text-[#94A3B8]">{h}</span>
+                        <span className="text-xs text-[#475569]">{h}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -209,8 +209,8 @@ const Portfolio = () => {
                 whileTap={{ scale: 0.98 }}
                 className={`relative w-full tech-card rounded-sm p-4 flex gap-4 text-left overflow-hidden transition-colors duration-300 ${
                   activeProject === index
-                    ? 'border-[#0EA5E9] bg-[#0F172A]'
-                    : 'bg-[#0F172A] hover:border-[#334155]'
+                    ? 'border-[#0EA5E9] bg-[#FFFFFF]'
+                    : 'bg-[#FFFFFF] hover:border-[#E2E8F0]'
                 }`}
               >
                 {activeProject === index && (
@@ -227,7 +227,7 @@ const Portfolio = () => {
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono text-xs text-[#334155]">{p.number}</span>
+                    <span className="font-mono text-xs text-[#E2E8F0]">{p.number}</span>
                     <span className={`text-xs ${activeProject === index ? 'text-[#0EA5E9]' : 'text-[#0EA5E9]'}`}>{p.category}</span>
                   </div>
                   <h4
@@ -236,9 +236,9 @@ const Portfolio = () => {
                   >
                     {p.title}
                   </h4>
-                  <p className="text-xs text-[#94A3B8]">{p.location}</p>
+                  <p className="text-xs text-[#475569]">{p.location}</p>
                 </div>
-                <div className={`flex items-center ${activeProject === index ? 'text-[#0EA5E9]' : 'text-[#334155]'}`}>
+                <div className={`flex items-center ${activeProject === index ? 'text-[#0EA5E9]' : 'text-[#E2E8F0]'}`}>
                   <ExternalLink size={18} />
                 </div>
               </motion.button>
@@ -247,9 +247,9 @@ const Portfolio = () => {
             {/* More Projects CTA */}
             <div
               data-testid="portfolio-more-cta"
-              className="text-center pt-6 border-t border-[#1E293B]"
+              className="text-center pt-6 border-t border-[#F1F5F9]"
             >
-              <p className="text-sm text-[#94A3B8] mb-4">
+              <p className="text-sm text-[#475569] mb-4">
                 Want to see more of our work?
               </p>
               <a

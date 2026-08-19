@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const faqs = [
   {
@@ -32,9 +32,6 @@ const faqs = [
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
-  const glowY = useTransform(scrollYProgress, [0, 1], [-60, 60]);
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
 
@@ -44,15 +41,15 @@ const FAQ = () => {
   };
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#020617] relative overflow-hidden">
+    <section className="py-24 lg:py-32 bg-[#F8FAFC] relative overflow-hidden">
       {/* Subtle grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
         backgroundSize: '50px 50px',
       }} />
-      {/* Ambient glow, drifts gently as you scroll through the section */}
-      <motion.div className="absolute pointer-events-none" style={{
-        top: '10%', left: '50%', translateX: '-50%', y: glowY,
+      {/* Ambient glow */}
+      <div className="absolute pointer-events-none" style={{
+        top: '10%', left: '50%', transform: 'translateX(-50%)',
         width: '600px', height: '300px',
         background: 'radial-gradient(ellipse, rgba(14,165,233,0.06) 0%, transparent 70%)',
       }} />
@@ -79,7 +76,7 @@ const FAQ = () => {
             }}>Questions</span>
           </h2>
 
-          <p className="text-[#94A3B8] max-w-xl mx-auto text-sm leading-relaxed">
+          <p className="text-[#475569] max-w-xl mx-auto text-sm leading-relaxed">
             Key answers to help project teams understand how Klyron Consulting approaches BIM coordination, model review, and digital delivery support.
           </p>
         </div>
@@ -96,15 +93,15 @@ const FAQ = () => {
                   transitionDelay: `${i * 60}ms`,
                   border: isOpen
                     ? '1px solid rgba(14,165,233,0.4)'
-                    : '1px solid rgba(30,41,59,1)',
+                    : '1px solid rgba(226,232,240,1)',
                 }}
                 animate={{
                   boxShadow: isOpen
                     ? '0 0 24px -6px rgba(14,165,233,0.18)'
                     : '0 0 0px 0px rgba(14,165,233,0)',
                   background: isOpen
-                    ? 'linear-gradient(135deg, #0d1f35 0%, #091525 100%)'
-                    : 'linear-gradient(135deg, #0F172A 0%, #0F172A 100%)',
+                    ? 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)'
+                    : 'linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%)',
                 }}
                 transition={{ duration: 0.3 }}
                 whileHover={{ y: -2 }}
@@ -122,7 +119,7 @@ const FAQ = () => {
                       style={{
                         background: isOpen ? 'rgba(14,165,233,0.15)' : 'rgba(14,165,233,0.06)',
                         border: isOpen ? '1px solid rgba(14,165,233,0.4)' : '1px solid rgba(14,165,233,0.15)',
-                        color: isOpen ? '#22D3EE' : '#475569',
+                        color: isOpen ? '#22D3EE' : '#94A3B8',
                         transition: 'all 0.3s ease',
                       }}
                     >
@@ -132,7 +129,7 @@ const FAQ = () => {
                       className="font-semibold text-sm leading-snug"
                       style={{
                         fontFamily: 'Space Grotesk, sans-serif',
-                        color: isOpen ? '#F1F5F9' : '#CBD5E1',
+                        color: isOpen ? '#1E293B' : '#334155',
                         transition: 'color 0.2s ease',
                       }}
                     >
@@ -146,7 +143,7 @@ const FAQ = () => {
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <ChevronDown size={18} style={{ color: isOpen ? '#22D3EE' : '#475569' }} />
+                    <ChevronDown size={18} style={{ color: isOpen ? '#22D3EE' : '#94A3B8' }} />
                   </motion.span>
                 </button>
 
@@ -162,7 +159,7 @@ const FAQ = () => {
                       style={{ overflow: 'hidden' }}
                     >
                       <div className="px-5 pb-5 pt-1" style={{ borderTop: '1px solid rgba(14,165,233,0.12)' }}>
-                        <p className="text-[#94A3B8] text-sm leading-relaxed pt-3">
+                        <p className="text-[#475569] text-sm leading-relaxed pt-3">
                           {faq.answer}
                         </p>
                       </div>
@@ -175,7 +172,7 @@ const FAQ = () => {
         </div>
 
         {/* CTA */}
-        <div className="sr-hidden text-center mt-12 pt-8 border-t border-[#1E293B]">
+        <div className="sr-hidden text-center mt-12 pt-8 border-t border-[#F1F5F9]">
           <p className="text-[#64748B] text-sm mb-5">
             Still unsure what level of BIM support your project needs?
           </p>

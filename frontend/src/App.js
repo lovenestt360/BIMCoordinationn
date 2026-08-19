@@ -18,7 +18,7 @@ const LandingPage = () => {
   useGlobalScrollReveal();
 
   return (
-    <div data-testid="landing-page" className="min-h-screen bg-[#020617]">
+    <div data-testid="landing-page" className="min-h-screen bg-[#F8FAFC]">
       <Navbar />
       <main>
         <Hero />

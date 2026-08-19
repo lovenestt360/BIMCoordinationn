@@ -19,13 +19,13 @@ const ClashStaticFallback = () => (
   >
     <div
       className="absolute inset-0"
-      style={{ background: 'linear-gradient(180deg, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.88) 100%)' }}
+      style={{ background: 'linear-gradient(180deg, rgba(15,23,42,0.45) 0%, rgba(15,23,42,0.8) 100%)' }}
     />
     <div className="absolute inset-0 flex items-center justify-center gap-3 px-4">
       {STATUS_STEPS.map((s) => (
         <div
           key={s.label}
-          className="output-tag-glow px-4 py-2 rounded-full text-xs font-mono font-bold"
+          className="px-4 py-2 rounded-full text-xs font-mono font-bold"
           style={{ background: `${s.color}22`, border: `1px solid ${s.color}66`, color: s.color }}
         >
           {s.label}
@@ -82,12 +82,12 @@ export default function ClashDetectionShowcase({ step }) {
         </div>
 
         <h3
-          className="text-[15px] font-bold text-[#F1F5F9] mb-3 leading-snug"
+          className="text-[15px] font-bold text-[#1E293B] mb-3 leading-snug"
           style={{ fontFamily: 'Space Grotesk, sans-serif' }}
         >
           {step.title}
         </h3>
-        <p className="text-[#94A3B8] text-sm leading-relaxed flex-1 mb-5">{step.description}</p>
+        <p className="text-[#475569] text-sm leading-relaxed flex-1 mb-5">{step.description}</p>
 
         <div
           className="flex items-center gap-2 px-3 py-2 rounded-md"
@@ -95,7 +95,7 @@ export default function ClashDetectionShowcase({ step }) {
         >
           <div className="output-dot w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: step.color }} />
           <span className="text-xs font-mono" style={{ color: step.color, opacity: 0.85 }}>
-            Output:&nbsp;<span className="text-[#CBD5E1] font-sans">{step.output}</span>
+            Output:&nbsp;<span className="text-[#334155] font-sans">{step.output}</span>
           </span>
         </div>
       </div>
@@ -103,7 +103,7 @@ export default function ClashDetectionShowcase({ step }) {
       {/* Scroll-scrubbed 3D showcase — intentionally NOT sr-hidden, its own scroll progress drives the reveal */}
       <div
         className="relative z-10 lg:col-span-3 h-[420px] lg:h-[520px] rounded-lg overflow-hidden border"
-        style={{ borderColor: 'rgba(14,165,233,0.15)', background: '#050B16' }}
+        style={{ borderColor: 'rgba(14,165,233,0.15)', background: '#F1F5F9' }}
       >
         <CanvasWrapper
           className="absolute inset-0"

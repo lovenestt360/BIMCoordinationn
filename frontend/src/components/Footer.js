@@ -14,7 +14,7 @@ const Footer = () => {
   return (
     <footer
       data-testid="footer"
-      className="bg-[#0F172A] border-t border-[#1E293B] py-12"
+      className="bg-[#FFFFFF] border-t border-[#F1F5F9] py-12"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -26,10 +26,10 @@ const Footer = () => {
               className="font-bold text-xl tracking-tight inline-block mb-4"
               style={{ fontFamily: 'Space Grotesk, sans-serif' }}
             >
-              <span className="text-[#F8FAFC]">KLYRON</span>
+              <span className="text-[#0F172A]">KLYRON</span>
               <span className="text-[#0EA5E9]">.</span>
             </a>
-            <p className="text-[#94A3B8] text-sm max-w-sm mb-4">
+            <p className="text-[#475569] text-sm max-w-sm mb-4">
               BIM coordination and digital delivery support for design and construction teams. Helping projects reduce clashes, improve model quality, and deliver construction-ready information.
             </p>
             {/* Social Links */}
@@ -39,14 +39,14 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="footer-linkedin"
-                className="w-10 h-10 rounded-sm bg-[#1E293B] flex items-center justify-center text-[#94A3B8] hover:bg-[#0EA5E9] hover:text-[#0F172A] transition-all duration-200"
+                className="w-10 h-10 rounded-sm bg-[#F1F5F9] flex items-center justify-center text-[#475569] hover:bg-[#0EA5E9] hover:text-[#0F172A] transition-all duration-200"
               >
                 <Linkedin size={18} />
               </a>
               <a
                 href="mailto:contact@klyronconsulting.com"
                 data-testid="footer-email"
-                className="w-10 h-10 rounded-sm bg-[#1E293B] flex items-center justify-center text-[#94A3B8] hover:bg-[#0EA5E9] hover:text-[#0F172A] transition-all duration-200"
+                className="w-10 h-10 rounded-sm bg-[#F1F5F9] flex items-center justify-center text-[#475569] hover:bg-[#0EA5E9] hover:text-[#0F172A] transition-all duration-200"
               >
                 <Mail size={18} />
               </a>
@@ -73,7 +73,7 @@ const Footer = () => {
                   <a
                     href={link.href}
                     onClick={(e) => scrollToSection(e, link.href)}
-                    className="text-[#94A3B8] hover:text-[#0EA5E9] text-sm transition-colors duration-200"
+                    className="text-[#475569] hover:text-[#0EA5E9] text-sm transition-colors duration-200"
                   >
                     {link.label}
                   </a>
@@ -100,7 +100,7 @@ const Footer = () => {
                 'On-Demand BIM Support',
               ].map((service) => (
                 <li key={service}>
-                  <span className="text-[#94A3B8] text-sm">{service}</span>
+                  <span className="text-[#475569] text-sm">{service}</span>
                 </li>
               ))}
             </ul>
@@ -110,7 +110,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div
           data-testid="footer-bottom"
-          className="pt-8 border-t border-[#1E293B] flex flex-col md:flex-row items-center justify-between gap-4"
+          className="pt-8 border-t border-[#F1F5F9] flex flex-col md:flex-row items-center justify-between gap-4"
         >
           <p className="text-[#64748B] text-sm">
             © {currentYear} Klyron Consulting. All rights reserved.
