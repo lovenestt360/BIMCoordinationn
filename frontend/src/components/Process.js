@@ -159,12 +159,12 @@ const Process = () => {
         backgroundSize: '50px 50px',
       }} />
 
-      {/* Ambient glow blobs */}
-      <div className="absolute pointer-events-none" style={{
+      {/* Ambient glow blobs — animate in as the section scrolls into view (native CSS, no JS) */}
+      <div className="ambient-glow absolute pointer-events-none" style={{
         top: '-80px', right: '-80px', width: '480px', height: '480px',
         background: 'radial-gradient(circle, rgba(14,165,233,0.09) 0%, transparent 65%)',
       }} />
-      <div className="absolute pointer-events-none" style={{
+      <div className="ambient-glow absolute pointer-events-none" style={{
         bottom: '0', left: '-60px', width: '360px', height: '360px',
         background: 'radial-gradient(circle, rgba(34,211,238,0.06) 0%, transparent 65%)',
       }} />

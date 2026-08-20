@@ -3,16 +3,11 @@ import CountUp from './CountUp';
 import CanvasWrapper from './3d/CanvasWrapper';
 
 const HeroStaticFallback = () => (
-  <div className="absolute inset-0 overflow-hidden">
-    <div
-      className="hero-bg-motion absolute inset-0"
-      style={{
-        backgroundImage: 'url(https://images.unsplash.com/photo-1760553120312-2821bf54e767?crop=entropy&cs=srgb&fm=jpg&q=85)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        opacity: 0.65,
-      }}
-    />
+  <div className="hero-mesh-bg">
+    <div className="hero-mesh-blob b1" />
+    <div className="hero-mesh-blob b2" />
+    <div className="hero-mesh-blob b3" />
+    <div className="hero-mesh-blob b4" />
   </div>
 );
 
@@ -30,7 +25,7 @@ const Hero = () => {
       data-testid="hero-section"
       className="relative min-h-screen flex items-center justify-center blueprint-bg overflow-hidden">
 
-      {/* 3D Background Scene (falls back to the static Ken-Burns image on low-end/no-WebGL/reduced-motion) */}
+      {/* 3D Background Scene (currently force-disabled site-wide — falls back to the animated mesh-gradient below) */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <CanvasWrapper
           className="absolute inset-0"
@@ -41,9 +36,9 @@ const Hero = () => {
       </div>
 
       
-      {/* Gradient Overlay — fades the photo into the page background at the edges, keeps it visible in the middle */}
+      {/* Gradient Overlay — softens the mesh into the page background at the very top/bottom */}
       <div className="absolute inset-0 z-0" style={{
-        background: 'linear-gradient(to bottom, #F8FAFC 0%, rgba(248,250,252,0) 22%, rgba(248,250,252,0) 45%, rgba(248,250,252,0.2) 80%, #F8FAFC 100%)',
+        background: 'linear-gradient(to bottom, rgba(248,250,252,0.5) 0%, rgba(248,250,252,0) 20%, rgba(248,250,252,0) 70%, rgba(248,250,252,0.6) 100%)',
       }} />
 
       {/* Content */}

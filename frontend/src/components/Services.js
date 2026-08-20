@@ -71,8 +71,8 @@ const Services = () => {
         backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
         backgroundSize: '50px 50px',
       }} />
-      {/* Ambient top glow */}
-      <div className="absolute pointer-events-none" style={{
+      {/* Ambient top glow — animates in as the section scrolls into view (native CSS, no JS) */}
+      <div className="ambient-glow absolute pointer-events-none" style={{
         top: 0, left: '30%', width: '500px', height: '300px',
         background: 'radial-gradient(ellipse, rgba(14,165,233,0.07) 0%, transparent 70%)',
       }} />

@@ -47,9 +47,10 @@ const FAQ = () => {
         backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
         backgroundSize: '50px 50px',
       }} />
-      {/* Ambient glow */}
-      <div className="absolute pointer-events-none" style={{
-        top: '10%', left: '50%', transform: 'translateX(-50%)',
+      {/* Ambient glow — animates in as the section scrolls into view (native CSS, no JS).
+          Centered via left/margin (not transform) so it doesn't fight the entrance animation's transform. */}
+      <div className="ambient-glow absolute pointer-events-none" style={{
+        top: '10%', left: '50%', marginLeft: '-300px',
         width: '600px', height: '300px',
         background: 'radial-gradient(ellipse, rgba(14,165,233,0.06) 0%, transparent 70%)',
       }} />
