@@ -11,19 +11,19 @@ const FloatingContact = () => {
         <div className="flex flex-col gap-2 items-end">
           <a
             href="mailto:contact@klyronconsulting.com"
-            className="flex items-center gap-3 bg-[#F1F5F9] border border-[#E2E8F0] rounded-sm px-4 py-3 text-sm text-[#0F172A] hover:border-[#0EA5E9] hover:text-[#0EA5E9] transition-all duration-200 whitespace-nowrap shadow-xl"
+            className="flex items-center gap-3 bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] rounded-sm px-4 py-3 text-sm text-[#F7F9FB] hover:border-[#39C3FF] hover:text-[#39C3FF] transition-all duration-200 whitespace-nowrap shadow-xl"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
-            <Mail size={16} className="text-[#0EA5E9]" />
+            <Mail size={16} className="text-[#39C3FF]" />
             Send an Email
           </a>
           <a
             href="#schedule"
             onClick={(e) => { e.preventDefault(); setOpen(false); document.querySelector('#schedule')?.scrollIntoView({ behavior: 'smooth' }); }}
-            className="flex items-center gap-3 bg-[#F1F5F9] border border-[#E2E8F0] rounded-sm px-4 py-3 text-sm text-[#0F172A] hover:border-[#22D3EE] hover:text-[#22D3EE] transition-all duration-200 whitespace-nowrap shadow-xl"
+            className="flex items-center gap-3 bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] rounded-sm px-4 py-3 text-sm text-[#F7F9FB] hover:border-[#7DE0FF] hover:text-[#7DE0FF] transition-all duration-200 whitespace-nowrap shadow-xl"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
-            <MessageCircle size={16} className="text-[#22D3EE]" />
+            <MessageCircle size={16} className="text-[#7DE0FF]" />
             Book a Consultation
           </a>
         </div>
@@ -34,15 +34,15 @@ const FloatingContact = () => {
         onClick={() => setOpen(!open)}
         className="w-14 h-14 rounded-sm flex items-center justify-center shadow-2xl transition-all duration-300"
         style={{
-          background: open ? '#F1F5F9' : '#0EA5E9',
-          border: open ? '1px solid #E2E8F0' : 'none',
+          background: open ? '#0B2A44' : '#39C3FF',
+          border: open ? '1px solid rgba(255,255,255,0.1)' : 'none',
           boxShadow: open ? 'none' : '0 0 30px -5px rgba(14,165,233,0.6)',
         }}
         aria-label="Contact us"
       >
         {open
-          ? <X size={20} className="text-[#475569]" />
-          : <Mail size={20} className="text-[#0F172A]" />
+          ? <X size={20} className="text-[rgba(247,249,251,0.65)]" />
+          : <Mail size={20} className="text-[#04070B]" />
         }
       </button>
     </div>

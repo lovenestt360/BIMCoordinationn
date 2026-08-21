@@ -41,43 +41,28 @@ const FAQ = () => {
   };
 
   return (
-    <section className="py-24 lg:py-32 bg-[#F8FAFC] relative overflow-hidden">
+    <section className="py-28 lg:py-40 bg-[#04070B] relative overflow-hidden">
       {/* Subtle grid */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px)',
-        backgroundSize: '50px 50px',
-      }} />
+      <div className="absolute inset-0 pointer-events-none blueprint-bg opacity-40" />
       {/* Ambient glow — animates in as the section scrolls into view (native CSS, no JS).
           Centered via left/margin (not transform) so it doesn't fight the entrance animation's transform. */}
       <div className="ambient-glow absolute pointer-events-none" style={{
         top: '10%', left: '50%', marginLeft: '-300px',
         width: '600px', height: '300px',
-        background: 'radial-gradient(ellipse, rgba(14,165,233,0.06) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, rgba(57,195,255,0.08) 0%, transparent 70%)',
       }} />
 
       <div className="max-w-3xl mx-auto px-6 relative z-10">
 
         {/* Header */}
-        <div className="sr-hidden text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-8" style={{ background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.5))' }} />
-            <span className="text-[#0EA5E9] font-mono text-sm">// FAQ</span>
-            <div className="h-px w-8" style={{ background: 'linear-gradient(90deg, rgba(14,165,233,0.5), transparent)' }} />
-          </div>
+        <div className="sr-hidden text-center mb-16">
+          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">FAQ</span>
 
-          <h2
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-          >
-            Common <span style={{
-              background: 'linear-gradient(90deg, #0EA5E9, #22D3EE)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>Questions</span>
+          <h2 className="font-instrument-serif text-5xl sm:text-6xl leading-[1.02] text-white mb-6">
+            Common <span className="italic text-white/70">Questions</span>
           </h2>
 
-          <p className="text-[#475569] max-w-xl mx-auto text-sm leading-relaxed">
+          <p className="text-white/65 max-w-xl mx-auto text-base font-light leading-relaxed">
             Key answers to help project teams understand how Klyron Consulting approaches BIM coordination, model review, and digital delivery support.
           </p>
         </div>
@@ -94,15 +79,15 @@ const FAQ = () => {
                   transitionDelay: `${i * 60}ms`,
                   border: isOpen
                     ? '1px solid rgba(14,165,233,0.4)'
-                    : '1px solid rgba(226,232,240,1)',
+                    : '1px solid rgba(255,255,255,0.1)',
                 }}
                 animate={{
                   boxShadow: isOpen
                     ? '0 0 24px -6px rgba(14,165,233,0.18)'
                     : '0 0 0px 0px rgba(14,165,233,0)',
                   background: isOpen
-                    ? 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)'
-                    : 'linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%)',
+                    ? 'linear-gradient(135deg, #164B78 0%, #0B2A44 100%)'
+                    : 'linear-gradient(135deg, #0B2A44 0%, #0B2A44 100%)',
                 }}
                 transition={{ duration: 0.3 }}
                 whileHover={{ y: -2 }}
@@ -120,7 +105,7 @@ const FAQ = () => {
                       style={{
                         background: isOpen ? 'rgba(14,165,233,0.15)' : 'rgba(14,165,233,0.06)',
                         border: isOpen ? '1px solid rgba(14,165,233,0.4)' : '1px solid rgba(14,165,233,0.15)',
-                        color: isOpen ? '#22D3EE' : '#94A3B8',
+                        color: isOpen ? '#7DE0FF' : 'rgba(247,249,251,0.45)',
                         transition: 'all 0.3s ease',
                       }}
                     >
@@ -130,7 +115,7 @@ const FAQ = () => {
                       className="font-semibold text-sm leading-snug"
                       style={{
                         fontFamily: 'Space Grotesk, sans-serif',
-                        color: isOpen ? '#1E293B' : '#334155',
+                        color: isOpen ? '#F7F9FB' : 'rgba(247,249,251,0.8)',
                         transition: 'color 0.2s ease',
                       }}
                     >
@@ -144,7 +129,7 @@ const FAQ = () => {
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <ChevronDown size={18} style={{ color: isOpen ? '#22D3EE' : '#94A3B8' }} />
+                    <ChevronDown size={18} style={{ color: isOpen ? '#7DE0FF' : 'rgba(247,249,251,0.45)' }} />
                   </motion.span>
                 </button>
 
@@ -160,7 +145,7 @@ const FAQ = () => {
                       style={{ overflow: 'hidden' }}
                     >
                       <div className="px-5 pb-5 pt-1" style={{ borderTop: '1px solid rgba(14,165,233,0.12)' }}>
-                        <p className="text-[#475569] text-sm leading-relaxed pt-3">
+                        <p className="text-[rgba(247,249,251,0.65)] text-sm leading-relaxed pt-3">
                           {faq.answer}
                         </p>
                       </div>
@@ -173,8 +158,8 @@ const FAQ = () => {
         </div>
 
         {/* CTA */}
-        <div className="sr-hidden text-center mt-12 pt-8 border-t border-[#F1F5F9]">
-          <p className="text-[#64748B] text-sm mb-5">
+        <div className="sr-hidden text-center mt-12 pt-8 border-t border-[#0B2A44]">
+          <p className="text-[rgba(247,249,251,0.55)] text-sm mb-5">
             Still unsure what level of BIM support your project needs?
           </p>
           <a

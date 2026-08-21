@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { ExternalLink, MapPin, Users, CheckCircle, Wrench, Tag } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, MapPin } from 'lucide-react';
+import gsap from 'gsap';
 
 const projects = [
   {
@@ -9,23 +9,12 @@ const projects = [
     category: 'Healthcare',
     title: 'Mental Health Unit',
     location: 'Australia',
-    client: 'Confidential',
-    sector: 'Healthcare',
     services: 'BIM Coordination, Clash Detection',
     tools: 'Navisworks, Autodesk Construction Cloud',
-    disciplines: 'Architectural, Structural, HVAC, Fire, Plumbing, Electrical',
-    delivery: 'Remote BIM Support',
-    status: 'Completed',
     description:
-      'Multidisciplinary healthcare project focused on BIM coordination, clash detection, federated model review, and ACC-based issue tracking. The work involved reviewing architectural, structural, HVAC, fire, plumbing, and electrical models to support better coordination before construction.',
-    highlights: [
-      '6+ Disciplines Coordinated',
-      '1,000+ Clashes Reviewed',
-      'ACC Issue Tracking',
-      'Completed Delivery Status',
-    ],
+      'Multidisciplinary healthcare project focused on BIM coordination, clash detection, federated model review, and ACC-based issue tracking across architectural, structural, HVAC, fire, plumbing, and electrical models.',
+    highlights: ['6+ Disciplines Coordinated', '1,000+ Clashes Reviewed', 'ACC Issue Tracking'],
     image: '/projects/mental-health-unit.jpg',
-    alt: 'Mental Health Unit BIM coordination model showing architectural and MEP systems',
   },
   {
     id: 2,
@@ -33,23 +22,12 @@ const projects = [
     category: 'Education',
     title: 'School Project',
     location: 'Australia',
-    client: 'Confidential',
-    sector: 'Education',
     services: 'BIM QA/QC, Model Validation',
-    tools: 'Solibri, Autodesk Construction Cloud, BCF Workflow',
-    disciplines: 'COBie & Model Data Review',
-    delivery: 'Remote BIM Support',
-    status: 'Completed',
+    tools: 'Solibri, Autodesk Construction Cloud, BCF',
     description:
-      'BIM QA/QC and model validation support for an education project, focused on reviewing model consistency, element classification, property sets, and COBie-related information. The work also included structured issue reporting through Solibri, Autodesk Construction Cloud, and BCF-based workflows.',
-    highlights: [
-      'Solibri Model Validation',
-      'COBie Data Review',
-      'BCF Issue Reporting',
-      'Completed Delivery Status',
-    ],
+      'BIM QA/QC and model validation support focused on reviewing model consistency, element classification, property sets, and COBie-related information through Solibri and BCF-based workflows.',
+    highlights: ['Solibri Model Validation', 'COBie Data Review', 'BCF Issue Reporting'],
     image: '/projects/school-project.jpg',
-    alt: 'School project building used for BIM QA/QC and model validation portfolio card',
   },
   {
     id: 3,
@@ -57,213 +35,105 @@ const projects = [
     category: 'Infrastructure',
     title: 'Water Supply System',
     location: 'Namigonha, Ribáuè District, Mozambique',
-    client: 'Confidential',
-    sector: 'Infrastructure',
     services: '4D/5D BIM, Quantity Take-Off, Cost Support',
     tools: 'Revit, Bexel Manager',
-    disciplines: 'Quantity Take-Off, Cost Estimation, Construction Sequencing',
-    delivery: 'BIM-Based Project Support',
-    status: 'Completed',
     description:
-      'BIM-based planning and cost support for a water supply infrastructure project. The work involved Revit model development, quantity take-off, cost assignment, cost estimation, and 4D/5D workflows using Bexel Manager to support project planning and cost understanding.',
-    highlights: [
-      '4D/5D BIM Workflow',
-      'QTO Quantity Take-Off',
-      'Cost Estimation Support',
-      'Completed Delivery Status',
-    ],
+      'BIM-based planning and cost support for a water supply infrastructure project — Revit model development, quantity take-off, cost assignment and 4D/5D workflows using Bexel Manager.',
+    highlights: ['4D/5D BIM Workflow', 'QTO Quantity Take-Off', 'Cost Estimation Support'],
     image: '/projects/water-supply-system.jpg',
-    alt: 'Water supply system BIM model showing architectural and structural 3D drawings',
   },
 ];
 
 const Portfolio = () => {
-  const [activeProject, setActiveProject] = useState(0);
+  const [active, setActive] = useState(0);
+  const imgRefs = useRef([]);
+  const project = projects[active];
 
-  const project = projects[activeProject];
+  useEffect(() => {
+    imgRefs.current.forEach((el, i) => {
+      if (!el) return;
+      gsap.to(el, { autoAlpha: i === active ? 1 : 0, duration: 0.8, ease: 'power2.out' });
+    });
+  }, [active]);
 
   return (
     <section
       id="portfolio"
       data-testid="portfolio-section"
-      className="py-24 lg:py-32 blueprint-bg relative"
+      className="relative min-h-screen flex flex-col overflow-hidden"
+      style={{ background: '#04070B' }}
     >
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="mb-16">
-          <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="portfolio-label">// PORTFOLIO</p>
-          <h2
-            data-testid="portfolio-title"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-          >
-            Featured <span className="text-[#0EA5E9]">Projects</span>
+      {/* Background image stack — crossfades between projects */}
+      <div className="absolute inset-0">
+        {projects.map((p, i) => (
+          <div
+            key={p.id}
+            ref={(el) => { imgRefs.current[i] = el; }}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${p.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: i === active ? 1 : 0,
+            }}
+          />
+        ))}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(100deg, rgba(4,7,11,0.92) 0%, rgba(4,7,11,0.55) 45%, rgba(4,7,11,0.8) 100%)' }} />
+      </div>
+
+      <div className="relative z-10 flex-1 flex flex-col justify-between px-6 md:px-12 lg:px-16 pt-32 pb-16">
+        <div className="max-w-2xl">
+          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">Selected Work</span>
+          <h2 className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-6">
+            Coordination across real project environments.
           </h2>
-          <p className="text-[#475569] max-w-2xl">
-            A selection of BIM coordination, QA/QC, and digital delivery projects showcasing practical model review, clash detection, validation, and 4D/5D support across construction and infrastructure workflows.
-          </p>
         </div>
 
-        {/* Portfolio Display */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Main Project Display */}
-          <div
-            data-testid="portfolio-main-display"
-            className="tech-card rounded-sm overflow-hidden bg-[#FFFFFF]"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {/* Image */}
-                <div
-                  className="h-64 lg:h-80 bg-cover bg-center relative"
-                  style={{ backgroundImage: `url(${project.image})` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/70 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <span className="px-3 py-1 bg-[#0EA5E9] text-[#0F172A] text-xs font-mono rounded-sm">
-                      {project.category}
-                    </span>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <span className="px-2 py-1 bg-[#F1F5F9] border border-[#E2E8F0] text-[#22D3EE] text-xs font-mono rounded-sm">
-                      {project.status}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <h3
-                    data-testid="portfolio-project-title"
-                    className="text-xl font-bold mb-1"
-                    style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-                  >
-                    {project.title}
-                  </h3>
-
-                  <div className="flex items-center gap-2 text-sm mb-4">
-                    <MapPin size={14} className="text-[#0EA5E9]" />
-                    <span className="text-[#475569]">{project.location}</span>
-                  </div>
-
-                  <p className="text-[#475569] text-sm mb-5 leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  {/* Project Meta */}
-                  <div className="grid grid-cols-2 gap-3 mb-5">
-                    <div className="bg-[#F1F5F9] rounded-sm p-3">
-                      <p className="text-[#94A3B8] text-xs font-mono mb-1">CLIENT</p>
-                      <p className="text-[#334155] text-sm font-medium">{project.client}</p>
-                    </div>
-                    <div className="bg-[#F1F5F9] rounded-sm p-3">
-                      <p className="text-[#94A3B8] text-xs font-mono mb-1">SECTOR</p>
-                      <p className="text-[#334155] text-sm font-medium">{project.sector}</p>
-                    </div>
-                    <div className="bg-[#F1F5F9] rounded-sm p-3 col-span-2">
-                      <p className="text-[#94A3B8] text-xs font-mono mb-1">SERVICES</p>
-                      <p className="text-[#334155] text-sm">{project.services}</p>
-                    </div>
-                    <div className="bg-[#F1F5F9] rounded-sm p-3 col-span-2">
-                      <p className="text-[#94A3B8] text-xs font-mono mb-1">TOOLS</p>
-                      <p className="text-[#334155] text-sm">{project.tools}</p>
-                    </div>
-                  </div>
-
-                  {/* Highlights */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.highlights.map((h, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.15 + idx * 0.05 }}
-                        className="flex items-center gap-1.5 px-2 py-1 border border-[#E2E8F0] rounded-sm"
-                      >
-                        <CheckCircle size={12} className="text-[#22D3EE]" />
-                        <span className="text-xs text-[#475569]">{h}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+          <div className="lg:col-span-7">
+            <span className="text-[#39C3FF] text-xs font-mono tracking-widest uppercase mb-3 block">{project.category}</span>
+            <h3 className="font-instrument-serif text-3xl sm:text-4xl text-white mb-3">{project.title}</h3>
+            <div className="flex items-center gap-2 text-white/50 text-sm mb-5">
+              <MapPin size={14} />
+              {project.location}
+            </div>
+            <p className="text-white/65 text-sm md:text-base font-light leading-relaxed max-w-lg mb-6">
+              {project.description}
+            </p>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {project.highlights.map((h) => (
+                <span key={h} className="px-3 py-1.5 rounded-full text-xs border border-white/15 text-white/60">
+                  {h}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Project List */}
-          <div
-            data-testid="portfolio-project-list"
-            className="space-y-4"
-          >
-            {projects.map((p, index) => (
-              <motion.button
+          <div className="lg:col-span-5 flex flex-col gap-3">
+            {projects.map((p, i) => (
+              <button
                 key={p.id}
-                data-testid={`portfolio-project-${p.id}`}
-                onClick={() => setActiveProject(index)}
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.98 }}
-                className={`relative w-full tech-card rounded-sm p-4 flex gap-4 text-left overflow-hidden transition-colors duration-300 ${
-                  activeProject === index
-                    ? 'border-[#0EA5E9] bg-[#FFFFFF]'
-                    : 'bg-[#FFFFFF] hover:border-[#E2E8F0]'
-                }`}
+                onClick={() => setActive(i)}
+                className="text-left flex items-center gap-4 py-3 border-b transition-colors duration-200"
+                style={{ borderColor: active === i ? 'rgba(57,195,255,0.4)' : 'rgba(255,255,255,0.1)' }}
               >
-                {activeProject === index && (
-                  <motion.div
-                    layoutId="portfolioActiveBar"
-                    className="absolute left-0 top-0 bottom-0 w-[3px]"
-                    style={{ background: 'linear-gradient(180deg, #0EA5E9, #22D3EE)' }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-                  />
-                )}
-                <div
-                  className="w-20 h-20 flex-shrink-0 rounded-sm bg-cover bg-center"
-                  style={{ backgroundImage: `url(${p.image})` }}
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono text-xs text-[#E2E8F0]">{p.number}</span>
-                    <span className={`text-xs ${activeProject === index ? 'text-[#0EA5E9]' : 'text-[#0EA5E9]'}`}>{p.category}</span>
-                  </div>
-                  <h4
-                    className="font-bold mb-1"
-                    style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-                  >
-                    {p.title}
-                  </h4>
-                  <p className="text-xs text-[#475569]">{p.location}</p>
-                </div>
-                <div className={`flex items-center ${activeProject === index ? 'text-[#0EA5E9]' : 'text-[#E2E8F0]'}`}>
-                  <ExternalLink size={18} />
-                </div>
-              </motion.button>
+                <span className="font-mono text-xs" style={{ color: active === i ? '#39C3FF' : 'rgba(255,255,255,0.3)' }}>
+                  {p.number}
+                </span>
+                <span className="text-sm md:text-base font-light flex-1" style={{ color: active === i ? '#F7F9FB' : 'rgba(247,249,251,0.45)' }}>
+                  {p.title}
+                </span>
+                <ArrowUpRight size={16} style={{ color: active === i ? '#39C3FF' : 'rgba(255,255,255,0.25)' }} />
+              </button>
             ))}
 
-            {/* More Projects CTA */}
-            <div
-              data-testid="portfolio-more-cta"
-              className="text-center pt-6 border-t border-[#F1F5F9]"
+            <a
+              href="#contact"
+              onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
+              className="mt-4 border border-white/25 text-white rounded-full px-6 py-3 text-sm font-medium text-center hover:bg-white/10 transition-colors duration-200"
             >
-              <p className="text-sm text-[#475569] mb-4">
-                Want to see more of our work?
-              </p>
-              <a
-                href="#contact"
-                data-testid="portfolio-contact-btn"
-                className="btn-outline px-6 py-2 rounded-sm text-sm inline-block"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                Request Full Portfolio
-              </a>
-            </div>
+              Request Full Portfolio
+            </a>
           </div>
         </div>
       </div>

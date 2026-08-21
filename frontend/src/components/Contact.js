@@ -60,65 +60,64 @@ const Contact = () => {
     <section
       id="contact"
       data-testid="contact-section"
-      className="py-24 lg:py-32 blueprint-bg relative"
+      className="min-h-screen flex flex-col justify-center py-28 lg:py-40 blueprint-bg relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="absolute pointer-events-none" style={{
+        bottom: '-10%', right: '-5%',
+        width: '700px', height: '700px',
+        background: 'radial-gradient(circle, rgba(57,195,255,0.10) 0%, transparent 70%)',
+      }} />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className="mb-16">
-          <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="contact-label">// CONTACT</p>
+        <div className="mb-20 max-w-3xl">
+          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="contact-label">Contact</span>
           <h2
             data-testid="contact-title"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+            className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6"
           >
-            Let's Discuss Your <span className="text-[#0EA5E9]">Project</span>
+            Let's discuss your <span className="italic text-[#39C3FF]">project</span>
           </h2>
-          <p className="text-[#475569] max-w-2xl">
+          <p className="text-white/65 text-base sm:text-lg font-light leading-relaxed max-w-xl">
             Whether you need BIM coordination, clash detection, model validation, or digital delivery support, share your project details and we'll get back to you with the next steps.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Info */}
-          <div className="space-y-6">
+          <div className="space-y-5">
             {/* Email Card */}
             <div
               data-testid="contact-email-card"
-              className="tech-card rounded-sm bg-[#FFFFFF] p-6"
+              className="rounded-sm border border-white/10 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-[#39C3FF]/40"
             >
-              <div className="w-12 h-12 rounded-sm bg-[#F1F5F9] flex items-center justify-center mb-4">
-                <Mail size={24} className="text-[#0EA5E9]" />
+              <div className="w-11 h-11 rounded-sm bg-[#39C3FF]/10 flex items-center justify-center mb-5">
+                <Mail size={20} className="text-[#39C3FF]" />
               </div>
-              <h3
-                className="font-bold mb-2"
-                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-              >
+              <h3 className="font-instrument-serif text-2xl text-white mb-2">
                 Email Us
               </h3>
               <a
                 href="mailto:contact@klyronconsulting.com"
-                className="text-[#0EA5E9] hover:text-[#22D3EE] transition-colors text-sm block mb-2"
+                className="text-[#39C3FF] hover:text-[#7DE0FF] transition-colors text-sm block mb-2"
               >
                 contact@klyronconsulting.com
               </a>
-              <p className="text-[#475569] text-sm">For BIM coordination requests, proposals, and project enquiries.</p>
+              <p className="text-white/55 text-sm font-light">For BIM coordination requests, proposals, and project enquiries.</p>
             </div>
 
             {/* Location Card */}
             <div
               data-testid="contact-location-card"
-              className="tech-card rounded-sm bg-[#FFFFFF] p-6"
+              className="rounded-sm border border-white/10 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-[#39C3FF]/40"
             >
-              <div className="w-12 h-12 rounded-sm bg-[#F1F5F9] flex items-center justify-center mb-4">
-                <MapPin size={24} className="text-[#22D3EE]" />
+              <div className="w-11 h-11 rounded-sm bg-[#39C3FF]/10 flex items-center justify-center mb-5">
+                <MapPin size={20} className="text-[#7DE0FF]" />
               </div>
-              <h3
-                className="font-bold mb-2"
-                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-              >
+              <h3 className="font-instrument-serif text-2xl text-white mb-2">
                 Location
               </h3>
-              <p className="text-[#475569] text-sm">
+              <p className="text-white/55 text-sm font-light leading-relaxed">
                 Operating Worldwide<br />
                 Remote BIM coordination and digital delivery support for international project teams.
               </p>
@@ -127,20 +126,17 @@ const Contact = () => {
             {/* Response Time */}
             <div
               data-testid="contact-response-card"
-              className="tech-card rounded-sm bg-[#FFFFFF] p-6"
+              className="rounded-sm border border-white/10 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-[#39C3FF]/40"
             >
-              <div className="w-12 h-12 rounded-sm bg-[#F1F5F9] flex items-center justify-center mb-4">
-                <Phone size={24} className="text-[#0EA5E9]" />
+              <div className="w-11 h-11 rounded-sm bg-[#39C3FF]/10 flex items-center justify-center mb-5">
+                <Phone size={20} className="text-[#39C3FF]" />
               </div>
-              <h3
-                className="font-bold mb-2"
-                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-              >
+              <h3 className="font-instrument-serif text-2xl text-white mb-2">
                 Response Time
               </h3>
-              <p className="text-[#475569] text-sm">
+              <p className="text-white/55 text-sm font-light leading-relaxed">
                 Usually within 24 hours<br />
-                <span className="text-[#22D3EE]">Priority response for scheduled calls and urgent project reviews.</span>
+                <span className="text-[#7DE0FF]">Priority response for scheduled calls and urgent project reviews.</span>
               </p>
             </div>
           </div>
@@ -148,19 +144,16 @@ const Contact = () => {
           {/* Contact Form */}
           <div
             data-testid="contact-form-container"
-            className="lg:col-span-2 tech-card rounded-sm bg-[#FFFFFF] p-6 lg:p-8"
+            className="lg:col-span-2 rounded-sm border border-white/10 bg-white/[0.03] p-7 lg:p-10"
           >
-            <h3
-              className="text-xl font-bold mb-6"
-              style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-            >
+            <h3 className="font-instrument-serif text-3xl text-white mb-8">
               Send a Message
             </h3>
 
             <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <Label htmlFor="contact-name" className="text-[#475569] text-sm mb-2 block">
+                  <Label htmlFor="contact-name" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
                     Name *
                   </Label>
                   <Input
@@ -171,12 +164,12 @@ const Contact = () => {
                     onChange={handleInputChange}
                     placeholder="Your full name"
                     required
-                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
+                    className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="contact-email" className="text-[#475569] text-sm mb-2 block">
+                  <Label htmlFor="contact-email" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
                     Email *
                   </Label>
                   <Input
@@ -188,13 +181,13 @@ const Contact = () => {
                     onChange={handleInputChange}
                     placeholder="your@email.com"
                     required
-                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
+                    className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
                   />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="contact-company" className="text-[#475569] text-sm mb-2 block">
+                <Label htmlFor="contact-company" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
                   Company
                 </Label>
                 <Input
@@ -204,12 +197,12 @@ const Contact = () => {
                   value={formData.company}
                   onChange={handleInputChange}
                   placeholder="Your company name"
-                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
+                  className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
                 />
               </div>
 
               <div>
-                <Label htmlFor="contact-message" className="text-[#475569] text-sm mb-2 block">
+                <Label htmlFor="contact-message" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
                   Message *
                 </Label>
                 <Textarea
@@ -221,7 +214,7 @@ const Contact = () => {
                   placeholder="Tell us about your project, timeline, and any specific requirements..."
                   rows={5}
                   required
-                  className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B] resize-none"
+                  className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50 resize-none"
                 />
               </div>
 
@@ -248,7 +241,7 @@ const Contact = () => {
                 type="submit"
                 data-testid="contact-submit-btn"
                 disabled={isSubmitting}
-                className="btn-primary px-8 py-3 rounded-sm font-medium flex items-center gap-2 disabled:opacity-50"
+                className="btn-primary px-9 py-4 rounded-sm font-medium flex items-center gap-2 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   'Sending...'

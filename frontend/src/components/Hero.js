@@ -1,17 +1,31 @@
-import { ArrowRight } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
+import gsap from 'gsap';
 import CountUp from './CountUp';
-import CanvasWrapper from './3d/CanvasWrapper';
-
-const HeroStaticFallback = () => (
-  <div className="hero-mesh-bg">
-    <div className="hero-mesh-blob b1" />
-    <div className="hero-mesh-blob b2" />
-    <div className="hero-mesh-blob b3" />
-    <div className="hero-mesh-blob b4" />
-  </div>
-);
 
 const Hero = () => {
+  const headlineRefs = useRef([]);
+  const fadeRefs = useRef([]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(headlineRefs.current, { yPercent: 100 });
+      gsap.set(fadeRefs.current, { autoAlpha: 0, y: 16 });
+
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+      tl.to(headlineRefs.current, {
+        yPercent: 0,
+        duration: 1.1,
+        stagger: 0.08,
+      }).to(
+        fadeRefs.current,
+        { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power2.out' },
+        '-=0.5'
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
   const scrollToSection = (e, href) => {
     e.preventDefault();
     const element = document.querySelector(href);
@@ -20,110 +34,118 @@ const Hero = () => {
     }
   };
 
+  const addHeadlineRef = (el) => {
+    if (el && !headlineRefs.current.includes(el)) headlineRefs.current.push(el);
+  };
+  const addFadeRef = (el) => {
+    if (el && !fadeRefs.current.includes(el)) fadeRefs.current.push(el);
+  };
+
   return (
     <section
+      id="top"
       data-testid="hero-section"
-      className="relative min-h-screen flex items-center justify-center blueprint-bg overflow-hidden">
+      className="relative w-full min-h-screen overflow-hidden"
+    >
+      {/* Cinematic video layer */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/videos/hero-cinematic.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      />
 
-      {/* 3D Background Scene (currently force-disabled site-wide — falls back to the animated mesh-gradient below) */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <CanvasWrapper
-          className="absolute inset-0"
-          sceneImport={() => import('./3d/HeroScene')}
-          fallback={<HeroStaticFallback />}
-          canvasProps={{ camera: { position: [0, 1, 7], fov: 45 } }}
-        />
-      </div>
-
-      
-      {/* Gradient Overlay — softens the mesh into the page background at the very top/bottom */}
-      <div className="absolute inset-0 z-0" style={{
-        background: 'linear-gradient(to bottom, rgba(248,250,252,0.5) 0%, rgba(248,250,252,0) 20%, rgba(248,250,252,0) 70%, rgba(248,250,252,0.6) 100%)',
-      }} />
+      {/* Restrained overlay — keeps the footage visually impressive */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-[#04070B]" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
-        {/* Main Heading */}
-        <h1
-          data-testid="hero-title"
-          className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up stagger-1"
-          style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+      <div className="relative z-10 min-h-screen flex flex-col">
+        <div className="flex-1 flex items-center px-6 md:px-12 lg:px-16">
+          <div className="max-w-[800px] pt-24">
+            {/* Headline */}
+            <h1
+              data-testid="hero-title"
+              className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl lg:text-[82px] xl:text-[96px] leading-[0.98] text-white mb-6"
+            >
+              <span className="overflow-hidden block">
+                <span ref={addHeadlineRef} className="block">Precision BIM</span>
+              </span>
+              <span className="overflow-hidden block">
+                <span ref={addHeadlineRef} className="block italic text-white/80">for</span>
+              </span>
+              <span className="overflow-hidden block">
+                <span ref={addHeadlineRef} className="block">Construction-Ready</span>
+              </span>
+              <span className="overflow-hidden block">
+                <span ref={addHeadlineRef} className="block">Delivery</span>
+              </span>
+            </h1>
 
-          <span className="text-[#0F172A]">Precision </span>
-          <span className="text-[#0EA5E9]">BIM Coordination</span>
-          <br />
-          <span className="text-[#0F172A]">for Construction-Ready Delivery</span>
-        </h1>
+            {/* Supporting copy */}
+            <p
+              ref={addFadeRef}
+              data-testid="hero-subtitle"
+              className="text-sm md:text-base text-white/65 font-light leading-relaxed max-w-[540px] mb-10"
+            >
+              Helping contractors, consultants and project teams coordinate multidisciplinary
+              BIM models, manage issues and improve model reliability before those problems
+              reach construction.
+            </p>
 
-        {/* Subheading */}
-        <p
-          data-testid="hero-subtitle"
-          className="text-base sm:text-lg text-[#475569] max-w-2xl mx-auto mb-10 animate-fade-in-up stagger-2">
+            {/* CTAs */}
+            <div ref={addFadeRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-16">
+              <a
+                href="#schedule"
+                data-testid="hero-cta-primary"
+                onClick={(e) => scrollToSection(e, '#schedule')}
+                className="group bg-white text-black rounded-full px-7 py-3 text-sm font-medium flex items-center gap-2"
+              >
+                Book a Consultation
+                <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+              </a>
+              <a
+                href="#portfolio"
+                data-testid="hero-cta-secondary"
+                onClick={(e) => scrollToSection(e, '#portfolio')}
+                className="border border-white/30 text-white rounded-full px-7 py-3 text-sm font-medium hover:bg-white/10 hover:border-white/60 transition-colors duration-200"
+              >
+                View Projects
+              </a>
+            </div>
 
-          Providing BIM coordination and digital delivery support to help project teams improve model reliability, reduce rework, and make better decisions before construction begins.
-        </p>
-
-        {/* Urgency badge */}
-        <div className="inline-flex items-center gap-2 mb-8 animate-fade-in-up stagger-2">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
-          </span>
-          <span className="text-xs text-[#64748B] font-mono tracking-wide">Currently accepting new projects — Q3 2026</span>
+            {/* Stats */}
+            <div
+              ref={addFadeRef}
+              data-testid="hero-stats"
+              className="flex items-center gap-10 pt-6 border-t border-white/10"
+            >
+              <div>
+                <CountUp target={8} suffix="+" duration={1600} className="text-2xl font-semibold text-white font-mono" />
+                <p className="text-xs text-white/50 mt-1">Projects Delivered</p>
+              </div>
+              <div>
+                <CountUp target={85} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
+                <p className="text-xs text-white/50 mt-1">Clash Resolution</p>
+              </div>
+              <div>
+                <CountUp target={2} suffix="+" duration={1200} className="text-2xl font-semibold text-white font-mono" />
+                <p className="text-xs text-white/50 mt-1">Years Experience</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* CTA Buttons */}
-        <div
-          data-testid="hero-cta-container"
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-3">
-
-          <a
-            href="#schedule"
-            data-testid="hero-cta-primary"
-            onClick={(e) => scrollToSection(e, '#schedule')}
-            className="btn-primary px-8 py-3 rounded-sm font-medium flex items-center gap-2">
-
-            Schedule a Meeting
-            <ArrowRight size={18} />
-          </a>
-          <a
-            href="#portfolio"
-            data-testid="hero-cta-secondary"
-            onClick={(e) => scrollToSection(e, '#portfolio')}
-            className="btn-outline px-8 py-3 rounded-sm font-medium">
-
-            View Portfolio
-          </a>
-        </div>
-
-        {/* Stats */}
-        <div
-          data-testid="hero-stats"
-          className="grid grid-cols-3 gap-8 max-w-xl mx-auto mt-16 pt-8 border-t border-[#F1F5F9] animate-fade-in-up stagger-4">
-
-          <div>
-            <CountUp target={8} suffix="+" duration={1600} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" />
-            <p className="text-xs sm:text-sm text-[#475569] mt-1">Projects Delivered</p>
-          </div>
-          <div>
-            <CountUp target={85} suffix="%" duration={1800} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#22D3EE] font-mono" />
-            <p className="text-xs sm:text-sm text-[#475569] mt-1">Clash Resolution</p>
-          </div>
-          <div>
-            <CountUp target={2} suffix="+" duration={1200} className="stat-number-glow text-2xl sm:text-3xl font-bold text-[#0EA5E9] font-mono" />
-            <p className="text-xs sm:text-sm text-[#475569] mt-1">Years Experience</p>
-          </div>
+        {/* Scroll cue */}
+        <div className="pb-8 flex flex-col items-center gap-2 text-white/50">
+          <span className="text-xs font-light tracking-wide">Scroll to explore</span>
+          <ChevronDown size={16} className="animate-bounce" />
         </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="w-6 h-10 border-2 border-[#E2E8F0] rounded-full flex justify-center pt-2">
-          <div className="w-1 h-3 bg-[#0EA5E9] rounded-full animate-bounce" />
-        </div>
-      </div>
-    </section>);
-
+    </section>
+  );
 };
 
 export default Hero;

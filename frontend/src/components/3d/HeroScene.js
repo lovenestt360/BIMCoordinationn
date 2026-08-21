@@ -14,8 +14,8 @@ function HeroSceneContent() {
   return (
     <>
       <ambientLight intensity={0.4} />
-      <pointLight position={[4, 4, 4]} intensity={1.2} color="#0EA5E9" />
-      <pointLight position={[-4, 2, -3]} intensity={0.7} color="#22D3EE" />
+      <pointLight position={[4, 4, 4]} intensity={1.2} color="#39C3FF" />
+      <pointLight position={[-4, 2, -3]} intensity={0.7} color="#7DE0FF" />
       <group ref={groupRef} position={[1.3, -1, 0]}>
         <BuildingModel />
       </group>

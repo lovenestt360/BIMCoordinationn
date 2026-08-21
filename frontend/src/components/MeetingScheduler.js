@@ -41,8 +41,8 @@ const MEETING_FOCUS_OPTIONS = [
   'General introduction call',
 ];
 
-const selectClass = 'w-full bg-[#F1F5F9] border border-[#E2E8F0] text-[#0F172A] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent appearance-none';
-const selectEmptyClass = 'w-full bg-[#F1F5F9] border border-[#E2E8F0] text-[#64748B] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-transparent appearance-none';
+const selectClass = 'w-full bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] text-[#F7F9FB] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#39C3FF] focus:border-transparent appearance-none';
+const selectEmptyClass = 'w-full bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] text-[rgba(247,249,251,0.55)] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#39C3FF] focus:border-transparent appearance-none';
 
 const STEPS = ['Date & Time', 'Your Details', 'Confirmed'];
 
@@ -158,29 +158,33 @@ const MeetingScheduler = () => {
     <section
       id="schedule"
       data-testid="schedule-section"
-      className="py-24 lg:py-32 bg-[#FFFFFF] relative"
+      className="py-28 lg:py-40 relative overflow-hidden"
+      style={{ background: 'linear-gradient(180deg, #0B2A44 0%, #04070B 100%)' }}
     >
       {/* Background Accent */}
-      <div className="absolute inset-0 overflow-hidden blueprint-bg" />
+      <div className="absolute inset-0 overflow-hidden blueprint-bg opacity-50" />
+      <div
+        className="absolute pointer-events-none"
+        style={{ top: '-10%', left: '50%', transform: 'translateX(-50%)', width: '70vw', height: '50vw', background: 'radial-gradient(ellipse, rgba(57,195,255,0.1) 0%, transparent 65%)' }}
+      />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
         <motion.div
-          className="mb-12 text-center"
+          className="mb-16 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-[#0EA5E9] font-mono text-sm mb-2" data-testid="schedule-label">// SCHEDULE</p>
+          <p className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6" data-testid="schedule-label">Schedule</p>
           <h2
             data-testid="schedule-title"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
+            className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6"
           >
-            Book a <span className="text-[#0EA5E9]">Consultation</span>
+            Book a <span className="italic text-white/70">Consultation</span>
           </h2>
-          <p className="text-[#475569] max-w-2xl mx-auto">
+          <p className="text-white/65 text-base md:text-lg font-light max-w-2xl mx-auto">
             Schedule a free consultation to discuss your project needs and how we can help optimize your BIM workflow.
           </p>
         </motion.div>
@@ -202,28 +206,28 @@ const MeetingScheduler = () => {
                 <div className="flex items-center gap-2">
                   <motion.div
                     animate={{
-                      backgroundColor: isDone || isActive ? 'rgba(14,165,233,0.15)' : 'rgba(226,232,240,0.6)',
-                      borderColor: isDone || isActive ? '#0EA5E9' : '#E2E8F0',
+                      backgroundColor: isDone || isActive ? 'rgba(57,195,255,0.15)' : 'rgba(255,255,255,0.06)',
+                      borderColor: isDone || isActive ? '#39C3FF' : 'rgba(255,255,255,0.1)',
                       scale: isActive ? 1.08 : 1,
                     }}
                     transition={{ duration: 0.3 }}
                     className="w-7 h-7 rounded-full border flex items-center justify-center font-mono text-xs font-bold flex-shrink-0"
-                    style={{ color: isDone || isActive ? '#22D3EE' : '#64748B' }}
+                    style={{ color: isDone || isActive ? '#7DE0FF' : 'rgba(247,249,251,0.55)' }}
                   >
                     {isDone ? <Check size={13} /> : i + 1}
                   </motion.div>
                   <span
                     className="hidden sm:inline text-xs font-mono"
-                    style={{ color: isDone || isActive ? '#334155' : '#64748B' }}
+                    style={{ color: isDone || isActive ? 'rgba(247,249,251,0.8)' : 'rgba(247,249,251,0.55)' }}
                   >
                     {label}
                   </span>
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div className="w-6 sm:w-10 h-px relative overflow-hidden bg-[#F1F5F9]">
+                  <div className="w-6 sm:w-10 h-px relative overflow-hidden bg-[#0B2A44]">
                     <motion.div
                       className="absolute inset-0"
-                      style={{ background: 'linear-gradient(90deg, #0EA5E9, #22D3EE)' }}
+                      style={{ background: 'linear-gradient(90deg, #39C3FF, #7DE0FF)' }}
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: isDone ? 1 : 0 }}
                       transition={{ duration: 0.4 }}
@@ -251,9 +255,9 @@ const MeetingScheduler = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Calendar Side */}
-            <div className="p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-[#F1F5F9]">
+            <div className="p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-[#0B2A44]">
               <div className="flex items-center gap-2 mb-6">
-                <CalendarIcon size={20} className="text-[#0EA5E9]" />
+                <CalendarIcon size={20} className="text-[#39C3FF]" />
                 <h3
                   className="font-bold"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
@@ -268,7 +272,7 @@ const MeetingScheduler = () => {
                   selected={selectedDate}
                   onSelect={setSelectedDate}
                   disabled={disabledDays}
-                  className="rounded-sm border border-[#F1F5F9]"
+                  className="rounded-sm border border-[#0B2A44]"
                 />
               </div>
 
@@ -284,14 +288,14 @@ const MeetingScheduler = () => {
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <div className="flex items-center gap-2 mb-4 pt-1">
-                      <Clock size={16} className="text-[#0EA5E9]" />
-                      <span className="text-sm text-[#475569]">
+                      <Clock size={16} className="text-[#39C3FF]" />
+                      <span className="text-sm text-[rgba(247,249,251,0.65)]">
                         Available times for {format(selectedDate, 'MMM dd, yyyy')}
                       </span>
                     </div>
 
                     {isLoading ? (
-                      <div className="flex items-center justify-center gap-2 text-[#475569] py-4">
+                      <div className="flex items-center justify-center gap-2 text-[rgba(247,249,251,0.65)] py-4">
                         <Loader2 size={16} className="animate-spin" />
                         Loading...
                       </div>
@@ -310,8 +314,8 @@ const MeetingScheduler = () => {
                             whileTap={{ scale: 0.96 }}
                             className={`py-2 px-3 rounded-sm text-sm font-mono transition-colors duration-200 ${
                               selectedTime === slot
-                                ? 'bg-[#0EA5E9] text-[#0F172A]'
-                                : 'bg-[#F1F5F9] text-[#475569] hover:bg-[#E2E8F0]'
+                                ? 'bg-[#39C3FF] text-[#04070B]'
+                                : 'bg-[#0B2A44] text-[rgba(247,249,251,0.65)] hover:bg-[rgba(255,255,255,0.1)]'
                             }`}
                           >
                             {slot}
@@ -319,7 +323,7 @@ const MeetingScheduler = () => {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-[#475569] text-center py-4">
+                      <p className="text-sm text-[rgba(247,249,251,0.65)] text-center py-4">
                         No available slots for this date
                       </p>
                     )}
@@ -331,7 +335,7 @@ const MeetingScheduler = () => {
             {/* Form Side */}
             <div className="p-6 lg:p-8">
               <div className="flex items-center gap-2 mb-6">
-                <User size={20} className="text-[#0EA5E9]" />
+                <User size={20} className="text-[#39C3FF]" />
                 <h3
                   className="font-bold"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
@@ -343,7 +347,7 @@ const MeetingScheduler = () => {
               <form onSubmit={handleSubmit} data-testid="meeting-form" className="space-y-4">
                 {/* Name */}
                 <div>
-                  <Label htmlFor="name" className="text-[#475569] text-sm mb-2 flex items-center gap-2">
+                  <Label htmlFor="name" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <User size={14} /> Name *
                   </Label>
                   <Input
@@ -354,13 +358,13 @@ const MeetingScheduler = () => {
                     onChange={handleInputChange}
                     placeholder="Your full name"
                     required
-                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
+                    className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <Label htmlFor="email" className="text-[#475569] text-sm mb-2 flex items-center gap-2">
+                  <Label htmlFor="email" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <Mail size={14} /> Email *
                   </Label>
                   <Input
@@ -372,13 +376,13 @@ const MeetingScheduler = () => {
                     onChange={handleInputChange}
                     placeholder="you@email.com"
                     required
-                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
+                    className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
                   />
                 </div>
 
                 {/* Company */}
                 <div>
-                  <Label htmlFor="company" className="text-[#475569] text-sm mb-2 flex items-center gap-2">
+                  <Label htmlFor="company" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <Building2 size={14} /> Company
                   </Label>
                   <Input
@@ -388,13 +392,13 @@ const MeetingScheduler = () => {
                     value={formData.company}
                     onChange={handleInputChange}
                     placeholder="Your company name"
-                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
+                    className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
                   />
                 </div>
 
                 {/* Service Needed */}
                 <div>
-                  <Label htmlFor="service" className="text-[#475569] text-sm mb-2 flex items-center gap-2">
+                  <Label htmlFor="service" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <Briefcase size={14} /> Service Needed *
                   </Label>
                   <select
@@ -408,14 +412,14 @@ const MeetingScheduler = () => {
                   >
                     <option value="" disabled>Select a service</option>
                     {SERVICE_OPTIONS.map(opt => (
-                      <option key={opt} value={opt} className="text-[#0F172A] bg-[#F1F5F9]">{opt}</option>
+                      <option key={opt} value={opt} className="text-[#F7F9FB] bg-[#0B2A44]">{opt}</option>
                     ))}
                   </select>
                 </div>
 
                 {/* Project Stage */}
                 <div>
-                  <Label htmlFor="projectStage" className="text-[#475569] text-sm mb-2 flex items-center gap-2">
+                  <Label htmlFor="projectStage" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <Layers size={14} /> Project Stage
                   </Label>
                   <select
@@ -428,14 +432,14 @@ const MeetingScheduler = () => {
                   >
                     <option value="">Select project stage</option>
                     {PROJECT_STAGE_OPTIONS.map(opt => (
-                      <option key={opt} value={opt} className="text-[#0F172A] bg-[#F1F5F9]">{opt}</option>
+                      <option key={opt} value={opt} className="text-[#F7F9FB] bg-[#0B2A44]">{opt}</option>
                     ))}
                   </select>
                 </div>
 
                 {/* Meeting Focus */}
                 <div>
-                  <Label htmlFor="meetingFocus" className="text-[#475569] text-sm mb-2 flex items-center gap-2">
+                  <Label htmlFor="meetingFocus" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <CalendarIcon size={14} /> Meeting Focus
                   </Label>
                   <select
@@ -448,14 +452,14 @@ const MeetingScheduler = () => {
                   >
                     <option value="">Select meeting focus</option>
                     {MEETING_FOCUS_OPTIONS.map(opt => (
-                      <option key={opt} value={opt} className="text-[#0F172A] bg-[#F1F5F9]">{opt}</option>
+                      <option key={opt} value={opt} className="text-[#F7F9FB] bg-[#0B2A44]">{opt}</option>
                     ))}
                   </select>
                 </div>
 
                 {/* Project Notes */}
                 <div>
-                  <Label htmlFor="notes" className="text-[#475569] text-sm mb-2 flex items-center gap-2">
+                  <Label htmlFor="notes" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <FileText size={14} /> Project Notes *
                   </Label>
                   <Textarea
@@ -467,7 +471,7 @@ const MeetingScheduler = () => {
                     placeholder="Tell us about your project, BIM scope, disciplines involved, timeline, and required support..."
                     rows={3}
                     required
-                    className="bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B] resize-none"
+                    className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)] resize-none"
                   />
                 </div>
 
@@ -499,15 +503,15 @@ const MeetingScheduler = () => {
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: -6 }}
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="flex items-center gap-3 p-3 rounded-sm border border-[#0EA5E9]/40"
+                      className="flex items-center gap-3 p-3 rounded-sm border border-[#39C3FF]/40"
                       style={{ background: 'linear-gradient(90deg, rgba(14,165,233,0.1), rgba(34,211,238,0.04))' }}
                     >
-                      <div className="w-8 h-8 rounded-full bg-[#0EA5E9]/15 border border-[#0EA5E9]/40 flex items-center justify-center flex-shrink-0">
-                        <Check size={14} className="text-[#22D3EE]" />
+                      <div className="w-8 h-8 rounded-full bg-[#39C3FF]/15 border border-[#39C3FF]/40 flex items-center justify-center flex-shrink-0">
+                        <Check size={14} className="text-[#7DE0FF]" />
                       </div>
                       <div>
-                        <p className="text-xs text-[#475569] mb-0.5">Selected Time:</p>
-                        <p className="font-mono text-[#0EA5E9] text-sm">
+                        <p className="text-xs text-[rgba(247,249,251,0.65)] mb-0.5">Selected Time:</p>
+                        <p className="font-mono text-[#39C3FF] text-sm">
                           {format(selectedDate, 'EEEE, MMMM dd, yyyy')} at {selectedTime}
                         </p>
                       </div>

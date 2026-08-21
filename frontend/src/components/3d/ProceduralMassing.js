@@ -33,33 +33,33 @@ export default function ProceduralMassing({ onClashTarget }) {
       {slabs.map((slab, i) => (
         <mesh key={i} position={[slab.offsetX, slab.y, 0]}>
           <boxGeometry args={SLAB_SIZE} />
-          <meshStandardMaterial color="#0EA5E9" transparent opacity={0.08} roughness={0.4} metalness={0.1} />
-          <Edges color="#22D3EE" />
+          <meshStandardMaterial color="#39C3FF" transparent opacity={0.08} roughness={0.4} metalness={0.1} />
+          <Edges color="#7DE0FF" />
         </mesh>
       ))}
 
       {/* Duct intersecting beam at the clash point */}
       <mesh position={[CLASH_POINT.x, CLASH_POINT.y, CLASH_POINT.z]} rotation={[0, 0, Math.PI / 2]}>
         <cylinderGeometry args={[0.12, 0.12, 2.4, 16]} />
-        <meshStandardMaterial color="#475569" roughness={0.5} metalness={0.3} />
+        <meshStandardMaterial color="rgba(247,249,251,0.65)" roughness={0.5} metalness={0.3} />
       </mesh>
       <mesh position={[CLASH_POINT.x, CLASH_POINT.y, CLASH_POINT.z]}>
         <boxGeometry args={[0.3, 0.3, 2.6]} />
-        <meshStandardMaterial color="#94A3B8" roughness={0.6} metalness={0.2} />
+        <meshStandardMaterial color="rgba(247,249,251,0.45)" roughness={0.6} metalness={0.2} />
       </mesh>
 
       {/* Ambient coordination indicators + dashed connector lines (hero "data flowing" look) */}
       {INDICATOR_POINTS.map((pos, i) => (
         <mesh key={`ind-${i}`} position={pos}>
           <sphereGeometry args={[0.06, 12, 12]} />
-          <meshBasicMaterial color="#22D3EE" />
+          <meshBasicMaterial color="#7DE0FF" />
         </mesh>
       ))}
       {INDICATOR_POINTS.map((pos, i) => (
         <Line
           key={`line-${i}`}
           points={[pos, CLASH_POINT]}
-          color="#22D3EE"
+          color="#7DE0FF"
           lineWidth={1}
           dashed
           dashSize={0.08}

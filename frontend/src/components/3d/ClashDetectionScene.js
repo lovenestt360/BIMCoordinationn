@@ -11,8 +11,8 @@ const OVERVIEW_POSITION = new THREE.Vector3(0, 2.6, 9);
 const GLOW_IN = [0.25, 0.45];
 const COLOR_BANDS = [0.6, 0.7, 0.8];
 const RED = new THREE.Color('#EF4444');
-const ORANGE = new THREE.Color('#F59E0B');
-const GREEN = new THREE.Color('#22C55E');
+const ORANGE = new THREE.Color('#39C3FF');
+const GREEN = new THREE.Color('#43D17A');
 
 const clamp01 = (v) => Math.min(Math.max(v, 0), 1);
 
@@ -62,7 +62,7 @@ function ClashDetectionSceneContent({ progressRef, scrollYProgress }) {
   return (
     <>
       <ambientLight intensity={0.5} />
-      <pointLight position={[3, 3, 3]} intensity={1} color="#0EA5E9" />
+      <pointLight position={[3, 3, 3]} intensity={1} color="#39C3FF" />
       <BuildingModel onClashTarget={handleClashTarget} />
       <mesh ref={glowRef} position={clashPoint}>
         <sphereGeometry args={[0.3, 16, 16]} />

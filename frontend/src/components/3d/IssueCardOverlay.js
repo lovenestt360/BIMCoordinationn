@@ -20,7 +20,7 @@ export default function IssueCardOverlay({ position, scrollYProgress }) {
 
   const cardOpacity = useTransform(scrollYProgress, CARD_IN, [0, 1]);
   const cardY = useTransform(scrollYProgress, CARD_IN, [16, 0]);
-  const statusColor = useTransform(scrollYProgress, COLOR_BANDS, ['#EF4444', '#F59E0B', '#22C55E']);
+  const statusColor = useTransform(scrollYProgress, COLOR_BANDS, ['#EF4444', '#39C3FF', '#43D17A']);
 
   if (phase === 'pending') return null;
 
@@ -28,26 +28,26 @@ export default function IssueCardOverlay({ position, scrollYProgress }) {
     <Html transform={false} center distanceFactor={8} position={position} style={{ pointerEvents: 'none' }}>
       <motion.div
         style={{ opacity: cardOpacity, y: cardY }}
-        className="w-56 rounded-lg border border-[#E2E8F0] bg-[#FFFFFF]/95 backdrop-blur-sm px-4 py-3 shadow-xl"
+        className="w-56 rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#0B2A44]/95 backdrop-blur-sm px-4 py-3 shadow-xl"
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-mono tracking-widest text-[#64748B]">CLASH-0142</span>
+          <span className="text-[10px] font-mono tracking-widest text-[rgba(247,249,251,0.55)]">CLASH-0142</span>
           <motion.span
             style={{ backgroundColor: statusColor }}
-            className="text-[10px] font-bold px-2 py-0.5 rounded-full text-[#0F172A]"
+            className="text-[10px] font-bold px-2 py-0.5 rounded-full text-[#04070B]"
           >
             {phase === 'resolved' ? 'RESOLVED' : 'OPEN'}
           </motion.span>
         </div>
         <div className="flex items-center gap-2 mb-1">
           {phase === 'resolved' ? (
-            <CheckCircle2 size={14} className="text-[#22C55E]" />
+            <CheckCircle2 size={14} className="text-[#43D17A]" />
           ) : (
             <AlertTriangle size={14} className="text-[#EF4444]" />
           )}
-          <span className="text-xs font-semibold text-[#1E293B]">MEP ↔ Structural</span>
+          <span className="text-xs font-semibold text-[#F7F9FB]">MEP ↔ Structural</span>
         </div>
-        <p className="text-[11px] text-[#475569] leading-snug">
+        <p className="text-[11px] text-[rgba(247,249,251,0.65)] leading-snug">
           Duct routing intersects primary beam — Level 3, Gridline C-4.
         </p>
       </motion.div>
