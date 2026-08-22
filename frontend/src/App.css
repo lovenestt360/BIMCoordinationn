@@ -536,6 +536,14 @@ textarea:-webkit-autofill:focus {
   transform-origin: 600px 383px;
 }
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Print styles */
 @media print {
   .glass,

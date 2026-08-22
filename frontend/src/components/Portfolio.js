@@ -124,6 +124,16 @@ const projects = [
   },
 ];
 
+const STAGES = [
+  { key: 'project', label: 'Project', icon: ClipboardList, color: 'text-white/50' },
+  { key: 'challenge', label: 'Challenge', icon: AlertTriangle, color: 'text-[#FF7A1A]' },
+  { key: 'scope', label: 'Scope', icon: ListChecks, color: 'text-white/50' },
+  { key: 'solution', label: 'Solution', icon: Wrench, color: 'text-[#39C3FF]' },
+  { key: 'numbers', label: 'Numbers', icon: BarChart3, color: 'text-white/50' },
+  { key: 'tools', label: 'Tools', icon: Boxes, color: 'text-white/50' },
+  { key: 'outcome', label: 'Outcome', icon: CheckCircle2, color: 'text-[#43D17A]' },
+];
+
 const Eyebrow = ({ icon: Icon, children, color = 'text-white/50' }) => (
   <div className="proj-fade flex items-center gap-2.5 mb-5">
     {Icon && <Icon size={16} className={color} strokeWidth={1.5} />}
@@ -133,10 +143,16 @@ const Eyebrow = ({ icon: Icon, children, color = 'text-white/50' }) => (
 
 const Portfolio = () => {
   const [active, setActive] = useState(0);
+  const [stage, setStage] = useState(0);
   const imgRefs = useRef([]);
   const bodyRef = useRef(null);
   const sectionRef = useRef(null);
   const project = projects[active];
+
+  const selectProject = (i) => {
+    setActive(i);
+    setStage(0);
+  };
 
   useEffect(() => {
     imgRefs.current.forEach((el, i) => {
@@ -149,10 +165,10 @@ const Portfolio = () => {
     if (!bodyRef.current) return;
     gsap.fromTo(
       bodyRef.current.querySelectorAll('.proj-fade'),
-      { autoAlpha: 0, y: 16 },
-      { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.04, ease: 'power2.out' }
+      { autoAlpha: 0, y: 12 },
+      { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.03, ease: 'power2.out' }
     );
-  }, [active]);
+  }, [active, stage]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -176,28 +192,24 @@ const Portfolio = () => {
       <div className="absolute inset-0 pointer-events-none blueprint-bg opacity-30" />
 
       {/* Section intro */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 pt-28 lg:pt-36 pb-16">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 pt-24 lg:pt-32 pb-10">
         <span className="pf-intro-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">Selected Work</span>
         <h2 className="pf-intro-fade font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6">
           Complex projects. <span className="italic text-white/70">Clearer coordination.</span>
         </h2>
-        <p className="pf-intro-fade text-white/65 text-base md:text-lg font-light leading-relaxed max-w-2xl mb-4">
+        <p className="pf-intro-fade text-white/65 text-base md:text-lg font-light leading-relaxed max-w-2xl">
           Selected project environments where multidisciplinary coordination, model review and digital
           delivery were used to turn complex project information into clearer technical decisions.
-        </p>
-        <p className="pf-intro-fade text-white/45 text-sm font-light leading-relaxed max-w-xl">
-          Every project begins with a different challenge. What matters is how that complexity is
-          turned into a coordinated response.
         </p>
       </div>
 
       {/* Project switcher */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 mb-10">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 mb-8">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {projects.map((p, i) => (
             <button
               key={p.id}
-              onClick={() => setActive(i)}
+              onClick={() => selectProject(i)}
               className="text-left px-5 py-4 rounded-sm border transition-colors duration-200"
               style={{
                 borderColor: active === i ? 'rgba(57,195,255,0.4)' : 'rgba(255,255,255,0.1)',
@@ -217,7 +229,7 @@ const Portfolio = () => {
       </div>
 
       {/* Project hero banner */}
-      <div className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden">
+      <div className="relative h-[38vh] md:h-[46vh] w-full overflow-hidden">
         {projects.map((p, i) => (
           <div
             key={p.id}
@@ -233,9 +245,9 @@ const Portfolio = () => {
         ))}
         <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(4,7,11,0.95) 0%, rgba(4,7,11,0.2) 55%, rgba(4,7,11,0.5) 100%)' }} />
 
-        <div className="relative z-10 h-full flex flex-col justify-end px-6 md:px-12 lg:px-16 pb-10">
+        <div className="relative z-10 h-full flex flex-col justify-end px-6 md:px-12 lg:px-16 pb-8">
           <span className="text-white/50 font-mono text-xs tracking-widest uppercase mb-3">{project.number} / Selected Work</span>
-          <h3 className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl text-white mb-4">{project.title}</h3>
+          <h3 className="font-instrument-serif text-3xl sm:text-4xl md:text-5xl text-white mb-3">{project.title}</h3>
           <div className="flex items-center gap-4 text-white/60 text-sm font-light">
             <span>{project.category}</span>
             <span className="w-1 h-1 rounded-full bg-white/30" />
@@ -244,102 +256,149 @@ const Portfolio = () => {
         </div>
       </div>
 
-      {/* Case study body */}
-      <div ref={bodyRef} key={project.id} className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 py-20 lg:py-28">
-        {/* The Project */}
-        <div className="mb-20">
-          <Eyebrow icon={ClipboardList}>The Project</Eyebrow>
-          <p className="proj-fade text-white/70 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.intro}</p>
-        </div>
-
-        {/* The Challenge */}
-        <div className="mb-20 pt-16 border-t border-white/10">
-          <Eyebrow icon={AlertTriangle} color="text-[#FF7A1A]">The Challenge</Eyebrow>
-          <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-10 max-w-2xl">
-            {project.challengeHeadline[0]}
-            <br />
-            <span className="italic text-white/70">{project.challengeHeadline[1]}</span>
-          </h4>
-          <div className="space-y-4 max-w-2xl">
-            {project.challengeCopy.map((p, i) => (
-              <p key={i} className="proj-fade text-white/60 text-base font-light leading-relaxed">{p}</p>
-            ))}
-          </div>
-        </div>
-
-        {/* Our Scope */}
-        <div className="mb-20 pt-16 border-t border-white/10">
-          <Eyebrow icon={ListChecks}>Our Scope</Eyebrow>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 max-w-2xl">
-            {project.scope.map((s) => (
-              <div key={s} className="proj-fade group flex items-center gap-3 border-b border-white/5 pb-2.5 transition-colors duration-200 hover:border-[#39C3FF]/30">
-                <CheckCircle size={14} className="text-white/25 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" strokeWidth={1.5} />
-                <span className="text-white/75 text-sm font-light transition-colors duration-200 group-hover:text-white">{s}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* The Solution */}
-        <div className="mb-20 pt-16 border-t border-white/10">
-          <Eyebrow icon={Wrench} color="text-[#39C3FF]">The Solution</Eyebrow>
-          <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-8 max-w-2xl">
-            {project.solutionHeadline[0]}
-            <br />
-            <span className="italic text-white/70">{project.solutionHeadline[1]}</span>
-          </h4>
-          <p className="proj-fade text-white/65 text-base font-light leading-relaxed max-w-2xl">{project.solutionCopy}</p>
-        </div>
-
-        {/* By the Numbers */}
-        <div className="mb-20 pt-16 border-t border-white/10">
-          <Eyebrow icon={BarChart3}>By the Numbers</Eyebrow>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-8">
-            {project.metrics.map((m) => (
-              <div
-                key={m.label}
-                className="proj-fade border-t border-white/10 pt-5 transition-transform duration-300 hover:-translate-y-1"
+      {/* Stage tabs */}
+      <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 pt-10">
+        <div className="flex gap-1 overflow-x-auto no-scrollbar border-b border-white/10">
+          {STAGES.map((s, i) => {
+            const SIcon = s.icon;
+            const isActive = stage === i;
+            return (
+              <button
+                key={s.key}
+                onClick={() => setStage(i)}
+                className="flex items-center gap-2 px-4 py-3 text-sm font-light whitespace-nowrap border-b-2 transition-colors duration-200 flex-shrink-0"
+                style={{
+                  borderColor: isActive ? '#39C3FF' : 'transparent',
+                  color: isActive ? '#F7F9FB' : 'rgba(247,249,251,0.45)',
+                }}
               >
-                {m.target !== undefined ? (
-                  <CountUp
-                    target={m.target}
-                    suffix={m.suffix}
-                    duration={900}
-                    className="font-instrument-serif text-4xl sm:text-5xl text-white mb-3 block"
-                  />
-                ) : (
-                  <p className="font-instrument-serif text-4xl sm:text-5xl text-white mb-3">{m.value}</p>
-                )}
-                <p className="text-white/45 text-xs font-light tracking-wide uppercase">{m.label}</p>
-              </div>
-            ))}
-          </div>
+                <SIcon size={14} className={isActive ? s.color : ''} strokeWidth={1.5} />
+                {s.label}
+              </button>
+            );
+          })}
         </div>
+      </div>
 
-        {/* Digital Environment / Tools */}
-        <div className="mb-20 pt-16 border-t border-white/10">
-          <Eyebrow icon={Boxes}>Digital Environment</Eyebrow>
-          <div className="space-y-5 max-w-2xl">
-            {project.tools.map((t) => (
-              <div key={t.name} className="proj-fade group flex flex-col sm:flex-row sm:items-baseline sm:gap-4 border-b border-white/5 pb-4 transition-colors duration-200 hover:border-[#39C3FF]/30">
-                <span className="text-white text-sm font-medium tracking-wide uppercase sm:w-64 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-                  {t.name}
-                </span>
-                <span className="text-white/50 text-sm font-light">{t.role}</span>
-              </div>
-            ))}
+      {/* Case study body — one stage at a time */}
+      <div ref={bodyRef} key={`${project.id}-${stage}`} className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 py-14 lg:py-16" style={{ minHeight: '360px' }}>
+        {stage === 0 && (
+          <div>
+            <Eyebrow icon={ClipboardList}>The Project</Eyebrow>
+            <p className="proj-fade text-white/70 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.intro}</p>
           </div>
-        </div>
+        )}
 
-        {/* The Outcome */}
-        <div className="pt-16 border-t border-white/10">
-          <Eyebrow icon={CheckCircle2} color="text-[#43D17A]">The Outcome</Eyebrow>
-          <p className="proj-fade text-white/75 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.outcomeCopy}</p>
+        {stage === 1 && (
+          <div>
+            <Eyebrow icon={AlertTriangle} color="text-[#FF7A1A]">The Challenge</Eyebrow>
+            <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-8 max-w-2xl">
+              {project.challengeHeadline[0]}
+              <br />
+              <span className="italic text-white/70">{project.challengeHeadline[1]}</span>
+            </h4>
+            <div className="space-y-4 max-w-2xl">
+              {project.challengeCopy.map((p, i) => (
+                <p key={i} className="proj-fade text-white/60 text-base font-light leading-relaxed">{p}</p>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {stage === 2 && (
+          <div>
+            <Eyebrow icon={ListChecks}>Our Scope</Eyebrow>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 max-w-2xl">
+              {project.scope.map((s) => (
+                <div key={s} className="proj-fade group flex items-center gap-3 border-b border-white/5 pb-2.5 transition-colors duration-200 hover:border-[#39C3FF]/30">
+                  <CheckCircle size={14} className="text-white/25 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" strokeWidth={1.5} />
+                  <span className="text-white/75 text-sm font-light transition-colors duration-200 group-hover:text-white">{s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {stage === 3 && (
+          <div>
+            <Eyebrow icon={Wrench} color="text-[#39C3FF]">The Solution</Eyebrow>
+            <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-6 max-w-2xl">
+              {project.solutionHeadline[0]}
+              <br />
+              <span className="italic text-white/70">{project.solutionHeadline[1]}</span>
+            </h4>
+            <p className="proj-fade text-white/65 text-base font-light leading-relaxed max-w-2xl">{project.solutionCopy}</p>
+          </div>
+        )}
+
+        {stage === 4 && (
+          <div>
+            <Eyebrow icon={BarChart3}>By the Numbers</Eyebrow>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-8">
+              {project.metrics.map((m) => (
+                <div key={m.label} className="proj-fade border-t border-white/10 pt-5 transition-transform duration-300 hover:-translate-y-1">
+                  {m.target !== undefined ? (
+                    <CountUp
+                      target={m.target}
+                      suffix={m.suffix}
+                      duration={900}
+                      className="font-instrument-serif text-4xl sm:text-5xl text-white mb-3 block"
+                    />
+                  ) : (
+                    <p className="font-instrument-serif text-4xl sm:text-5xl text-white mb-3">{m.value}</p>
+                  )}
+                  <p className="text-white/45 text-xs font-light tracking-wide uppercase">{m.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {stage === 5 && (
+          <div>
+            <Eyebrow icon={Boxes}>Digital Environment</Eyebrow>
+            <div className="space-y-5 max-w-2xl">
+              {project.tools.map((t) => (
+                <div key={t.name} className="proj-fade group flex flex-col sm:flex-row sm:items-baseline sm:gap-4 border-b border-white/5 pb-4 transition-colors duration-200 hover:border-[#39C3FF]/30">
+                  <span className="text-white text-sm font-medium tracking-wide uppercase sm:w-64 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+                    {t.name}
+                  </span>
+                  <span className="text-white/50 text-sm font-light">{t.role}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {stage === 6 && (
+          <div>
+            <Eyebrow icon={CheckCircle2} color="text-[#43D17A]">The Outcome</Eyebrow>
+            <p className="proj-fade text-white/75 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.outcomeCopy}</p>
+          </div>
+        )}
+
+        {/* Stage navigation */}
+        <div className="flex items-center justify-between mt-12 pt-6 border-t border-white/10">
+          <button
+            onClick={() => setStage((s) => Math.max(0, s - 1))}
+            disabled={stage === 0}
+            className="text-sm font-light text-white/50 hover:text-white transition-colors duration-200 disabled:opacity-0 disabled:pointer-events-none"
+          >
+            ← Back
+          </button>
+          <span className="text-white/30 text-xs font-mono">{stage + 1} / {STAGES.length}</span>
+          <button
+            onClick={() => setStage((s) => Math.min(STAGES.length - 1, s + 1))}
+            disabled={stage === STAGES.length - 1}
+            className="text-sm font-light text-white/50 hover:text-white transition-colors duration-200 disabled:opacity-0 disabled:pointer-events-none"
+          >
+            Next: {STAGES[Math.min(stage + 1, STAGES.length - 1)]?.label} →
+          </button>
         </div>
       </div>
 
       {/* Request full portfolio */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 pb-20 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 pb-16 text-center">
         <a
           href="#contact"
           onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
@@ -350,7 +409,7 @@ const Portfolio = () => {
       </div>
 
       {/* Closing transition */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 py-20 border-t border-white/10 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 py-16 border-t border-white/10 text-center">
         <h3 className="font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-6">
           Different projects. Different challenges.
           <br />
