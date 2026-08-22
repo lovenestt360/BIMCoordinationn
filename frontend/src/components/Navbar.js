@@ -10,8 +10,6 @@ const NAV_LINKS = [
   { label: 'Contact', href: '#contact' },
 ];
 
-const MOBILE_LINKS = [...NAV_LINKS, { label: 'Portfolio', href: '#portfolio' }];
-
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -115,13 +113,6 @@ const Navbar = () => {
           {/* Right side */}
           <div className="hidden md:flex items-center gap-6">
             <a
-              href="#portfolio"
-              onClick={(e) => scrollToSection(e, '#portfolio')}
-              className="text-white/70 hover:text-white text-sm font-light transition-colors duration-200"
-            >
-              Portfolio
-            </a>
-            <a
               href="#schedule"
               onClick={(e) => scrollToSection(e, '#schedule')}
               data-testid="navbar-cta"
@@ -169,7 +160,7 @@ const Navbar = () => {
       {/* Mobile menu overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-50 md:hidden bg-black/90 backdrop-blur-xl flex-col"
+        className="fixed inset-0 z-[60] md:hidden bg-black/90 backdrop-blur-xl flex-col"
         style={{ display: 'none' }}
       >
         <div className="flex items-center justify-between px-6 py-5">
@@ -187,7 +178,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex-1 flex flex-col justify-center px-6 gap-1">
-          {MOBILE_LINKS.map((link, i) => (
+          {NAV_LINKS.map((link, i) => (
             <a
               key={`${link.label}-${i}`}
               ref={(el) => { linkRefs.current[i] = el; }}

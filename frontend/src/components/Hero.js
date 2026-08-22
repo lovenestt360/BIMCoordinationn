@@ -64,7 +64,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
         <div className="flex-1 flex items-center px-6 md:px-12 lg:px-16">
-          <div className="max-w-[800px] pt-24">
+          <div className="max-w-[800px] pt-16 sm:pt-24">
             {/* Headline */}
             <h1
               data-testid="hero-title"
@@ -120,19 +120,19 @@ const Hero = () => {
             <div
               ref={addFadeRef}
               data-testid="hero-stats"
-              className="flex items-center gap-10 pt-6 border-t border-white/10"
+              className="flex flex-wrap items-center gap-x-10 gap-y-6 pt-6 border-t border-white/10"
             >
               <div>
-                <CountUp target={8} suffix="+" duration={1600} className="text-2xl font-semibold text-white font-mono" />
-                <p className="text-xs text-white/50 mt-1">Projects Delivered</p>
+                <CountUp target={10} suffix="+" duration={1600} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
+                <p className="text-xs text-white/50 mt-1">Project Delivered</p>
               </div>
               <div>
-                <CountUp target={85} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
-                <p className="text-xs text-white/50 mt-1">Clash Resolution</p>
+                <CountUp target={80} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
+                <p className="text-xs text-white/50 mt-1">Efficiency Improvement</p>
               </div>
               <div>
-                <CountUp target={2} suffix="+" duration={1200} className="text-2xl font-semibold text-white font-mono" />
-                <p className="text-xs text-white/50 mt-1">Years Experience</p>
+                <CountUp target={65} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
+                <p className="text-xs text-white/50 mt-1">Cost Optimization</p>
               </div>
             </div>
           </div>

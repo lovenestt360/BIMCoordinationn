@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ArrowRight, MessageCircle, FolderCog, Layers, SearchCheck, ShieldCheck, FileCheck } from 'lucide-react';
+import { MessageCircle, FolderCog, Layers, SearchCheck, ShieldCheck, FileCheck } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
@@ -102,11 +102,6 @@ const Process = () => {
     return () => ctx.revert();
   }, []);
 
-  const scrollToSchedule = (e) => {
-    e.preventDefault();
-    document.querySelector('#schedule')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section id="process" ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden" style={{ background: '#04070B' }}>
       <div className="absolute inset-0 pointer-events-none blueprint-bg opacity-40" />
@@ -172,28 +167,6 @@ const Process = () => {
           </div>
         </div>
 
-        {/* CTA */}
-        <div
-          className="sr-hidden mt-24 rounded-2xl p-10 lg:p-14 text-center relative overflow-hidden border border-white/10"
-          style={{ background: 'linear-gradient(135deg, rgba(57,195,255,0.08) 0%, rgba(4,7,11,0.4) 60%)' }}
-        >
-          <span className="inline-block text-xs text-[#39C3FF] font-mono tracking-[3px] mb-4 uppercase">Next Step</span>
-          <h3 className="font-instrument-serif text-3xl sm:text-4xl text-white mb-4">
-            Need BIM support for an active project?
-          </h3>
-          <p className="text-white/60 max-w-xl mx-auto mb-8 text-sm font-light leading-relaxed">
-            Book a consultation and share your project scope, models, timeline, and required
-            deliverables. We&apos;ll review how Klyron Consulting can support your team.
-          </p>
-          <a
-            href="#schedule"
-            onClick={scrollToSchedule}
-            className="group bg-white text-black rounded-full px-8 py-3 text-sm font-medium inline-flex items-center gap-2"
-          >
-            Book a Consultation
-            <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
-          </a>
-        </div>
       </div>
     </section>
   );

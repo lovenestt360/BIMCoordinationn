@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
@@ -26,11 +25,6 @@ const OnDemandSupport = () => {
     }, sectionRef);
     return () => ctx.revert();
   }, []);
-
-  const scrollToContact = (e) => {
-    e.preventDefault();
-    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section
@@ -68,15 +62,6 @@ const OnDemandSupport = () => {
             </span>
           ))}
         </div>
-
-        <a
-          href="#contact"
-          onClick={scrollToContact}
-          className="group bg-white text-black rounded-full px-8 py-4 text-sm font-medium inline-flex items-center gap-2"
-        >
-          Discuss Your Project
-          <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
-        </a>
       </div>
     </section>
   );

@@ -138,20 +138,6 @@ const Services = () => {
             </div>
           </div>
         </div>
-
-        <div className="mt-20 text-center">
-          <p className="text-white/45 text-sm font-light mb-5">Need a specific BIM service for your project?</p>
-          <a
-            href="#contact"
-            className="btn-primary px-8 py-3 rounded-full font-medium inline-block text-sm"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Discuss Your Project
-          </a>
-        </div>
       </div>
     </section>
   );

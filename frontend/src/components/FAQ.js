@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ArrowRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const faqs = [
@@ -34,11 +34,6 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
-
-  const scrollToSchedule = (e) => {
-    e.preventDefault();
-    document.querySelector('#schedule')?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section className="py-28 lg:py-40 bg-[#04070B] relative overflow-hidden">
@@ -155,21 +150,6 @@ const FAQ = () => {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* CTA */}
-        <div className="sr-hidden text-center mt-12 pt-8 border-t border-[#0B2A44]">
-          <p className="text-[rgba(247,249,251,0.55)] text-sm mb-5">
-            Still unsure what level of BIM support your project needs?
-          </p>
-          <a
-            href="#schedule"
-            onClick={scrollToSchedule}
-            className="btn-primary inline-flex items-center gap-2 px-7 py-3 rounded-sm font-medium text-sm"
-          >
-            Book a Consultation
-            <ArrowRight size={16} />
-          </a>
         </div>
 
       </div>

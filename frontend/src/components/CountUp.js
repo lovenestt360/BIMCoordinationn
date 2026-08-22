@@ -35,7 +35,7 @@ const CountUp = ({ target, suffix = '', duration = 1800, className = '', style =
 
   return (
     <span ref={elRef} className={className} style={style}>
-      {count}{suffix}
+      {count.toLocaleString('en-US')}{suffix}
     </span>
   );
 };
