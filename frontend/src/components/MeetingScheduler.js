@@ -6,6 +6,7 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../components/ui/select';
 import { supabase } from '../lib/supabase';
 import { format, addDays, isBefore, startOfToday } from 'date-fns';
 
@@ -41,8 +42,9 @@ const MEETING_FOCUS_OPTIONS = [
   'General introduction call',
 ];
 
-const selectClass = 'w-full bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] text-[#F7F9FB] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#39C3FF] focus:border-transparent appearance-none';
-const selectEmptyClass = 'w-full bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] text-[rgba(247,249,251,0.55)] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#39C3FF] focus:border-transparent appearance-none';
+const selectTriggerClass = 'w-full h-auto bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] px-3 py-2 text-sm data-[placeholder]:text-[rgba(247,249,251,0.55)] focus:ring-[#39C3FF] focus:ring-offset-0';
+const selectContentClass = 'bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB]';
+const selectItemClass = 'text-[rgba(247,249,251,0.8)] focus:bg-[#39C3FF]/10 focus:text-[#F7F9FB] cursor-pointer';
 
 const STEPS = ['Date & Time', 'Your Details', 'Confirmed'];
 
@@ -95,6 +97,10 @@ const MeetingScheduler = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (name) => (value) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -250,7 +256,7 @@ const MeetingScheduler = () => {
         >
           {/* Ambient corner glow for extra depth */}
           <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full pointer-events-none" style={{
-            background: 'radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(57,195,255,0.1) 0%, transparent 70%)',
           }} />
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -401,20 +407,16 @@ const MeetingScheduler = () => {
                   <Label htmlFor="service" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <Briefcase size={14} /> Service Needed *
                   </Label>
-                  <select
-                    id="service"
-                    name="service"
-                    data-testid="meeting-service-input"
-                    value={formData.service}
-                    onChange={handleInputChange}
-                    required
-                    className={formData.service ? selectClass : selectEmptyClass}
-                  >
-                    <option value="" disabled>Select a service</option>
-                    {SERVICE_OPTIONS.map(opt => (
-                      <option key={opt} value={opt} className="text-[#F7F9FB] bg-[#0B2A44]">{opt}</option>
-                    ))}
-                  </select>
+                  <Select value={formData.service} onValueChange={handleSelectChange('service')}>
+                    <SelectTrigger id="service" data-testid="meeting-service-input" className={selectTriggerClass}>
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent className={selectContentClass}>
+                      {SERVICE_OPTIONS.map(opt => (
+                        <SelectItem key={opt} value={opt} className={selectItemClass}>{opt}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Project Stage */}
@@ -422,19 +424,16 @@ const MeetingScheduler = () => {
                   <Label htmlFor="projectStage" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <Layers size={14} /> Project Stage
                   </Label>
-                  <select
-                    id="projectStage"
-                    name="projectStage"
-                    data-testid="meeting-stage-input"
-                    value={formData.projectStage}
-                    onChange={handleInputChange}
-                    className={formData.projectStage ? selectClass : selectEmptyClass}
-                  >
-                    <option value="">Select project stage</option>
-                    {PROJECT_STAGE_OPTIONS.map(opt => (
-                      <option key={opt} value={opt} className="text-[#F7F9FB] bg-[#0B2A44]">{opt}</option>
-                    ))}
-                  </select>
+                  <Select value={formData.projectStage} onValueChange={handleSelectChange('projectStage')}>
+                    <SelectTrigger id="projectStage" data-testid="meeting-stage-input" className={selectTriggerClass}>
+                      <SelectValue placeholder="Select project stage" />
+                    </SelectTrigger>
+                    <SelectContent className={selectContentClass}>
+                      {PROJECT_STAGE_OPTIONS.map(opt => (
+                        <SelectItem key={opt} value={opt} className={selectItemClass}>{opt}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Meeting Focus */}
@@ -442,19 +441,16 @@ const MeetingScheduler = () => {
                   <Label htmlFor="meetingFocus" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
                     <CalendarIcon size={14} /> Meeting Focus
                   </Label>
-                  <select
-                    id="meetingFocus"
-                    name="meetingFocus"
-                    data-testid="meeting-focus-input"
-                    value={formData.meetingFocus}
-                    onChange={handleInputChange}
-                    className={formData.meetingFocus ? selectClass : selectEmptyClass}
-                  >
-                    <option value="">Select meeting focus</option>
-                    {MEETING_FOCUS_OPTIONS.map(opt => (
-                      <option key={opt} value={opt} className="text-[#F7F9FB] bg-[#0B2A44]">{opt}</option>
-                    ))}
-                  </select>
+                  <Select value={formData.meetingFocus} onValueChange={handleSelectChange('meetingFocus')}>
+                    <SelectTrigger id="meetingFocus" data-testid="meeting-focus-input" className={selectTriggerClass}>
+                      <SelectValue placeholder="Select meeting focus" />
+                    </SelectTrigger>
+                    <SelectContent className={selectContentClass}>
+                      {MEETING_FOCUS_OPTIONS.map(opt => (
+                        <SelectItem key={opt} value={opt} className={selectItemClass}>{opt}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Project Notes */}
@@ -504,7 +500,7 @@ const MeetingScheduler = () => {
                       exit={{ opacity: 0, scale: 0.95, y: -6 }}
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       className="flex items-center gap-3 p-3 rounded-sm border border-[#39C3FF]/40"
-                      style={{ background: 'linear-gradient(90deg, rgba(14,165,233,0.1), rgba(34,211,238,0.04))' }}
+                      style={{ background: 'linear-gradient(90deg, rgba(57,195,255,0.1), rgba(125,224,255,0.04))' }}
                     >
                       <div className="w-8 h-8 rounded-full bg-[#39C3FF]/15 border border-[#39C3FF]/40 flex items-center justify-center flex-shrink-0">
                         <Check size={14} className="text-[#7DE0FF]" />

@@ -197,7 +197,7 @@ const Contact = () => {
                   value={formData.company}
                   onChange={handleInputChange}
                   placeholder="Your company name"
-                  className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
+                  className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
                 />
               </div>
 
@@ -222,11 +222,12 @@ const Contact = () => {
               {submitStatus && (
                 <div
                   data-testid="contact-submit-status"
-                  className={`flex items-center gap-2 p-3 rounded-sm ${
+                  className="flex items-center gap-2 p-3 rounded-sm border"
+                  style={
                     submitStatus.type === 'success'
-                      ? 'bg-green-900/30 text-green-400'
-                      : 'bg-red-900/30 text-red-400'
-                  }`}
+                      ? { background: 'rgba(67,209,122,0.1)', borderColor: 'rgba(67,209,122,0.35)', color: '#43D17A' }
+                      : { background: 'rgba(255,122,26,0.1)', borderColor: 'rgba(255,122,26,0.35)', color: '#FF7A1A' }
+                  }
                 >
                   {submitStatus.type === 'success' ? (
                     <CheckCircle size={18} />

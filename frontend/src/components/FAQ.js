@@ -63,55 +63,29 @@ const FAQ = () => {
         </div>
 
         {/* Accordion */}
-        <div className="space-y-3">
+        <div className="sr-hidden divide-y divide-white/10 border-t border-white/10">
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
-              <motion.div
-                key={i}
-                className="sr-hidden rounded-sm overflow-hidden"
-                style={{
-                  transitionDelay: `${i * 60}ms`,
-                  border: isOpen
-                    ? '1px solid rgba(14,165,233,0.4)'
-                    : '1px solid rgba(255,255,255,0.1)',
-                }}
-                animate={{
-                  boxShadow: isOpen
-                    ? '0 0 24px -6px rgba(14,165,233,0.18)'
-                    : '0 0 0px 0px rgba(14,165,233,0)',
-                  background: isOpen
-                    ? 'linear-gradient(135deg, #164B78 0%, #0B2A44 100%)'
-                    : 'linear-gradient(135deg, #0B2A44 0%, #0B2A44 100%)',
-                }}
-                transition={{ duration: 0.3 }}
-                whileHover={{ y: -2 }}
-              >
+              <div key={i}>
                 {/* Question row */}
                 <button
                   onClick={() => toggle(i)}
-                  className="w-full flex items-center justify-between gap-4 p-5 text-left transition-colors duration-200"
-                  style={{ background: 'transparent' }}
+                  className="group w-full flex items-center justify-between gap-4 py-6 text-left"
                 >
                   {/* Number + question */}
-                  <div className="flex items-center gap-4 min-w-0">
+                  <div className="flex items-center gap-5 min-w-0">
                     <span
-                      className="flex-shrink-0 w-7 h-7 rounded-sm flex items-center justify-center font-mono text-xs font-bold"
-                      style={{
-                        background: isOpen ? 'rgba(14,165,233,0.15)' : 'rgba(14,165,233,0.06)',
-                        border: isOpen ? '1px solid rgba(14,165,233,0.4)' : '1px solid rgba(14,165,233,0.15)',
-                        color: isOpen ? '#7DE0FF' : 'rgba(247,249,251,0.45)',
-                        transition: 'all 0.3s ease',
-                      }}
+                      className="flex-shrink-0 font-mono text-xs transition-colors duration-200"
+                      style={{ color: isOpen ? '#39C3FF' : 'rgba(247,249,251,0.3)' }}
                     >
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span
-                      className="font-semibold text-sm leading-snug"
+                      className="text-base font-medium leading-snug transition-colors duration-200"
                       style={{
                         fontFamily: 'Space Grotesk, sans-serif',
                         color: isOpen ? '#F7F9FB' : 'rgba(247,249,251,0.8)',
-                        transition: 'color 0.2s ease',
                       }}
                     >
                       {faq.question}
@@ -124,7 +98,11 @@ const FAQ = () => {
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <ChevronDown size={18} style={{ color: isOpen ? '#7DE0FF' : 'rgba(247,249,251,0.45)' }} />
+                    <ChevronDown
+                      size={18}
+                      className="transition-colors duration-200"
+                      style={{ color: isOpen ? '#39C3FF' : 'rgba(247,249,251,0.35)' }}
+                    />
                   </motion.span>
                 </button>
 
@@ -139,15 +117,15 @@ const FAQ = () => {
                       transition={{ height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25 } }}
                       style={{ overflow: 'hidden' }}
                     >
-                      <div className="px-5 pb-5 pt-1" style={{ borderTop: '1px solid rgba(14,165,233,0.12)' }}>
-                        <p className="text-[rgba(247,249,251,0.65)] text-sm leading-relaxed pt-3">
+                      <div className="pb-6 pl-[calc(0.75rem+1.25rem)]">
+                        <p className="text-white/55 text-sm font-light leading-relaxed">
                           {faq.answer}
                         </p>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
         </div>
