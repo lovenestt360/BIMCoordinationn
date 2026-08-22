@@ -118,7 +118,7 @@ const Contact = () => {
                 Location
               </h3>
               <p className="text-white/55 text-sm font-light leading-relaxed">
-                Operating Worldwide<br />
+                Kuala Lumpur, Malaysia<br />
                 Remote BIM coordination and digital delivery support for international project teams.
               </p>
             </div>
