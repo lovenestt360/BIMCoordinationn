@@ -126,12 +126,12 @@ const projects = [
 
 const STAGES = [
   { key: 'project', label: 'Project', icon: ClipboardList, color: 'text-white/50' },
-  { key: 'challenge', label: 'Challenge', icon: AlertTriangle, color: 'text-[#FF7A1A]' },
   { key: 'scope', label: 'Scope', icon: ListChecks, color: 'text-white/50' },
+  { key: 'challenge', label: 'Challenge', icon: AlertTriangle, color: 'text-[#FF7A1A]' },
   { key: 'solution', label: 'Solution', icon: Wrench, color: 'text-[#39C3FF]' },
-  { key: 'numbers', label: 'Numbers', icon: BarChart3, color: 'text-white/50' },
-  { key: 'tools', label: 'Tools', icon: Boxes, color: 'text-white/50' },
   { key: 'outcome', label: 'Outcome', icon: CheckCircle2, color: 'text-[#43D17A]' },
+  { key: 'tools', label: 'Tools', icon: Boxes, color: 'text-white/50' },
+  { key: 'numbers', label: 'Numbers', icon: BarChart3, color: 'text-white/50' },
 ];
 
 const Eyebrow = ({ icon: Icon, children, color = 'text-white/50' }) => (
@@ -282,14 +282,28 @@ const Portfolio = () => {
 
       {/* Case study body — one stage at a time */}
       <div ref={bodyRef} key={`${project.id}-${stage}`} className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 py-14 lg:py-16" style={{ minHeight: '360px' }}>
-        {stage === 0 && (
+        {STAGES[stage].key === 'project' && (
           <div>
             <Eyebrow icon={ClipboardList}>The Project</Eyebrow>
             <p className="proj-fade text-white/70 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.intro}</p>
           </div>
         )}
 
-        {stage === 1 && (
+        {STAGES[stage].key === 'scope' && (
+          <div>
+            <Eyebrow icon={ListChecks}>Our Scope</Eyebrow>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 max-w-2xl">
+              {project.scope.map((s) => (
+                <div key={s} className="proj-fade group flex items-center gap-3 border-b border-white/5 pb-2.5 transition-colors duration-200 hover:border-[#39C3FF]/30">
+                  <CheckCircle size={14} className="text-white/25 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" strokeWidth={1.5} />
+                  <span className="text-white/75 text-sm font-light transition-colors duration-200 group-hover:text-white">{s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {STAGES[stage].key === 'challenge' && (
           <div>
             <Eyebrow icon={AlertTriangle} color="text-[#FF7A1A]">The Challenge</Eyebrow>
             <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-8 max-w-2xl">
@@ -305,21 +319,7 @@ const Portfolio = () => {
           </div>
         )}
 
-        {stage === 2 && (
-          <div>
-            <Eyebrow icon={ListChecks}>Our Scope</Eyebrow>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 max-w-2xl">
-              {project.scope.map((s) => (
-                <div key={s} className="proj-fade group flex items-center gap-3 border-b border-white/5 pb-2.5 transition-colors duration-200 hover:border-[#39C3FF]/30">
-                  <CheckCircle size={14} className="text-white/25 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" strokeWidth={1.5} />
-                  <span className="text-white/75 text-sm font-light transition-colors duration-200 group-hover:text-white">{s}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {stage === 3 && (
+        {STAGES[stage].key === 'solution' && (
           <div>
             <Eyebrow icon={Wrench} color="text-[#39C3FF]">The Solution</Eyebrow>
             <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-6 max-w-2xl">
@@ -331,7 +331,30 @@ const Portfolio = () => {
           </div>
         )}
 
-        {stage === 4 && (
+        {STAGES[stage].key === 'outcome' && (
+          <div>
+            <Eyebrow icon={CheckCircle2} color="text-[#43D17A]">The Outcome</Eyebrow>
+            <p className="proj-fade text-white/75 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.outcomeCopy}</p>
+          </div>
+        )}
+
+        {STAGES[stage].key === 'tools' && (
+          <div>
+            <Eyebrow icon={Boxes}>Digital Environment</Eyebrow>
+            <div className="space-y-5 max-w-2xl">
+              {project.tools.map((t) => (
+                <div key={t.name} className="proj-fade group flex flex-col sm:flex-row sm:items-baseline sm:gap-4 border-b border-white/5 pb-4 transition-colors duration-200 hover:border-[#39C3FF]/30">
+                  <span className="text-white text-sm font-medium tracking-wide uppercase sm:w-64 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+                    {t.name}
+                  </span>
+                  <span className="text-white/50 text-sm font-light">{t.role}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {STAGES[stage].key === 'numbers' && (
           <div>
             <Eyebrow icon={BarChart3}>By the Numbers</Eyebrow>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-8">
@@ -351,29 +374,6 @@ const Portfolio = () => {
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {stage === 5 && (
-          <div>
-            <Eyebrow icon={Boxes}>Digital Environment</Eyebrow>
-            <div className="space-y-5 max-w-2xl">
-              {project.tools.map((t) => (
-                <div key={t.name} className="proj-fade group flex flex-col sm:flex-row sm:items-baseline sm:gap-4 border-b border-white/5 pb-4 transition-colors duration-200 hover:border-[#39C3FF]/30">
-                  <span className="text-white text-sm font-medium tracking-wide uppercase sm:w-64 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-                    {t.name}
-                  </span>
-                  <span className="text-white/50 text-sm font-light">{t.role}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {stage === 6 && (
-          <div>
-            <Eyebrow icon={CheckCircle2} color="text-[#43D17A]">The Outcome</Eyebrow>
-            <p className="proj-fade text-white/75 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.outcomeCopy}</p>
           </div>
         )}
 
