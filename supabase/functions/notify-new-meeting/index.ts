@@ -445,12 +445,23 @@ serve(async (req) => {
     const record = payload.record;
     if (!record) return new Response(JSON.stringify({ error: "No record" }), { status: 400 });
 
-    const accessToken = await getAccessToken();
-    const calendarEvent = await createCalendarEvent(record, accessToken);
-    const meetLink = calendarEvent.conferenceData?.entryPoints?.find(
-      (ep: any) => ep.entryPointType === "video"
-    )?.uri || "";
-    const calendarLink = calendarEvent.htmlLink || "";
+    // Calendar/Meet is a nice-to-have — if Google credentials are missing or
+    // the API call fails, still send the confirmation emails without it
+    // rather than losing the notification entirely.
+    let meetLink = "";
+    let calendarLink = "";
+    if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_REFRESH_TOKEN) {
+      try {
+        const accessToken = await getAccessToken();
+        const calendarEvent = await createCalendarEvent(record, accessToken);
+        meetLink = calendarEvent.conferenceData?.entryPoints?.find(
+          (ep: any) => ep.entryPointType === "video"
+        )?.uri || "";
+        calendarLink = calendarEvent.htmlLink || "";
+      } catch (calendarError) {
+        console.error("Calendar event creation failed, continuing without it:", calendarError.message);
+      }
+    }
 
     await sendEmail(
       OWNER_EMAIL,
