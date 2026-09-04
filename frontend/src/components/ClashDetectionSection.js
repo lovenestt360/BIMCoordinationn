@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ClashDetectionSection = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -39,17 +41,15 @@ const ClashDetectionSection = () => {
       <div className="relative z-10 px-6 md:px-12 lg:px-16">
         <div className="max-w-xl">
           <span className="text-[#FF7A1A] text-xs font-light tracking-[0.2em] uppercase mb-6 block">
-            Clash Detection
+            {t('clashDetection.eyebrow')}
           </span>
           <h2 className="cd-headline font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-6">
-            Finding the clash is only the beginning.
+            {t('clashDetection.titleLine1')}
             <br />
-            <span className="italic text-white/70">Closing it is what matters.</span>
+            <span className="italic text-white/70">{t('clashDetection.titleLine2')}</span>
           </h2>
           <p className="text-white/65 text-base font-light leading-relaxed max-w-md">
-            Klyron identifies meaningful coordination conflicts, filters priorities, assigns
-            responsibility and tracks issues through resolution rather than simply generating
-            long clash reports.
+            {t('clashDetection.body')}
           </p>
         </div>
       </div>

@@ -1,65 +1,22 @@
 import { useState } from 'react';
 import { Layers, Target, FileCheck, Box, Ruler, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-const services = [
-  {
-    id: '01',
-    icon: Layers,
-    color: '#39C3FF',
-    title: 'BIM Coordination',
-    description: 'Coordinate Architectural, Structural and MEP disciplines within a controlled federated workflow.',
-    features: ['Federated model coordination', 'Discipline alignment', 'Multidisciplinary reviews', 'Coordination workflows'],
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?crop=entropy&cs=srgb&fm=jpg&q=85',
-  },
-  {
-    id: '02',
-    icon: Target,
-    color: '#FF7A1A',
-    title: 'Clash Detection & Issue Review',
-    description: 'Identify, prioritise and communicate meaningful coordination conflicts.',
-    features: ['Clash detection', 'Priority filtering', 'Issue assignment', 'Coordination reporting', 'Issue follow-up'],
-    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?crop=entropy&cs=srgb&fm=jpg&q=85',
-  },
-  {
-    id: '03',
-    icon: FileCheck,
-    color: '#43D17A',
-    title: 'BIM QA/QC & Model Validation',
-    description: 'Review model quality, consistency and information reliability.',
-    features: ['Naming checks', 'Classification review', 'Property validation', 'Model compliance', 'QA/QC reporting'],
-    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?crop=entropy&cs=srgb&fm=jpg&q=85',
-  },
-  {
-    id: '04',
-    icon: Box,
-    color: '#39C3FF',
-    title: '4D/5D BIM Support',
-    description: 'Connect BIM information with project sequencing, quantities and cost-related workflows.',
-    features: ['Construction sequence support', 'Quantity take-off', 'Phasing', 'Cost planning support'],
-    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?crop=entropy&cs=srgb&fm=jpg&q=85',
-  },
-  {
-    id: '05',
-    icon: Ruler,
-    color: '#7DE0FF',
-    title: 'COBie & Information Management',
-    description: 'Review and structure asset and project information for reliable digital delivery.',
-    features: ['COBie validation', 'Asset information review', 'Model data consistency', 'Structured information delivery'],
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85',
-  },
-  {
-    id: '06',
-    icon: Zap,
-    color: '#164B78',
-    title: 'On-Demand BIM Support',
-    description: 'Flexible remote BIM capacity when project teams experience demanding workloads or deadlines.',
-    features: ['Temporary BIM support', 'Urgent coordination', 'QA/QC reviews', 'Additional project capacity'],
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?crop=entropy&cs=srgb&fm=jpg&q=85',
-  },
+const SERVICE_META = [
+  { id: '01', icon: Layers, color: '#39C3FF', image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?crop=entropy&cs=srgb&fm=jpg&q=85' },
+  { id: '02', icon: Target, color: '#FF7A1A', image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?crop=entropy&cs=srgb&fm=jpg&q=85' },
+  { id: '03', icon: FileCheck, color: '#43D17A', image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?crop=entropy&cs=srgb&fm=jpg&q=85' },
+  { id: '04', icon: Box, color: '#39C3FF', image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?crop=entropy&cs=srgb&fm=jpg&q=85' },
+  { id: '05', icon: Ruler, color: '#7DE0FF', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85' },
+  { id: '06', icon: Zap, color: '#164B78', image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?crop=entropy&cs=srgb&fm=jpg&q=85' },
 ];
 
 const Services = () => {
+  const { t } = useTranslation();
   const [active, setActive] = useState(0);
+
+  const items = t('services.items', { returnObjects: true });
+  const services = SERVICE_META.map((meta, i) => ({ ...meta, ...items[i] }));
   const service = services[active];
   const Icon = service.icon;
 
@@ -78,10 +35,10 @@ const Services = () => {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10 w-full">
         <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">
-          What We Deliver
+          {t('services.eyebrow')}
         </span>
         <h2 className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-20 max-w-3xl">
-          Digital coordination built around project delivery.
+          {t('services.heading')}
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">

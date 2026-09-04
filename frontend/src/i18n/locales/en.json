@@ -1,0 +1,473 @@
+{
+  "nav": {
+    "about": "About",
+    "services": "Services",
+    "process": "Process",
+    "projects": "Projects",
+    "contact": "Contact",
+    "cta": "Book a Consultation",
+    "toggleMenu": "Toggle menu",
+    "closeMenu": "Close menu",
+    "toggleLanguage": "Switch language"
+  },
+  "hero": {
+    "headlineLine1": "Precision BIM",
+    "headlineLine2": "for",
+    "headlineLine3": "Construction-Ready",
+    "headlineLine4": "Delivery",
+    "subtitle": "Helping contractors, consultants and project teams coordinate multidisciplinary BIM models, manage issues and improve model reliability before those problems reach construction.",
+    "ctaPrimary": "Book a Consultation",
+    "ctaSecondary": "View Projects",
+    "statProjects": "Projects Delivered",
+    "statEfficiency": "Efficiency Improvement",
+    "statCost": "Cost Optimization",
+    "scrollCue": "Scroll to explore"
+  },
+  "whyBim": {
+    "eyebrow": "The Problem",
+    "titleLine1": "Complex buildings aren't designed by one discipline.",
+    "titleLine2": "They have to work as one.",
+    "body": "Architectural, structural, mechanical, electrical, plumbing and fire protection systems often compete for the same physical space. Without structured coordination, problems can remain unresolved until construction.",
+    "consequence1": "Rework",
+    "consequence2": "Site delays",
+    "consequence3": "Installation conflicts",
+    "consequence4": "Additional labour",
+    "consequence5": "Wasted materials",
+    "consequence6": "Coordination pressure"
+  },
+  "modelFederation": {
+    "eyebrow": "Model Federation",
+    "titleLine1": "Different disciplines.",
+    "titleLine2": "One coordinated environment.",
+    "disciplineArchitecture": "Architecture",
+    "disciplineStructure": "Structure",
+    "disciplineMechanical": "Mechanical",
+    "disciplineElectrical": "Electrical",
+    "disciplinePlumbing": "Plumbing",
+    "disciplineFire": "Fire",
+    "federatedModel": "Federated Model",
+    "body": "We combine architectural, structural and MEP models into a coordinated federated environment so spatial relationships, model alignment and multidisciplinary conflicts can be reviewed before construction."
+  },
+  "clashDetection": {
+    "eyebrow": "Clash Detection",
+    "titleLine1": "Finding the clash is only the beginning.",
+    "titleLine2": "Closing it is what matters.",
+    "body": "Klyron identifies meaningful coordination conflicts, filters priorities, assigns responsibility and tracks issues through resolution rather than simply generating long clash reports."
+  },
+  "services": {
+    "eyebrow": "What We Deliver",
+    "heading": "Digital coordination built around project delivery.",
+    "items": [
+      {
+        "title": "BIM Coordination",
+        "description": "Coordinate Architectural, Structural and MEP disciplines within a controlled federated workflow.",
+        "features": ["Federated model coordination", "Discipline alignment", "Multidisciplinary reviews", "Coordination workflows"]
+      },
+      {
+        "title": "Clash Detection & Issue Review",
+        "description": "Identify, prioritise and communicate meaningful coordination conflicts.",
+        "features": ["Clash detection", "Priority filtering", "Issue assignment", "Coordination reporting", "Issue follow-up"]
+      },
+      {
+        "title": "BIM QA/QC & Model Validation",
+        "description": "Review model quality, consistency and information reliability.",
+        "features": ["Naming checks", "Classification review", "Property validation", "Model compliance", "QA/QC reporting"]
+      },
+      {
+        "title": "4D/5D BIM Support",
+        "description": "Connect BIM information with project sequencing, quantities and cost-related workflows.",
+        "features": ["Construction sequence support", "Quantity take-off", "Phasing", "Cost planning support"]
+      },
+      {
+        "title": "COBie & Information Management",
+        "description": "Review and structure asset and project information for reliable digital delivery.",
+        "features": ["COBie validation", "Asset information review", "Model data consistency", "Structured information delivery"]
+      },
+      {
+        "title": "On-Demand BIM Support",
+        "description": "Flexible remote BIM capacity when project teams experience demanding workloads or deadlines.",
+        "features": ["Temporary BIM support", "Urgent coordination", "QA/QC reviews", "Additional project capacity"]
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "How We Work",
+    "titleLine1": "A controlled workflow",
+    "titleLine2": "from model intake to delivery.",
+    "body": "Designed for design teams, contractors, BIM managers and project teams needing reliable remote BIM support.",
+    "stepLabel": "STEP",
+    "steps": [
+      {
+        "title": "Consultation & Scope Review",
+        "description": "We start by understanding your project, BIM requirements, disciplines involved, timeline, deliverables, and the level of coordination or digital support needed.",
+        "output": "Clear BIM support scope"
+      },
+      {
+        "title": "Model Intake & Workflow Setup",
+        "description": "We receive the project models, review file structure, confirm model versions, set up the federated model environment, and align the coordination workflow with the project team.",
+        "output": "Ready-to-review BIM environment"
+      },
+      {
+        "title": "Federated Model Review",
+        "description": "We combine and review architectural, structural, and MEP models to check discipline alignment, model positioning, coordination zones, and readiness for clash detection.",
+        "output": "Federated model ready for coordination"
+      },
+      {
+        "title": "Clash Detection & Coordination",
+        "description": "We run clash detection, review hard clashes and clearance issues, classify priorities, separate real issues from low-value clashes, and support resolution tracking through ACC, BCF, or the agreed platform.",
+        "output": "Prioritized coordination issues"
+      },
+      {
+        "title": "BIM QA/QC & Data Validation",
+        "description": "We review model quality, element classification, naming, property sets, COBie-related information, and model consistency to improve the reliability of project information.",
+        "output": "Validated BIM information"
+      },
+      {
+        "title": "Digital Delivery & Reporting",
+        "description": "We deliver structured clash reports, QA/QC comments, validation summaries, issue logs, 4D/5D support outputs, and coordination feedback ready for project review and action.",
+        "output": "Clear deliverables for decision-making"
+      }
+    ]
+  },
+  "whyKlyron": {
+    "titleLine1": "Coordination isn't about creating more reports.",
+    "titleLine2": "It's about creating fewer site problems.",
+    "principles": [
+      { "title": "Clarity", "description": "Every meaningful coordination issue should have a clear status." },
+      { "title": "Accountability", "description": "Issues must have an owner, not just a screenshot." },
+      { "title": "Priority", "description": "Not every clash deserves the same attention." },
+      { "title": "Closure", "description": "An issue isn't finished when it is discussed. It is finished when it is resolved." }
+    ]
+  },
+  "onDemand": {
+    "eyebrow": "On-Demand BIM Support",
+    "titleLine1": "When your BIM workload increases,",
+    "titleLine2": "your project shouldn't slow down.",
+    "body": "Klyron works remotely alongside contractors, consultants, BIM managers and internal coordination teams, providing additional BIM capacity during demanding project stages, deadlines and peak workloads.",
+    "highlight1": "Remote delivery",
+    "highlight2": "International support",
+    "highlight3": "Flexible capacity",
+    "highlight4": "Project-based collaboration"
+  },
+  "about": {
+    "eyebrow": "About Klyron",
+    "openingTitleLine1": "Built to bring control",
+    "openingTitleLine2": "to complex BIM projects.",
+    "openingBody1": "Klyron Consulting is a BIM Coordination and Digital Delivery consultancy built for the increasingly complex digital environment behind modern construction.",
+    "openingBody2": "Klyron was created around that reality.",
+    "existsEyebrow": "Why Klyron Exists",
+    "existsTitleLine1": "A model can identify a problem.",
+    "existsTitleLine2": "But a project still has to solve it.",
+    "existsBodyPrefix": "Projects aren't short of models, meetings or information. The challenge is what happens between having it and turning it into a clear decision — across",
+    "existsBodyEmphasis1": "multiple disciplines",
+    "existsBodyEmphasis2": "multiple organisations",
+    "existsBodyEmphasis3": "information that never stops changing",
+    "existsBodyConnector": "and",
+    "existsClosing": "Klyron exists to bring precision and structure to that environment — not by making BIM more complicated, but by making complex information easier to trust.",
+    "glanceEyebrow": "Klyron at a Glance",
+    "glance": [
+      { "label": "Remote-First", "title": "Digital Consultancy", "description": "Collaboration beyond geographic boundaries." },
+      { "label": "Multidisciplinary", "title": "BIM Perspective", "description": "Architecture, structure and services — as one project." },
+      { "label": "International", "title": "Project Outlook", "description": "An international approach to BIM coordination." },
+      { "label": "Specialised", "title": "BIM Focus", "description": "Coordination and digital delivery. Nothing else." }
+    ],
+    "editorialLine1": "Technology gives us the tools.",
+    "editorialLine2": "Precision comes from how we use them.",
+    "editorialBody": "Engineering thinking. Digital construction. Disciplined coordination.",
+    "leadershipEyebrow": "Leadership",
+    "leadershipTitle": "Technical direction behind Klyron.",
+    "directorName": "Mário Quissico Júnior",
+    "directorRole": "Director & BIM Coordinator",
+    "directorBio1": "Mário leads Klyron's technical direction across multidisciplinary BIM coordination and digital delivery. His Civil Engineering degree (SEGi University, Malaysia) grounds that direction in how architectural, structural and services systems actually interact — digitally and on site.",
+    "directorBio2": "His focus: multidisciplinary coordination, model reliability, and the quality of information behind project decisions.",
+    "expertiseLabel": "Areas of Expertise",
+    "expertise": [
+      "BIM Coordination",
+      "Model Federation",
+      "Clash Detection & Issue Management",
+      "BIM QA/QC & Model Validation",
+      "4D / 5D BIM",
+      "COBie & Information Management",
+      "Digital Construction Workflows"
+    ],
+    "technicalEnvironmentLabel": "Technical Environment",
+    "directionEyebrow": "Our Direction",
+    "directionTitleLine1": "Better coordinated information.",
+    "directionTitleLine2": "Better construction decisions.",
+    "directionBody": "Klyron's ambition: become a trusted BIM Coordination and Digital Delivery partner internationally — grounded in technical quality and dependable collaboration.",
+    "directionQuote": "The value of BIM is not simply what a model looks like. It's what a project team can confidently do with the information inside it.",
+    "selectedWorkEyebrow": "Selected Work",
+    "selectedWorkBody": "See how Klyron's technical approach translates into real project environments."
+  },
+  "portfolio": {
+    "eyebrow": "Selected Work",
+    "titleLine1": "Complex projects.",
+    "titleLine2": "Clearer coordination.",
+    "intro": "Selected project environments where multidisciplinary coordination, model review and digital delivery were used to turn complex project information into clearer technical decisions.",
+    "stageProject": "Project",
+    "stageScope": "Scope",
+    "stageChallenge": "Challenge",
+    "stageSolution": "Solution",
+    "stageOutcome": "Outcome",
+    "stageTools": "Tools",
+    "stageNumbers": "Numbers",
+    "eyebrowProject": "The Project",
+    "eyebrowScope": "Our Scope",
+    "eyebrowChallenge": "The Challenge",
+    "eyebrowSolution": "The Solution",
+    "eyebrowOutcome": "The Outcome",
+    "eyebrowTools": "Digital Environment",
+    "eyebrowNumbers": "By the Numbers",
+    "back": "← Back",
+    "next": "Next: {{label}} →",
+    "requestPortfolio": "Request Full Portfolio",
+    "closingTitleLine1": "Different projects. Different challenges.",
+    "closingTitleLine2": "The same need for clearer coordination.",
+    "closingBody": "When project complexity or workload increases, Klyron can also provide additional BIM capacity alongside existing teams.",
+    "projects": [
+      {
+        "category": "Healthcare",
+        "title": "Mental Health Unit",
+        "location": "Australia",
+        "intro": "A multidisciplinary healthcare project in Australia, bringing together architectural, structural and building-services information within a technically complex project environment. Klyron supported the coordination process with a focus on federated model review, clash detection and structured digital issue management.",
+        "challengeHeadline": ["Multiple disciplines.", "Limited coordination space."],
+        "challengeCopy": [
+          "The project brought together architectural, structural, HVAC, fire, plumbing and electrical models developing in parallel within a shared federated environment.",
+          "As the models matured, multidisciplinary interferences accumulated across the coordination environment. The challenge was not simply finding clashes, but identifying which conflicts required project attention and making those issues visible within the coordination workflow."
+        ],
+        "scope": ["Federated Model Review", "BIM Coordination", "Clash Detection", "Clash Review & Filtering", "ACC-Based Issue Tracking"],
+        "solutionHeadline": ["From model conflicts", "to coordinated decisions."],
+        "solutionCopy": "The six discipline models were reviewed within a federated coordination environment to identify meaningful spatial conflicts between systems. Rather than treating every detected interference equally, clashes were reviewed in context and organised according to their coordination relevance, then communicated through Autodesk Construction Cloud so the relevant teams had clear visibility of the location, context and status of each issue.",
+        "metrics": [
+          { "label": "Disciplines Coordinated" },
+          { "label": "Clashes Reviewed" },
+          { "label": "Model Development", "value": "LOD 350" },
+          { "label": "Issue Tracking", "value": "ACC" },
+          { "label": "Delivery Status", "value": "Completed" }
+        ],
+        "tools": [
+          { "role": "Federated Model Review / Clash Detection" },
+          { "role": "Issue Management / Project Collaboration" }
+        ],
+        "outcomeCopy": "The coordination process gave the project team a structured view of multidisciplinary model conflicts and a digital environment for tracking relevant issues through to resolution — rather than relying on static clash reports and ad-hoc coordination meetings."
+      },
+      {
+        "category": "Education",
+        "title": "School Project",
+        "location": "Australia",
+        "intro": "An education-sector project in Australia requiring independent validation of the coordinated model before its data could support downstream information requirements. Klyron supported the project with BIM QA/QC and model validation, focused on model consistency, classification and COBie-related information.",
+        "challengeHeadline": ["A model that looks right.", "Data that has to be right."],
+        "challengeCopy": [
+          "As the design model matured, its geometry, classification and property data needed to be reliable enough to support COBie delivery and downstream facility information — not just visually complete.",
+          "The challenge was identifying inconsistencies in model rules, classification and data quality that would not necessarily be visible from a 3D view alone, and making them actionable for the design teams."
+        ],
+        "scope": ["BIM QA/QC", "Model Validation", "COBie Data Review", "BCF Issue Reporting"],
+        "solutionHeadline": ["From model checks", "to reliable information."],
+        "solutionCopy": "The model was reviewed in Solibri against defined validation rules, checking element classification, property sets and model consistency. Findings were documented and reported back to the design teams through BCF, giving them a structured, tool-agnostic way to locate and resolve each issue directly within their own modelling software.",
+        "metrics": [
+          { "label": "Disciplines Reviewed" },
+          { "label": "Model Checks Performed" },
+          { "label": "Issues Reported via BCF" },
+          { "label": "Model Development", "value": "LOD 350" },
+          { "label": "Delivery Status", "value": "Completed" }
+        ],
+        "tools": [
+          { "role": "Model Validation / Rule Checking" },
+          { "role": "Issue Reporting" },
+          { "role": "Project Collaboration" }
+        ],
+        "outcomeCopy": "The validation process gave the design teams a clear, structured record of model and data inconsistencies ahead of COBie delivery — supporting a more reliable handover of information rather than relying on visual review alone."
+      },
+      {
+        "category": "Infrastructure",
+        "title": "Water Supply System",
+        "location": "Namigonha, Ribáuè District, Mozambique",
+        "intro": "A water supply infrastructure project in Namigonha, Ribáuè District, Mozambique, requiring a coordinated 3D model to support planning, quantities and cost. Klyron supported the project with Revit model development and Bexel Manager-based 4D/5D workflows.",
+        "challengeHeadline": ["A network of systems.", "One set of reliable quantities."],
+        "challengeCopy": [
+          "Unlike a single-building coordination project, this infrastructure work needed quantities and cost data that stayed reliable as the network design developed — not a one-off take-off disconnected from the model.",
+          "The challenge was keeping quantities, cost and schedule information tied directly to the model as it evolved, so planning decisions could be based on current data rather than a static estimate."
+        ],
+        "scope": ["Revit Model Development", "Quantity Take-Off", "Cost Assignment", "4D/5D Scheduling"],
+        "solutionHeadline": ["From a static model", "to a live cost and schedule view."],
+        "solutionCopy": "The infrastructure model was developed in Revit, then linked to Bexel Manager to take off quantities and assign cost directly against model elements. The same model was connected to project scheduling to build 4D/5D workflows — keeping quantities, cost and programme aligned to the model rather than tracked separately.",
+        "metrics": [
+          { "label": "Model Elements Quantified" },
+          { "label": "Cost Items Assigned" },
+          { "label": "Model Development", "value": "LOD 300" },
+          { "label": "BIM Workflow", "value": "4D/5D" },
+          { "label": "Delivery Status", "value": "Completed" }
+        ],
+        "tools": [
+          { "role": "Model Development" },
+          { "role": "Quantity Take-Off / Cost & 4D-5D" }
+        ],
+        "outcomeCopy": "The project team gained a model-linked view of quantities, cost and schedule — supporting planning and budgeting decisions with data drawn directly from the model rather than a disconnected estimate."
+      }
+    ]
+  },
+  "qaqc": {
+    "eyebrow": "QA/QC & Information",
+    "titleLine1": "A coordinated model isn't enough.",
+    "titleLine2": "It also has to be reliable.",
+    "body": "Clash detection concerns geometry. QA/QC concerns the reliability of the information behind it — so decisions made from the model can actually be trusted.",
+    "checks": ["Naming", "Classification", "Parameters", "Properties", "COBie", "Information Consistency", "Model Requirements"],
+    "validated": "Validated",
+    "checking": "Checking"
+  },
+  "bimToConstruction": {
+    "titleLine1": "Coordinate digitally.",
+    "titleLine2": "Build with confidence.",
+    "body": "The goal of BIM coordination is not a perfect model for its own sake. It is clearer decisions, fewer unresolved conflicts and better information before construction."
+  },
+  "scheduler": {
+    "eyebrow": "Schedule",
+    "titlePrefix": "Book a",
+    "titleEmphasis": "Consultation",
+    "subtitle": "Schedule a free consultation to discuss your project needs and how we can help optimize your BIM workflow.",
+    "step1": "Date & Time",
+    "step2": "Your Details",
+    "step3": "Confirmed",
+    "selectDate": "Select a Consultation Date",
+    "availableTimesFor": "Available times for {{date}}",
+    "loading": "Loading...",
+    "noSlots": "No available slots for this date",
+    "yourDetails": "Your Details",
+    "labelName": "Name *",
+    "placeholderName": "Your full name",
+    "labelEmail": "Email *",
+    "placeholderEmail": "you@email.com",
+    "labelCompany": "Company",
+    "placeholderCompany": "Your company name",
+    "labelService": "Service Needed *",
+    "placeholderService": "Select a service",
+    "labelStage": "Project Stage",
+    "placeholderStage": "Select project stage",
+    "labelFocus": "Meeting Focus",
+    "placeholderFocus": "Select meeting focus",
+    "labelNotes": "Project Notes *",
+    "placeholderNotes": "Tell us about your project, BIM scope, disciplines involved, timeline, and required support...",
+    "errorRequired": "Please fill in all required fields and select a date and time.",
+    "successMessage": "Meeting scheduled successfully! You will receive a confirmation email shortly.",
+    "errorFallback": "Failed to schedule meeting. Please try again.",
+    "selectedTime": "Selected Time:",
+    "submitIdle": "Schedule Meeting",
+    "submitLoading": "Scheduling...",
+    "serviceOptions": [
+      "BIM Coordination",
+      "Clash Detection & Issue Review",
+      "BIM QA/QC & Model Validation",
+      "4D/5D BIM Support",
+      "COBie & Information Management",
+      "On-Demand BIM Support",
+      "Not Sure Yet"
+    ],
+    "stageOptions": [
+      "Design Stage",
+      "Pre-Construction",
+      "Construction",
+      "Tender / Proposal Stage",
+      "Existing Model Review",
+      "Urgent Coordination Support",
+      "Not Sure Yet"
+    ],
+    "focusOptions": [
+      "Review project requirements",
+      "Discuss BIM coordination support",
+      "Discuss clash detection workflow",
+      "Discuss model QA/QC or validation",
+      "Discuss 4D/5D or quantity support",
+      "Discuss urgent project support",
+      "General introduction call"
+    ]
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "titlePrefix": "Common",
+    "titleEmphasis": "Questions",
+    "subtitle": "Key answers to help project teams understand how Klyron Consulting approaches BIM coordination, model review, and digital delivery support.",
+    "items": [
+      {
+        "question": "How do you determine the right BIM support for our project?",
+        "answer": "We first review your project stage, available models, disciplines involved, timeline, coordination challenges, and expected deliverables. From there, we define whether your team needs clash detection, model QA/QC, coordination reporting, 4D/5D support, COBie review, or a combined digital delivery support package. This is usually clarified during the initial consultation."
+      },
+      {
+        "question": "What makes your coordination process different from simply running clash detection?",
+        "answer": "Our process focuses on practical coordination, not just exporting clash results. We review the model context, classify issues by priority, separate true coordination risks from low-value clashes, check discipline alignment, and provide structured comments that help project teams take action. The goal is to support decision-making, not just produce a long list of clashes."
+      },
+      {
+        "question": "Can you support our team if we already have an internal BIM department?",
+        "answer": "Yes. Klyron Consulting can work as external BIM coordination support for internal teams, contractors, consultants, or BIM managers. We can help during workload peaks, urgent submissions, recurring coordination cycles, model validation reviews, or specialist 4D/5D and QA/QC tasks without replacing your internal team."
+      },
+      {
+        "question": "How do you protect project information and confidential models?",
+        "answer": "We treat client models, drawings, reports, and project data as confidential. Where required, we can work under NDAs or confidentiality agreements. Project files are handled through agreed collaboration platforms or secure file-sharing workflows, and we avoid disclosing client names or sensitive project information without permission."
+      },
+      {
+        "question": "What is the best way to start working with Klyron Consulting?",
+        "answer": "The best first step is to book a consultation and share your project scope, model status, disciplines involved, timeline, and required deliverables. This allows us to understand the support needed, confirm the right workflow, and recommend the most suitable BIM coordination or digital delivery approach before work begins."
+      }
+    ]
+  },
+  "finalCta": {
+    "eyebrow": "Start a Project",
+    "titleLine1": "Ready to coordinate your next project?",
+    "titleLine2": "Let's bring clarity to the complexity.",
+    "body": "Tell us about your project, disciplines, BIM requirements, model status and timeline. We'll review where Klyron Consulting can support your coordination and digital delivery workflow.",
+    "primaryCta": "Book a Consultation",
+    "secondaryCta": "Send Project Details"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "titlePrefix": "Let's discuss your",
+    "titleEmphasis": "project",
+    "subtitle": "Whether you need BIM coordination, clash detection, model validation, or digital delivery support, share your project details and we'll get back to you with the next steps.",
+    "emailCardTitle": "Email Us",
+    "emailCardBody": "For BIM coordination requests, proposals, and project enquiries.",
+    "locationCardTitle": "Location",
+    "locationCardBody": "Kuala Lumpur, Malaysia",
+    "locationCardBody2": "Remote BIM coordination and digital delivery support for international project teams.",
+    "responseCardTitle": "Response Time",
+    "responseCardBody": "Usually within 24 hours",
+    "responseCardBody2": "Priority response for scheduled calls and urgent project reviews.",
+    "formTitle": "Send a Message",
+    "labelName": "Name *",
+    "placeholderName": "Your full name",
+    "labelEmail": "Email *",
+    "placeholderEmail": "your@email.com",
+    "labelCompany": "Company",
+    "placeholderCompany": "Your company name",
+    "labelMessage": "Message *",
+    "placeholderMessage": "Tell us about your project, timeline, and any specific requirements...",
+    "errorRequired": "Please fill in all required fields",
+    "successMessage": "Message sent successfully! We will get back to you soon.",
+    "errorFallback": "Failed to send message. Please try again.",
+    "submitLoading": "Sending...",
+    "submitIdle": "Send Message"
+  },
+  "footer": {
+    "tagline": "BIM coordination and digital delivery support for design and construction teams. Helping projects reduce clashes, improve model quality, and deliver construction-ready information.",
+    "quickLinks": "Quick Links",
+    "linkAbout": "About",
+    "linkServices": "Services",
+    "linkPortfolio": "Portfolio",
+    "linkSchedule": "Schedule",
+    "linkContact": "Contact",
+    "servicesTitle": "Services",
+    "serviceItems": [
+      "BIM Coordination",
+      "Clash Detection & Issue Review",
+      "BIM QA/QC & Model Validation",
+      "4D/5D BIM Support",
+      "COBie & Information Management",
+      "On-Demand BIM Support"
+    ],
+    "rights": "All rights reserved.",
+    "tagline2": "BIM COORDINATION · QA/QC · 4D/5D · DIGITAL DELIVERY"
+  },
+  "floatingContact": {
+    "sendEmail": "Send an Email",
+    "bookConsultation": "Book a Consultation",
+    "ariaLabel": "Contact us"
+  }
+}

@@ -2,50 +2,18 @@ import { useEffect, useRef } from 'react';
 import { Globe, Layers, Globe2, Target, Compass } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const GLANCE = [
-  {
-    icon: Globe,
-    label: 'Remote-First',
-    title: 'Digital Consultancy',
-    description: 'Collaboration beyond geographic boundaries.',
-  },
-  {
-    icon: Layers,
-    label: 'Multidisciplinary',
-    title: 'BIM Perspective',
-    description: 'Architecture, structure and services — as one project.',
-  },
-  {
-    icon: Globe2,
-    label: 'International',
-    title: 'Project Outlook',
-    description: 'An international approach to BIM coordination.',
-  },
-  {
-    icon: Target,
-    label: 'Specialised',
-    title: 'BIM Focus',
-    description: 'Coordination and digital delivery. Nothing else.',
-  },
-];
-
-const EXPERTISE = [
-  'BIM Coordination',
-  'Model Federation',
-  'Clash Detection & Issue Management',
-  'BIM QA/QC & Model Validation',
-  '4D / 5D BIM',
-  'COBie & Information Management',
-  'Digital Construction Workflows',
-];
-
-const TECH_STACK = ['Revit', 'Navisworks', 'Solibri', 'Autodesk Construction Cloud', 'Bexel Manager', 'BCF Workflows'];
+const GLANCE_ICONS = [Globe, Layers, Globe2, Target];
 
 const About = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
+
+  const glance = t('about.glance', { returnObjects: true }).map((g, i) => ({ ...g, icon: GLANCE_ICONS[i] }));
+  const expertise = t('about.expertise', { returnObjects: true });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -96,53 +64,48 @@ const About = () => {
       {/* ================= ABOUT OPENING ================= */}
       <div className="about-block relative z-10 py-28 lg:py-40 max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
         <span className="about-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="about-label">
-          About Klyron
+          {t('about.eyebrow')}
         </span>
         <h2 data-testid="about-title" className="about-fade font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-10">
-          Built to bring control
+          {t('about.openingTitleLine1')}
           <br />
-          <span className="italic text-white/70">to complex BIM projects.</span>
+          <span className="italic text-white/70">{t('about.openingTitleLine2')}</span>
         </h2>
         <div className="about-fade text-white/65 text-base md:text-lg font-light leading-relaxed space-y-4 max-w-2xl">
-          <p>
-            Klyron Consulting is a BIM Coordination and Digital Delivery consultancy built for the
-            increasingly complex digital environment behind modern construction.
-          </p>
-          <p className="text-white/85">Klyron was created around that reality.</p>
+          <p>{t('about.openingBody1')}</p>
+          <p className="text-white/85">{t('about.openingBody2')}</p>
         </div>
       </div>
 
       {/* ================= WHY KLYRON EXISTS ================= */}
       <div className="about-block relative z-10 py-20 lg:py-28 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
         <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-8 block">
-          Why Klyron Exists
+          {t('about.existsEyebrow')}
         </span>
         <h3 className="about-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-12 max-w-3xl">
-          A model can identify a problem.
+          {t('about.existsTitleLine1')}
           <br />
-          <span className="italic text-white/70">But a project still has to solve it.</span>
+          <span className="italic text-white/70">{t('about.existsTitleLine2')}</span>
         </h3>
         <p className="about-fade text-white/60 text-base font-light leading-relaxed max-w-2xl mb-6">
-          Projects aren&apos;t short of models, meetings or information. The challenge is what happens
-          between having it and turning it into a clear decision — across{' '}
-          <span className="text-white/85">multiple disciplines</span>,{' '}
-          <span className="text-white/85">multiple organisations</span>, and{' '}
-          <span className="text-white/85">information that never stops changing</span>.
+          {t('about.existsBodyPrefix')}{' '}
+          <span className="text-white/85">{t('about.existsBodyEmphasis1')}</span>,{' '}
+          <span className="text-white/85">{t('about.existsBodyEmphasis2')}</span>, {t('about.existsBodyConnector')}{' '}
+          <span className="text-white/85">{t('about.existsBodyEmphasis3')}</span>.
         </p>
 
         <p className="about-fade text-white/80 text-base font-light leading-relaxed max-w-2xl">
-          Klyron exists to bring precision and structure to that environment — not by making BIM more
-          complicated, but by making complex information easier to trust.
+          {t('about.existsClosing')}
         </p>
       </div>
 
       {/* ================= KLYRON AT A GLANCE ================= */}
       <div className="about-block relative z-10 py-20 lg:py-28 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
         <span className="about-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-12 block">
-          Klyron at a Glance
+          {t('about.glanceEyebrow')}
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
-          {GLANCE.map((g, i) => {
+          {glance.map((g, i) => {
             const GIcon = g.icon;
             return (
               <div
@@ -164,29 +127,29 @@ const About = () => {
       {/* ================= EDITORIAL BRAND STATEMENT ================= */}
       <div className="about-block relative z-10 py-32 lg:py-48 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 text-center border-t border-white/10">
         <h3 className="about-fade font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.1] text-white mb-8">
-          Technology gives us the tools.
+          {t('about.editorialLine1')}
           <br />
-          <span className="italic text-white/70">Precision comes from how we use them.</span>
+          <span className="italic text-white/70">{t('about.editorialLine2')}</span>
         </h3>
         <p className="about-fade text-white/55 text-base font-light leading-relaxed max-w-xl mx-auto">
-          Engineering thinking. Digital construction. Disciplined coordination.
+          {t('about.editorialBody')}
         </p>
       </div>
 
       {/* ================= LEADERSHIP ================= */}
       <div className="about-block relative z-10 py-20 lg:py-28 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
         <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-6 block">
-          Leadership
+          {t('about.leadershipEyebrow')}
         </span>
         <h3 className="about-fade font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-16 max-w-3xl">
-          Technical direction behind Klyron.
+          {t('about.leadershipTitle')}
         </h3>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="about-fade lg:col-span-4">
             <img
               src="/mario.jpg"
-              alt="Mário Quissico Júnior"
+              alt={t('about.directorName')}
               className="w-full rounded-2xl object-cover border border-white/10"
               style={{ filter: 'saturate(0.95)' }}
             />
@@ -194,27 +157,19 @@ const About = () => {
 
           <div className="about-fade lg:col-span-8 flex flex-col justify-center">
             <h4 data-testid="about-name" className="font-instrument-serif text-3xl sm:text-4xl text-white mb-2">
-              Mário Quissico Júnior
+              {t('about.directorName')}
             </h4>
-            <p className="text-[#39C3FF] font-mono text-sm mb-6">Director &amp; BIM Coordinator</p>
+            <p className="text-[#39C3FF] font-mono text-sm mb-6">{t('about.directorRole')}</p>
 
             <div className="text-white/65 text-base font-light leading-relaxed space-y-4 mb-10 max-w-2xl">
-              <p>
-                Mário leads Klyron&apos;s technical direction across multidisciplinary BIM coordination
-                and digital delivery. His Civil Engineering degree (SEGi University, Malaysia) grounds
-                that direction in how architectural, structural and services systems actually interact
-                — digitally and on site.
-              </p>
-              <p>
-                His focus: multidisciplinary coordination, model reliability, and the quality of
-                information behind project decisions.
-              </p>
+              <p>{t('about.directorBio1')}</p>
+              <p>{t('about.directorBio2')}</p>
             </div>
 
             {/* Areas of Expertise */}
-            <p className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-5">Areas of Expertise</p>
+            <p className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-5">{t('about.expertiseLabel')}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 mb-10">
-              {EXPERTISE.map((item, i) => (
+              {expertise.map((item, i) => (
                 <div key={item} className="expertise-row flex items-baseline gap-3 border-b border-white/5 pb-2.5">
                   <span className="text-white/30 font-mono text-xs flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
                   <span className="text-white/75 text-sm font-light">{item}</span>
@@ -223,9 +178,9 @@ const About = () => {
             </div>
 
             {/* Technical environment — understated */}
-            <p className="text-white/40 text-xs font-light tracking-[0.15em] uppercase mb-2">Technical Environment</p>
+            <p className="text-white/40 text-xs font-light tracking-[0.15em] uppercase mb-2">{t('about.technicalEnvironmentLabel')}</p>
             <p className="text-white/50 text-sm font-light">
-              {TECH_STACK.join(' · ')}
+              Revit · Navisworks · Solibri · Autodesk Construction Cloud · Bexel Manager · BCF Workflows
             </p>
           </div>
         </div>
@@ -236,16 +191,15 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start mb-14">
           <div className="lg:col-span-8">
             <span className="about-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">
-              Our Direction
+              {t('about.directionEyebrow')}
             </span>
             <h3 className="about-fade font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-8">
-              Better coordinated information.
+              {t('about.directionTitleLine1')}
               <br />
-              <span className="italic text-white/70">Better construction decisions.</span>
+              <span className="italic text-white/70">{t('about.directionTitleLine2')}</span>
             </h3>
             <p className="about-fade text-white/65 text-base font-light leading-relaxed max-w-2xl">
-              Klyron&apos;s ambition: become a trusted BIM Coordination and Digital Delivery partner
-              internationally — grounded in technical quality and dependable collaboration.
+              {t('about.directionBody')}
             </p>
           </div>
 
@@ -267,18 +221,17 @@ const About = () => {
           className="about-fade font-instrument-serif text-2xl sm:text-3xl italic text-white/80 leading-snug max-w-2xl pl-6 md:pl-8"
           style={{ borderLeft: '2px solid rgba(57,195,255,0.5)' }}
         >
-          The value of BIM is not simply what a model looks like. It&apos;s what a project team can
-          confidently do with the information inside it.
+          {t('about.directionQuote')}
         </p>
       </div>
 
       {/* ================= TRANSITION — SELECTED WORK ================= */}
       <div className="about-block relative z-10 pt-16 pb-8 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 text-center border-t border-white/10">
         <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-4 block">
-          Selected Work
+          {t('about.selectedWorkEyebrow')}
         </span>
         <p className="about-fade text-white/55 text-base font-light">
-          See how Klyron&apos;s technical approach translates into real project environments.
+          {t('about.selectedWorkBody')}
         </p>
       </div>
     </section>

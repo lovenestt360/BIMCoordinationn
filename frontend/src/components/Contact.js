@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Send, CheckCircle, AlertCircle, MapPin, Phone } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
@@ -7,6 +8,7 @@ import { Label } from '../components/ui/label';
 import { supabase } from '../lib/supabase';
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
-      setSubmitStatus({ type: 'error', message: 'Please fill in all required fields' });
+      setSubmitStatus({ type: 'error', message: t('contact.errorRequired') });
       return;
     }
 
@@ -43,13 +45,13 @@ const Contact = () => {
 
       setSubmitStatus({
         type: 'success',
-        message: 'Message sent successfully! We will get back to you soon.',
+        message: t('contact.successMessage'),
       });
       setFormData({ name: '', email: '', company: '', message: '' });
     } catch (error) {
       setSubmitStatus({
         type: 'error',
-        message: error.message || 'Failed to send message. Please try again.',
+        message: error.message || t('contact.errorFallback'),
       });
     } finally {
       setIsSubmitting(false);
@@ -71,15 +73,15 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Section Header */}
         <div className="mb-20 max-w-3xl">
-          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="contact-label">Contact</span>
+          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="contact-label">{t('contact.eyebrow')}</span>
           <h2
             data-testid="contact-title"
             className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6"
           >
-            Let's discuss your <span className="italic text-[#39C3FF]">project</span>
+            {t('contact.titlePrefix')} <span className="italic text-[#39C3FF]">{t('contact.titleEmphasis')}</span>
           </h2>
           <p className="text-white/65 text-base sm:text-lg font-light leading-relaxed max-w-xl">
-            Whether you need BIM coordination, clash detection, model validation, or digital delivery support, share your project details and we'll get back to you with the next steps.
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -95,7 +97,7 @@ const Contact = () => {
                 <Mail size={20} className="text-[#39C3FF]" />
               </div>
               <h3 className="font-instrument-serif text-2xl text-white mb-2">
-                Email Us
+                {t('contact.emailCardTitle')}
               </h3>
               <a
                 href="mailto:contact@klyronconsulting.com"
@@ -103,7 +105,7 @@ const Contact = () => {
               >
                 contact@klyronconsulting.com
               </a>
-              <p className="text-white/55 text-sm font-light">For BIM coordination requests, proposals, and project enquiries.</p>
+              <p className="text-white/55 text-sm font-light">{t('contact.emailCardBody')}</p>
             </div>
 
             {/* Location Card */}
@@ -115,11 +117,11 @@ const Contact = () => {
                 <MapPin size={20} className="text-[#7DE0FF]" />
               </div>
               <h3 className="font-instrument-serif text-2xl text-white mb-2">
-                Location
+                {t('contact.locationCardTitle')}
               </h3>
               <p className="text-white/55 text-sm font-light leading-relaxed">
-                Kuala Lumpur, Malaysia<br />
-                Remote BIM coordination and digital delivery support for international project teams.
+                {t('contact.locationCardBody')}<br />
+                {t('contact.locationCardBody2')}
               </p>
             </div>
 
@@ -132,11 +134,11 @@ const Contact = () => {
                 <Phone size={20} className="text-[#39C3FF]" />
               </div>
               <h3 className="font-instrument-serif text-2xl text-white mb-2">
-                Response Time
+                {t('contact.responseCardTitle')}
               </h3>
               <p className="text-white/55 text-sm font-light leading-relaxed">
-                Usually within 24 hours<br />
-                <span className="text-[#7DE0FF]">Priority response for scheduled calls and urgent project reviews.</span>
+                {t('contact.responseCardBody')}<br />
+                <span className="text-[#7DE0FF]">{t('contact.responseCardBody2')}</span>
               </p>
             </div>
           </div>
@@ -147,14 +149,14 @@ const Contact = () => {
             className="lg:col-span-2 rounded-sm border border-white/10 bg-white/[0.03] p-7 lg:p-10"
           >
             <h3 className="font-instrument-serif text-3xl text-white mb-8">
-              Send a Message
+              {t('contact.formTitle')}
             </h3>
 
             <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <Label htmlFor="contact-name" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
-                    Name *
+                    {t('contact.labelName')}
                   </Label>
                   <Input
                     id="contact-name"
@@ -162,7 +164,7 @@ const Contact = () => {
                     data-testid="contact-name-input"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Your full name"
+                    placeholder={t('contact.placeholderName')}
                     required
                     className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
                   />
@@ -170,7 +172,7 @@ const Contact = () => {
 
                 <div>
                   <Label htmlFor="contact-email" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
-                    Email *
+                    {t('contact.labelEmail')}
                   </Label>
                   <Input
                     id="contact-email"
@@ -179,7 +181,7 @@ const Contact = () => {
                     data-testid="contact-email-input"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="your@email.com"
+                    placeholder={t('contact.placeholderEmail')}
                     required
                     className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
                   />
@@ -188,7 +190,7 @@ const Contact = () => {
 
               <div>
                 <Label htmlFor="contact-company" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
-                  Company
+                  {t('contact.labelCompany')}
                 </Label>
                 <Input
                   id="contact-company"
@@ -196,14 +198,14 @@ const Contact = () => {
                   data-testid="contact-company-input"
                   value={formData.company}
                   onChange={handleInputChange}
-                  placeholder="Your company name"
+                  placeholder={t('contact.placeholderCompany')}
                   className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
                 />
               </div>
 
               <div>
                 <Label htmlFor="contact-message" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
-                  Message *
+                  {t('contact.labelMessage')}
                 </Label>
                 <Textarea
                   id="contact-message"
@@ -211,7 +213,7 @@ const Contact = () => {
                   data-testid="contact-message-input"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Tell us about your project, timeline, and any specific requirements..."
+                  placeholder={t('contact.placeholderMessage')}
                   rows={5}
                   required
                   className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50 resize-none"
@@ -245,10 +247,10 @@ const Contact = () => {
                 className="btn-primary px-9 py-4 rounded-sm font-medium flex items-center gap-2 disabled:opacity-50"
               >
                 {isSubmitting ? (
-                  'Sending...'
+                  t('contact.submitLoading')
                 ) : (
                   <>
-                    Send Message
+                    {t('contact.submitIdle')}
                     <Send size={18} />
                   </>
                 )}

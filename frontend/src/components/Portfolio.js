@@ -1,137 +1,41 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapPin, ClipboardList, AlertTriangle, ListChecks, Wrench, BarChart3, Boxes, CheckCircle2, CheckCircle } from 'lucide-react';
 import gsap from 'gsap';
+import { useTranslation } from 'react-i18next';
 import CountUp from './CountUp';
 
-const projects = [
+const PROJECT_META = [
   {
     id: 1,
     number: '01',
-    category: 'Healthcare',
-    title: 'Mental Health Unit',
-    location: 'Australia',
     image: '/projects/mental-health-unit.jpg',
-
-    intro:
-      'A multidisciplinary healthcare project in Australia, bringing together architectural, structural and building-services information within a technically complex project environment. Klyron supported the coordination process with a focus on federated model review, clash detection and structured digital issue management.',
-
-    challengeHeadline: ['Multiple disciplines.', 'Limited coordination space.'],
-    challengeCopy: [
-      'The project brought together architectural, structural, HVAC, fire, plumbing and electrical models developing in parallel within a shared federated environment.',
-      'As the models matured, multidisciplinary interferences accumulated across the coordination environment. The challenge was not simply finding clashes, but identifying which conflicts required project attention and making those issues visible within the coordination workflow.',
-    ],
-
-    scope: ['Federated Model Review', 'BIM Coordination', 'Clash Detection', 'Clash Review & Filtering', 'ACC-Based Issue Tracking'],
-
-    solutionHeadline: ['From model conflicts', 'to coordinated decisions.'],
-    solutionCopy:
-      'The six discipline models were reviewed within a federated coordination environment to identify meaningful spatial conflicts between systems. Rather than treating every detected interference equally, clashes were reviewed in context and organised according to their coordination relevance, then communicated through Autodesk Construction Cloud so the relevant teams had clear visibility of the location, context and status of each issue.',
-
-    metrics: [
-      { target: 6, suffix: '+', label: 'Disciplines Coordinated' },
-      { target: 1000, suffix: '+', label: 'Clashes Reviewed' },
-      { value: 'LOD 350', label: 'Model Development' },
-      { value: 'ACC', label: 'Issue Tracking' },
-      { value: 'Completed', label: 'Delivery Status' },
-    ],
-
-    tools: [
-      { name: 'Navisworks', role: 'Federated Model Review / Clash Detection' },
-      { name: 'Autodesk Construction Cloud', role: 'Issue Management / Project Collaboration' },
-    ],
-
-    outcomeCopy:
-      'The coordination process gave the project team a structured view of multidisciplinary model conflicts and a digital environment for tracking relevant issues through to resolution — rather than relying on static clash reports and ad-hoc coordination meetings.',
+    metrics: [{ target: 6, suffix: '+' }, { target: 1000, suffix: '+' }, {}, {}, {}],
+    tools: [{ name: 'Navisworks' }, { name: 'Autodesk Construction Cloud' }],
   },
   {
     id: 2,
     number: '02',
-    category: 'Education',
-    title: 'School Project',
-    location: 'Australia',
     image: '/projects/school-project.jpg',
-
-    intro:
-      'An education-sector project in Australia requiring independent validation of the coordinated model before its data could support downstream information requirements. Klyron supported the project with BIM QA/QC and model validation, focused on model consistency, classification and COBie-related information.',
-
-    challengeHeadline: ['A model that looks right.', 'Data that has to be right.'],
-    challengeCopy: [
-      'As the design model matured, its geometry, classification and property data needed to be reliable enough to support COBie delivery and downstream facility information — not just visually complete.',
-      'The challenge was identifying inconsistencies in model rules, classification and data quality that would not necessarily be visible from a 3D view alone, and making them actionable for the design teams.',
-    ],
-
-    scope: ['BIM QA/QC', 'Model Validation', 'COBie Data Review', 'BCF Issue Reporting'],
-
-    solutionHeadline: ['From model checks', 'to reliable information.'],
-    solutionCopy:
-      'The model was reviewed in Solibri against defined validation rules, checking element classification, property sets and model consistency. Findings were documented and reported back to the design teams through BCF, giving them a structured, tool-agnostic way to locate and resolve each issue directly within their own modelling software.',
-
-    metrics: [
-      { target: 5, suffix: '+', label: 'Disciplines Reviewed' },
-      { target: 100, suffix: '+', label: 'Model Checks Performed' },
-      { target: 50, suffix: '+', label: 'Issues Reported via BCF' },
-      { value: 'LOD 350', label: 'Model Development' },
-      { value: 'Completed', label: 'Delivery Status' },
-    ],
-
-    tools: [
-      { name: 'Solibri', role: 'Model Validation / Rule Checking' },
-      { name: 'BCF', role: 'Issue Reporting' },
-      { name: 'Autodesk Construction Cloud', role: 'Project Collaboration' },
-    ],
-
-    outcomeCopy:
-      'The validation process gave the design teams a clear, structured record of model and data inconsistencies ahead of COBie delivery — supporting a more reliable handover of information rather than relying on visual review alone.',
+    metrics: [{ target: 5, suffix: '+' }, { target: 100, suffix: '+' }, { target: 50, suffix: '+' }, {}, {}],
+    tools: [{ name: 'Solibri' }, { name: 'BCF' }, { name: 'Autodesk Construction Cloud' }],
   },
   {
     id: 3,
     number: '03',
-    category: 'Infrastructure',
-    title: 'Water Supply System',
-    location: 'Namigonha, Ribáuè District, Mozambique',
     image: '/projects/water-supply-system.jpg',
-
-    intro:
-      'A water supply infrastructure project in Namigonha, Ribáuè District, Mozambique, requiring a coordinated 3D model to support planning, quantities and cost. Klyron supported the project with Revit model development and Bexel Manager-based 4D/5D workflows.',
-
-    challengeHeadline: ['A network of systems.', 'One set of reliable quantities.'],
-    challengeCopy: [
-      "Unlike a single-building coordination project, this infrastructure work needed quantities and cost data that stayed reliable as the network design developed — not a one-off take-off disconnected from the model.",
-      'The challenge was keeping quantities, cost and schedule information tied directly to the model as it evolved, so planning decisions could be based on current data rather than a static estimate.',
-    ],
-
-    scope: ['Revit Model Development', 'Quantity Take-Off', 'Cost Assignment', '4D/5D Scheduling'],
-
-    solutionHeadline: ['From a static model', 'to a live cost and schedule view.'],
-    solutionCopy:
-      'The infrastructure model was developed in Revit, then linked to Bexel Manager to take off quantities and assign cost directly against model elements. The same model was connected to project scheduling to build 4D/5D workflows — keeping quantities, cost and programme aligned to the model rather than tracked separately.',
-
-    metrics: [
-      { target: 500, suffix: '+', label: 'Model Elements Quantified' },
-      { target: 100, suffix: '+', label: 'Cost Items Assigned' },
-      { value: 'LOD 300', label: 'Model Development' },
-      { value: '4D/5D', label: 'BIM Workflow' },
-      { value: 'Completed', label: 'Delivery Status' },
-    ],
-
-    tools: [
-      { name: 'Revit', role: 'Model Development' },
-      { name: 'Bexel Manager', role: 'Quantity Take-Off / Cost & 4D-5D' },
-    ],
-
-    outcomeCopy:
-      'The project team gained a model-linked view of quantities, cost and schedule — supporting planning and budgeting decisions with data drawn directly from the model rather than a disconnected estimate.',
+    metrics: [{ target: 500, suffix: '+' }, { target: 100, suffix: '+' }, {}, {}, {}],
+    tools: [{ name: 'Revit' }, { name: 'Bexel Manager' }],
   },
 ];
 
-const STAGES = [
-  { key: 'project', label: 'Project', icon: ClipboardList, color: 'text-white/50' },
-  { key: 'scope', label: 'Scope', icon: ListChecks, color: 'text-white/50' },
-  { key: 'challenge', label: 'Challenge', icon: AlertTriangle, color: 'text-[#FF7A1A]' },
-  { key: 'solution', label: 'Solution', icon: Wrench, color: 'text-[#39C3FF]' },
-  { key: 'outcome', label: 'Outcome', icon: CheckCircle2, color: 'text-[#43D17A]' },
-  { key: 'tools', label: 'Tools', icon: Boxes, color: 'text-white/50' },
-  { key: 'numbers', label: 'Numbers', icon: BarChart3, color: 'text-white/50' },
+const STAGE_META = [
+  { key: 'project', icon: ClipboardList, color: 'text-white/50' },
+  { key: 'scope', icon: ListChecks, color: 'text-white/50' },
+  { key: 'challenge', icon: AlertTriangle, color: 'text-[#FF7A1A]' },
+  { key: 'solution', icon: Wrench, color: 'text-[#39C3FF]' },
+  { key: 'outcome', icon: CheckCircle2, color: 'text-[#43D17A]' },
+  { key: 'tools', icon: Boxes, color: 'text-white/50' },
+  { key: 'numbers', icon: BarChart3, color: 'text-white/50' },
 ];
 
 const Eyebrow = ({ icon: Icon, children, color = 'text-white/50' }) => (
@@ -142,11 +46,30 @@ const Eyebrow = ({ icon: Icon, children, color = 'text-white/50' }) => (
 );
 
 const Portfolio = () => {
+  const { t } = useTranslation();
   const [active, setActive] = useState(0);
   const [stage, setStage] = useState(0);
   const imgRefs = useRef([]);
   const bodyRef = useRef(null);
   const sectionRef = useRef(null);
+
+  const translatedProjects = t('portfolio.projects', { returnObjects: true });
+  const projects = PROJECT_META.map((meta, i) => {
+    const tr = translatedProjects[i];
+    return {
+      ...meta,
+      ...tr,
+      metrics: meta.metrics.map((m, j) => ({ ...m, ...tr.metrics[j] })),
+      tools: meta.tools.map((tl, j) => ({ ...tl, ...tr.tools[j] })),
+    };
+  });
+
+  const STAGES = STAGE_META.map((s) => ({
+    ...s,
+    label: t(`portfolio.stage${s.key.charAt(0).toUpperCase()}${s.key.slice(1)}`),
+    eyebrow: t(`portfolio.eyebrow${s.key.charAt(0).toUpperCase()}${s.key.slice(1)}`),
+  }));
+
   const project = projects[active];
 
   const selectProject = (i) => {
@@ -193,13 +116,12 @@ const Portfolio = () => {
 
       {/* Section intro */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 pt-24 lg:pt-32 pb-10">
-        <span className="pf-intro-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">Selected Work</span>
+        <span className="pf-intro-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">{t('portfolio.eyebrow')}</span>
         <h2 className="pf-intro-fade font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6">
-          Complex projects. <span className="italic text-white/70">Clearer coordination.</span>
+          {t('portfolio.titleLine1')} <span className="italic text-white/70">{t('portfolio.titleLine2')}</span>
         </h2>
         <p className="pf-intro-fade text-white/65 text-base md:text-lg font-light leading-relaxed max-w-2xl">
-          Selected project environments where multidisciplinary coordination, model review and digital
-          delivery were used to turn complex project information into clearer technical decisions.
+          {t('portfolio.intro')}
         </p>
       </div>
 
@@ -246,7 +168,7 @@ const Portfolio = () => {
         <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, rgba(4,7,11,0.95) 0%, rgba(4,7,11,0.2) 55%, rgba(4,7,11,0.5) 100%)' }} />
 
         <div className="relative z-10 h-full flex flex-col justify-end px-6 md:px-12 lg:px-16 pb-8">
-          <span className="text-white/50 font-mono text-xs tracking-widest uppercase mb-3">{project.number} / Selected Work</span>
+          <span className="text-white/50 font-mono text-xs tracking-widest uppercase mb-3">{project.number} / {t('portfolio.eyebrow')}</span>
           <h3 className="font-instrument-serif text-3xl sm:text-4xl md:text-5xl text-white mb-3">{project.title}</h3>
           <div className="flex items-center gap-4 text-white/60 text-sm font-light">
             <span>{project.category}</span>
@@ -284,14 +206,14 @@ const Portfolio = () => {
       <div ref={bodyRef} key={`${project.id}-${stage}`} className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 py-14 lg:py-16" style={{ minHeight: '360px' }}>
         {STAGES[stage].key === 'project' && (
           <div>
-            <Eyebrow icon={ClipboardList}>The Project</Eyebrow>
+            <Eyebrow icon={ClipboardList}>{STAGES[stage].eyebrow}</Eyebrow>
             <p className="proj-fade text-white/70 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.intro}</p>
           </div>
         )}
 
         {STAGES[stage].key === 'scope' && (
           <div>
-            <Eyebrow icon={ListChecks}>Our Scope</Eyebrow>
+            <Eyebrow icon={ListChecks}>{STAGES[1].eyebrow}</Eyebrow>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 max-w-2xl">
               {project.scope.map((s) => (
                 <div key={s} className="proj-fade group flex items-center gap-3 border-b border-white/5 pb-2.5 transition-colors duration-200 hover:border-[#39C3FF]/30">
@@ -305,7 +227,7 @@ const Portfolio = () => {
 
         {STAGES[stage].key === 'challenge' && (
           <div>
-            <Eyebrow icon={AlertTriangle} color="text-[#FF7A1A]">The Challenge</Eyebrow>
+            <Eyebrow icon={AlertTriangle} color="text-[#FF7A1A]">{STAGES[2].eyebrow}</Eyebrow>
             <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-8 max-w-2xl">
               {project.challengeHeadline[0]}
               <br />
@@ -321,7 +243,7 @@ const Portfolio = () => {
 
         {STAGES[stage].key === 'solution' && (
           <div>
-            <Eyebrow icon={Wrench} color="text-[#39C3FF]">The Solution</Eyebrow>
+            <Eyebrow icon={Wrench} color="text-[#39C3FF]">{STAGES[3].eyebrow}</Eyebrow>
             <h4 className="proj-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-6 max-w-2xl">
               {project.solutionHeadline[0]}
               <br />
@@ -333,21 +255,21 @@ const Portfolio = () => {
 
         {STAGES[stage].key === 'outcome' && (
           <div>
-            <Eyebrow icon={CheckCircle2} color="text-[#43D17A]">The Outcome</Eyebrow>
+            <Eyebrow icon={CheckCircle2} color="text-[#43D17A]">{STAGES[4].eyebrow}</Eyebrow>
             <p className="proj-fade text-white/75 text-base md:text-lg font-light leading-relaxed max-w-2xl">{project.outcomeCopy}</p>
           </div>
         )}
 
         {STAGES[stage].key === 'tools' && (
           <div>
-            <Eyebrow icon={Boxes}>Digital Environment</Eyebrow>
+            <Eyebrow icon={Boxes}>{STAGES[5].eyebrow}</Eyebrow>
             <div className="space-y-5 max-w-2xl">
-              {project.tools.map((t) => (
-                <div key={t.name} className="proj-fade group flex flex-col sm:flex-row sm:items-baseline sm:gap-4 border-b border-white/5 pb-4 transition-colors duration-200 hover:border-[#39C3FF]/30">
+              {project.tools.map((tool) => (
+                <div key={tool.name} className="proj-fade group flex flex-col sm:flex-row sm:items-baseline sm:gap-4 border-b border-white/5 pb-4 transition-colors duration-200 hover:border-[#39C3FF]/30">
                   <span className="text-white text-sm font-medium tracking-wide uppercase sm:w-64 flex-shrink-0 transition-colors duration-200 group-hover:text-[#39C3FF]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-                    {t.name}
+                    {tool.name}
                   </span>
-                  <span className="text-white/50 text-sm font-light">{t.role}</span>
+                  <span className="text-white/50 text-sm font-light">{tool.role}</span>
                 </div>
               ))}
             </div>
@@ -356,7 +278,7 @@ const Portfolio = () => {
 
         {STAGES[stage].key === 'numbers' && (
           <div>
-            <Eyebrow icon={BarChart3}>By the Numbers</Eyebrow>
+            <Eyebrow icon={BarChart3}>{STAGES[6].eyebrow}</Eyebrow>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-8">
               {project.metrics.map((m) => (
                 <div key={m.label} className="proj-fade border-t border-white/10 pt-5 transition-transform duration-300 hover:-translate-y-1">
@@ -384,7 +306,7 @@ const Portfolio = () => {
             disabled={stage === 0}
             className="text-sm font-light text-white/50 hover:text-white transition-colors duration-200 disabled:opacity-0 disabled:pointer-events-none"
           >
-            ← Back
+            {t('portfolio.back')}
           </button>
           <span className="text-white/30 text-xs font-mono">{stage + 1} / {STAGES.length}</span>
           <button
@@ -392,7 +314,7 @@ const Portfolio = () => {
             disabled={stage === STAGES.length - 1}
             className="text-sm font-light text-white/50 hover:text-white transition-colors duration-200 disabled:opacity-0 disabled:pointer-events-none"
           >
-            Next: {STAGES[Math.min(stage + 1, STAGES.length - 1)]?.label} →
+            {t('portfolio.next', { label: STAGES[Math.min(stage + 1, STAGES.length - 1)]?.label })}
           </button>
         </div>
       </div>
@@ -404,20 +326,19 @@ const Portfolio = () => {
           onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
           className="inline-block border border-white/25 text-white rounded-full px-6 py-3 text-sm font-medium hover:bg-white/10 transition-colors duration-200"
         >
-          Request Full Portfolio
+          {t('portfolio.requestPortfolio')}
         </a>
       </div>
 
       {/* Closing transition */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 py-16 border-t border-white/10 text-center">
         <h3 className="font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-6">
-          Different projects. Different challenges.
+          {t('portfolio.closingTitleLine1')}
           <br />
-          <span className="italic text-white/70">The same need for clearer coordination.</span>
+          <span className="italic text-white/70">{t('portfolio.closingTitleLine2')}</span>
         </h3>
         <p className="text-white/55 text-base font-light max-w-xl mx-auto">
-          When project complexity or workload increases, Klyron can also provide additional BIM
-          capacity alongside existing teams.
+          {t('portfolio.closingBody')}
         </p>
       </div>
     </section>

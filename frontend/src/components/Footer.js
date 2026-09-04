@@ -1,7 +1,10 @@
 import { Linkedin, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
+  const serviceItems = t('footer.serviceItems', { returnObjects: true });
 
   const scrollToSection = (e, href) => {
     e.preventDefault();
@@ -10,6 +13,14 @@ const Footer = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const quickLinks = [
+    { href: '#about', label: t('footer.linkAbout') },
+    { href: '#services', label: t('footer.linkServices') },
+    { href: '#portfolio', label: t('footer.linkPortfolio') },
+    { href: '#schedule', label: t('footer.linkSchedule') },
+    { href: '#contact', label: t('footer.linkContact') },
+  ];
 
   return (
     <footer
@@ -30,7 +41,7 @@ const Footer = () => {
               <span className="text-[#39C3FF]">.</span>
             </a>
             <p className="text-[rgba(247,249,251,0.65)] text-sm max-w-sm mb-4">
-              BIM coordination and digital delivery support for design and construction teams. Helping projects reduce clashes, improve model quality, and deliver construction-ready information.
+              {t('footer.tagline')}
             </p>
             {/* Social Links */}
             <div className="flex gap-4">
@@ -59,16 +70,10 @@ const Footer = () => {
               className="font-bold mb-4 text-sm"
               style={{ fontFamily: 'Space Grotesk, sans-serif' }}
             >
-              Quick Links
+              {t('footer.quickLinks')}
             </h4>
             <ul className="space-y-2">
-              {[
-                { href: '#about', label: 'About' },
-                { href: '#services', label: 'Services' },
-                { href: '#portfolio', label: 'Portfolio' },
-                { href: '#schedule', label: 'Schedule' },
-                { href: '#contact', label: 'Contact' },
-              ].map((link) => (
+              {quickLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
@@ -88,17 +93,10 @@ const Footer = () => {
               className="font-bold mb-4 text-sm"
               style={{ fontFamily: 'Space Grotesk, sans-serif' }}
             >
-              Services
+              {t('footer.servicesTitle')}
             </h4>
             <ul className="space-y-2">
-              {[
-                'BIM Coordination',
-                'Clash Detection & Issue Review',
-                'BIM QA/QC & Model Validation',
-                '4D/5D BIM Support',
-                'COBie & Information Management',
-                'On-Demand BIM Support',
-              ].map((service) => (
+              {serviceItems.map((service) => (
                 <li key={service}>
                   <span className="text-[rgba(247,249,251,0.65)] text-sm">{service}</span>
                 </li>
@@ -113,10 +111,10 @@ const Footer = () => {
           className="pt-8 border-t border-[#0B2A44] flex flex-col md:flex-row items-center justify-between gap-4"
         >
           <p className="text-[rgba(247,249,251,0.55)] text-sm">
-            © {currentYear} Klyron Consulting. All rights reserved.
+            © {currentYear} Klyron Consulting. {t('footer.rights')}
           </p>
           <p className="text-[rgba(247,249,251,0.55)] text-xs font-mono">
-            BIM COORDINATION · QA/QC · 4D/5D · DIGITAL DELIVERY
+            {t('footer.tagline2')}
           </p>
         </div>
       </div>

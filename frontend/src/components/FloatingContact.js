@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Mail, X, MessageCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const FloatingContact = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   return (
@@ -15,7 +17,7 @@ const FloatingContact = () => {
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
             <Mail size={16} className="text-[#39C3FF]" />
-            Send an Email
+            {t('floatingContact.sendEmail')}
           </a>
           <a
             href="#schedule"
@@ -24,7 +26,7 @@ const FloatingContact = () => {
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
             <MessageCircle size={16} className="text-[#7DE0FF]" />
-            Book a Consultation
+            {t('floatingContact.bookConsultation')}
           </a>
         </div>
       )}
@@ -38,7 +40,7 @@ const FloatingContact = () => {
           border: open ? '1px solid rgba(255,255,255,0.1)' : 'none',
           boxShadow: open ? 'none' : '0 0 30px -5px rgba(14,165,233,0.6)',
         }}
-        aria-label="Contact us"
+        aria-label={t('floatingContact.ariaLabel')}
       >
         {open
           ? <X size={20} className="text-[rgba(247,249,251,0.65)]" />

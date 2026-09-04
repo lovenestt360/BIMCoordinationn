@@ -2,34 +2,17 @@ import { useEffect, useRef } from 'react';
 import { Eye, ShieldCheck, ListOrdered, CheckCircle2 } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PRINCIPLES = [
-  {
-    icon: Eye,
-    title: 'Clarity',
-    description: 'Every meaningful coordination issue should have a clear status.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Accountability',
-    description: 'Issues must have an owner, not just a screenshot.',
-  },
-  {
-    icon: ListOrdered,
-    title: 'Priority',
-    description: 'Not every clash deserves the same attention.',
-  },
-  {
-    icon: CheckCircle2,
-    title: 'Closure',
-    description: 'An issue isn’t finished when it is discussed. It is finished when it is resolved.',
-  },
-];
+const ICONS = [Eye, ShieldCheck, ListOrdered, CheckCircle2];
 
 const WhyKlyron = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
+
+  const principles = t('whyKlyron.principles', { returnObjects: true }).map((p, i) => ({ ...p, icon: ICONS[i] }));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -53,13 +36,13 @@ const WhyKlyron = () => {
     <section ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden" style={{ background: '#04070B' }}>
       <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
         <h2 className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-20 max-w-3xl">
-          Coordination isn&apos;t about creating more reports.
+          {t('whyKlyron.titleLine1')}
           <br />
-          <span className="italic text-white/70">It&apos;s about creating fewer site problems.</span>
+          <span className="italic text-white/70">{t('whyKlyron.titleLine2')}</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
-          {PRINCIPLES.map((p) => {
+          {principles.map((p) => {
             const PIcon = p.icon;
             return (
               <div key={p.title} className="principle-card">

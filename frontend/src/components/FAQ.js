@@ -1,37 +1,12 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-
-const faqs = [
-  {
-    question: 'How do you determine the right BIM support for our project?',
-    answer:
-      'We first review your project stage, available models, disciplines involved, timeline, coordination challenges, and expected deliverables. From there, we define whether your team needs clash detection, model QA/QC, coordination reporting, 4D/5D support, COBie review, or a combined digital delivery support package. This is usually clarified during the initial consultation.',
-  },
-  {
-    question: 'What makes your coordination process different from simply running clash detection?',
-    answer:
-      'Our process focuses on practical coordination, not just exporting clash results. We review the model context, classify issues by priority, separate true coordination risks from low-value clashes, check discipline alignment, and provide structured comments that help project teams take action. The goal is to support decision-making, not just produce a long list of clashes.',
-  },
-  {
-    question: 'Can you support our team if we already have an internal BIM department?',
-    answer:
-      'Yes. Klyron Consulting can work as external BIM coordination support for internal teams, contractors, consultants, or BIM managers. We can help during workload peaks, urgent submissions, recurring coordination cycles, model validation reviews, or specialist 4D/5D and QA/QC tasks without replacing your internal team.',
-  },
-  {
-    question: 'How do you protect project information and confidential models?',
-    answer:
-      'We treat client models, drawings, reports, and project data as confidential. Where required, we can work under NDAs or confidentiality agreements. Project files are handled through agreed collaboration platforms or secure file-sharing workflows, and we avoid disclosing client names or sensitive project information without permission.',
-  },
-  {
-    question: 'What is the best way to start working with Klyron Consulting?',
-    answer:
-      'The best first step is to book a consultation and share your project scope, model status, disciplines involved, timeline, and required deliverables. This allows us to understand the support needed, confirm the right workflow, and recommend the most suitable BIM coordination or digital delivery approach before work begins.',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 const FAQ = () => {
+  const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState(null);
+  const faqs = t('faq.items', { returnObjects: true });
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
 
@@ -51,14 +26,14 @@ const FAQ = () => {
 
         {/* Header */}
         <div className="sr-hidden text-center mb-16">
-          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">FAQ</span>
+          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">{t('faq.eyebrow')}</span>
 
           <h2 className="font-instrument-serif text-5xl sm:text-6xl leading-[1.02] text-white mb-6">
-            Common <span className="italic text-white/70">Questions</span>
+            {t('faq.titlePrefix')} <span className="italic text-white/70">{t('faq.titleEmphasis')}</span>
           </h2>
 
           <p className="text-white/65 max-w-xl mx-auto text-base font-light leading-relaxed">
-            Key answers to help project teams understand how Klyron Consulting approaches BIM coordination, model review, and digital delivery support.
+            {t('faq.subtitle')}
           </p>
         </div>
 

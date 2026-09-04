@@ -2,69 +2,26 @@ import { useEffect, useRef } from 'react';
 import { MessageCircle, FolderCog, Layers, SearchCheck, ShieldCheck, FileCheck } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const processSteps = [
-  {
-    number: '01',
-    title: 'Consultation & Scope Review',
-    description:
-      'We start by understanding your project, BIM requirements, disciplines involved, timeline, deliverables, and the level of coordination or digital support needed.',
-    output: 'Clear BIM support scope',
-    icon: MessageCircle,
-    color: '#39C3FF',
-  },
-  {
-    number: '02',
-    title: 'Model Intake & Workflow Setup',
-    description:
-      'We receive the project models, review file structure, confirm model versions, set up the federated model environment, and align the coordination workflow with the project team.',
-    output: 'Ready-to-review BIM environment',
-    icon: FolderCog,
-    color: '#7DE0FF',
-  },
-  {
-    number: '03',
-    title: 'Federated Model Review',
-    description:
-      'We combine and review architectural, structural, and MEP models to check discipline alignment, model positioning, coordination zones, and readiness for clash detection.',
-    output: 'Federated model ready for coordination',
-    icon: Layers,
-    color: '#39C3FF',
-  },
-  {
-    number: '04',
-    title: 'Clash Detection & Coordination',
-    description:
-      'We run clash detection, review hard clashes and clearance issues, classify priorities, separate real issues from low-value clashes, and support resolution tracking through ACC, BCF, or the agreed platform.',
-    output: 'Prioritized coordination issues',
-    icon: SearchCheck,
-    color: '#FF7A1A',
-  },
-  {
-    number: '05',
-    title: 'BIM QA/QC & Data Validation',
-    description:
-      'We review model quality, element classification, naming, property sets, COBie-related information, and model consistency to improve the reliability of project information.',
-    output: 'Validated BIM information',
-    icon: ShieldCheck,
-    color: '#43D17A',
-  },
-  {
-    number: '06',
-    title: 'Digital Delivery & Reporting',
-    description:
-      'We deliver structured clash reports, QA/QC comments, validation summaries, issue logs, 4D/5D support outputs, and coordination feedback ready for project review and action.',
-    output: 'Clear deliverables for decision-making',
-    icon: FileCheck,
-    color: '#7DE0FF',
-  },
+const STEP_META = [
+  { number: '01', icon: MessageCircle, color: '#39C3FF' },
+  { number: '02', icon: FolderCog, color: '#7DE0FF' },
+  { number: '03', icon: Layers, color: '#39C3FF' },
+  { number: '04', icon: SearchCheck, color: '#FF7A1A' },
+  { number: '05', icon: ShieldCheck, color: '#43D17A' },
+  { number: '06', icon: FileCheck, color: '#7DE0FF' },
 ];
 
 const Process = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
   const lineRef = useRef(null);
+
+  const steps = t('process.steps', { returnObjects: true });
+  const processSteps = STEP_META.map((meta, i) => ({ ...meta, ...steps[i] }));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -109,15 +66,14 @@ const Process = () => {
       <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
         {/* Header */}
         <div className="sr-hidden mb-20 max-w-2xl">
-          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">How We Work</span>
+          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block">{t('process.eyebrow')}</span>
           <h2 className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-6">
-            A controlled workflow
+            {t('process.titleLine1')}
             <br />
-            <span className="italic text-white/70">from model intake to delivery.</span>
+            <span className="italic text-white/70">{t('process.titleLine2')}</span>
           </h2>
           <p className="text-white/65 text-base font-light leading-relaxed">
-            Designed for design teams, contractors, BIM managers and project teams needing
-            reliable remote BIM support.
+            {t('process.body')}
           </p>
         </div>
 
@@ -144,7 +100,7 @@ const Process = () => {
                     </div>
                   </div>
                   <div className="md:col-span-2 flex flex-col justify-center">
-                    <span className="font-mono text-xs" style={{ color: step.color }}>STEP {step.number}</span>
+                    <span className="font-mono text-xs" style={{ color: step.color }}>{t('process.stepLabel')} {step.number}</span>
                   </div>
                   <div className="md:col-span-6">
                     <h3 className="text-white text-lg md:text-xl font-medium mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>

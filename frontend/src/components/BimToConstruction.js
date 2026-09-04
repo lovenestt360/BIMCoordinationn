@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const BimToConstruction = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -40,13 +42,12 @@ const BimToConstruction = () => {
 
       <div className="btc-content relative z-10 w-full px-6 md:px-12 lg:px-16 pb-20 md:pb-28">
         <h2 className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-6 max-w-2xl">
-          Coordinate digitally.
+          {t('bimToConstruction.titleLine1')}
           <br />
-          <span className="italic text-white/70">Build with confidence.</span>
+          <span className="italic text-white/70">{t('bimToConstruction.titleLine2')}</span>
         </h2>
         <p className="text-white/65 text-base font-light leading-relaxed max-w-md">
-          The goal of BIM coordination is not a perfect model for its own sake. It is clearer
-          decisions, fewer unresolved conflicts and better information before construction.
+          {t('bimToConstruction.body')}
         </p>
       </div>
     </section>

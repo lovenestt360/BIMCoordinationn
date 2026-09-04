@@ -1,12 +1,21 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DISCIPLINES = ['Architecture', 'Structure', 'Mechanical', 'Electrical', 'Plumbing', 'Fire'];
+const DISCIPLINE_KEYS = [
+  'modelFederation.disciplineArchitecture',
+  'modelFederation.disciplineStructure',
+  'modelFederation.disciplineMechanical',
+  'modelFederation.disciplineElectrical',
+  'modelFederation.disciplinePlumbing',
+  'modelFederation.disciplineFire',
+];
 
 const ModelFederation = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -65,26 +74,26 @@ const ModelFederation = () => {
 
       <div className="max-w-5xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
         <span className="text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-6 block">
-          Model Federation
+          {t('modelFederation.eyebrow')}
         </span>
 
         <h2 className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white mb-14 max-w-3xl">
-          Different disciplines.
+          {t('modelFederation.titleLine1')}
           <br />
-          <span className="italic text-white/70">One coordinated environment.</span>
+          <span className="italic text-white/70">{t('modelFederation.titleLine2')}</span>
         </h2>
 
         {/* Discipline convergence visual */}
         <div className="flex flex-col items-center mb-14 py-6">
           <div className="flex flex-wrap justify-center gap-3 mb-8">
-            {DISCIPLINES.map((d, i) => (
-              <span key={d} className="flex items-center gap-3">
+            {DISCIPLINE_KEYS.map((key, i) => (
+              <span key={key} className="flex items-center gap-3">
                 <span
                   className="disc-chip text-xs md:text-sm font-light text-white/70 border border-white/15 rounded-full px-4 py-2"
                 >
-                  {d}
+                  {t(key)}
                 </span>
-                {i < DISCIPLINES.length - 1 && <span className="text-white/20 text-xs">*</span>}
+                {i < DISCIPLINE_KEYS.length - 1 && <span className="text-white/20 text-xs">*</span>}
               </span>
             ))}
           </div>
@@ -92,14 +101,12 @@ const ModelFederation = () => {
           <div className="fed-arrow w-px h-10 bg-gradient-to-b from-white/30 to-[#39C3FF] origin-top" />
 
           <div className="fed-model mt-4 border border-[#39C3FF]/40 rounded-full px-8 py-3" style={{ background: 'rgba(57,195,255,0.08)' }}>
-            <span className="text-[#7DE0FF] text-sm font-medium tracking-wide">Federated Model</span>
+            <span className="text-[#7DE0FF] text-sm font-medium tracking-wide">{t('modelFederation.federatedModel')}</span>
           </div>
         </div>
 
         <p className="text-white/65 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto text-center">
-          We combine architectural, structural and MEP models into a coordinated federated
-          environment so spatial relationships, model alignment and multidisciplinary conflicts
-          can be reviewed before construction.
+          {t('modelFederation.body')}
         </p>
       </div>
     </section>

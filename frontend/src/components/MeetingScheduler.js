@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Clock, User, Mail, Building2, FileText, CheckCircle, AlertCircle, Briefcase, Layers, Loader2, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { pt as ptLocale } from 'date-fns/locale';
 import { Calendar } from '../components/ui/calendar';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -12,41 +14,9 @@ import { format, addDays, isBefore, startOfToday } from 'date-fns';
 
 const ALL_SLOTS = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
 
-const SERVICE_OPTIONS = [
-  'BIM Coordination',
-  'Clash Detection & Issue Review',
-  'BIM QA/QC & Model Validation',
-  '4D/5D BIM Support',
-  'COBie & Information Management',
-  'On-Demand BIM Support',
-  'Not Sure Yet',
-];
-
-const PROJECT_STAGE_OPTIONS = [
-  'Design Stage',
-  'Pre-Construction',
-  'Construction',
-  'Tender / Proposal Stage',
-  'Existing Model Review',
-  'Urgent Coordination Support',
-  'Not Sure Yet',
-];
-
-const MEETING_FOCUS_OPTIONS = [
-  'Review project requirements',
-  'Discuss BIM coordination support',
-  'Discuss clash detection workflow',
-  'Discuss model QA/QC or validation',
-  'Discuss 4D/5D or quantity support',
-  'Discuss urgent project support',
-  'General introduction call',
-];
-
 const selectTriggerClass = 'w-full h-auto bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] px-3 py-2 text-sm data-[placeholder]:text-[rgba(247,249,251,0.55)] focus:ring-[#39C3FF] focus:ring-offset-0';
 const selectContentClass = 'bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB]';
 const selectItemClass = 'text-[rgba(247,249,251,0.8)] focus:bg-[#39C3FF]/10 focus:text-[#F7F9FB] cursor-pointer';
-
-const STEPS = ['Date & Time', 'Your Details', 'Confirmed'];
 
 const fieldVariants = {
   hidden: { opacity: 0, y: 10 },
@@ -54,6 +24,14 @@ const fieldVariants = {
 };
 
 const MeetingScheduler = () => {
+  const { t, i18n } = useTranslation();
+  const dateLocale = i18n.language?.startsWith('pt') ? ptLocale : undefined;
+
+  const SERVICE_OPTIONS = t('scheduler.serviceOptions', { returnObjects: true });
+  const PROJECT_STAGE_OPTIONS = t('scheduler.stageOptions', { returnObjects: true });
+  const MEETING_FOCUS_OPTIONS = t('scheduler.focusOptions', { returnObjects: true });
+  const STEPS = [t('scheduler.step1'), t('scheduler.step2'), t('scheduler.step3')];
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedTime, setSelectedTime] = useState('');
@@ -74,6 +52,7 @@ const MeetingScheduler = () => {
     if (selectedDate) {
       fetchAvailableSlots(format(selectedDate, 'yyyy-MM-dd'));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
   const fetchAvailableSlots = async (date) => {
@@ -107,7 +86,7 @@ const MeetingScheduler = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedDate || !selectedTime || !formData.name || !formData.email || !formData.service || !formData.notes) {
-      setSubmitStatus({ type: 'error', message: 'Please fill in all required fields and select a date and time.' });
+      setSubmitStatus({ type: 'error', message: t('scheduler.errorRequired') });
       return;
     }
 
@@ -137,7 +116,7 @@ const MeetingScheduler = () => {
 
       setSubmitStatus({
         type: 'success',
-        message: 'Meeting scheduled successfully! You will receive a confirmation email shortly.',
+        message: t('scheduler.successMessage'),
       });
       setFormData({ name: '', email: '', company: '', service: '', projectStage: '', meetingFocus: '', notes: '' });
       setSelectedDate(null);
@@ -145,7 +124,7 @@ const MeetingScheduler = () => {
     } catch (error) {
       setSubmitStatus({
         type: 'error',
-        message: error.message || 'Failed to schedule meeting. Please try again.',
+        message: error.message || t('scheduler.errorFallback'),
       });
     } finally {
       setIsSubmitting(false);
@@ -183,15 +162,15 @@ const MeetingScheduler = () => {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6" data-testid="schedule-label">Schedule</p>
+          <p className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6" data-testid="schedule-label">{t('scheduler.eyebrow')}</p>
           <h2
             data-testid="schedule-title"
             className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6"
           >
-            Book a <span className="italic text-white/70">Consultation</span>
+            {t('scheduler.titlePrefix')} <span className="italic text-white/70">{t('scheduler.titleEmphasis')}</span>
           </h2>
           <p className="text-white/65 text-base md:text-lg font-light max-w-2xl mx-auto">
-            Schedule a free consultation to discuss your project needs and how we can help optimize your BIM workflow.
+            {t('scheduler.subtitle')}
           </p>
         </motion.div>
 
@@ -268,7 +247,7 @@ const MeetingScheduler = () => {
                   className="font-bold"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                 >
-                  Select a Consultation Date
+                  {t('scheduler.selectDate')}
                 </h3>
               </div>
 
@@ -278,6 +257,7 @@ const MeetingScheduler = () => {
                   selected={selectedDate}
                   onSelect={setSelectedDate}
                   disabled={disabledDays}
+                  locale={dateLocale}
                   className="rounded-sm border border-[#0B2A44]"
                 />
               </div>
@@ -296,14 +276,14 @@ const MeetingScheduler = () => {
                     <div className="flex items-center gap-2 mb-4 pt-1">
                       <Clock size={16} className="text-[#39C3FF]" />
                       <span className="text-sm text-[rgba(247,249,251,0.65)]">
-                        Available times for {format(selectedDate, 'MMM dd, yyyy')}
+                        {t('scheduler.availableTimesFor', { date: format(selectedDate, 'MMM dd, yyyy', { locale: dateLocale }) })}
                       </span>
                     </div>
 
                     {isLoading ? (
                       <div className="flex items-center justify-center gap-2 text-[rgba(247,249,251,0.65)] py-4">
                         <Loader2 size={16} className="animate-spin" />
-                        Loading...
+                        {t('scheduler.loading')}
                       </div>
                     ) : availableSlots.length > 0 ? (
                       <div className="grid grid-cols-3 gap-2">
@@ -330,7 +310,7 @@ const MeetingScheduler = () => {
                       </div>
                     ) : (
                       <p className="text-sm text-[rgba(247,249,251,0.65)] text-center py-4">
-                        No available slots for this date
+                        {t('scheduler.noSlots')}
                       </p>
                     )}
                   </motion.div>
@@ -346,7 +326,7 @@ const MeetingScheduler = () => {
                   className="font-bold"
                   style={{ fontFamily: 'Space Grotesk, sans-serif' }}
                 >
-                  Your Details
+                  {t('scheduler.yourDetails')}
                 </h3>
               </div>
 
@@ -354,7 +334,7 @@ const MeetingScheduler = () => {
                 {/* Name */}
                 <div>
                   <Label htmlFor="name" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
-                    <User size={14} /> Name *
+                    <User size={14} /> {t('scheduler.labelName')}
                   </Label>
                   <Input
                     id="name"
@@ -362,7 +342,7 @@ const MeetingScheduler = () => {
                     data-testid="meeting-name-input"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Your full name"
+                    placeholder={t('scheduler.placeholderName')}
                     required
                     className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
                   />
@@ -371,7 +351,7 @@ const MeetingScheduler = () => {
                 {/* Email */}
                 <div>
                   <Label htmlFor="email" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
-                    <Mail size={14} /> Email *
+                    <Mail size={14} /> {t('scheduler.labelEmail')}
                   </Label>
                   <Input
                     id="email"
@@ -380,7 +360,7 @@ const MeetingScheduler = () => {
                     data-testid="meeting-email-input"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="you@email.com"
+                    placeholder={t('scheduler.placeholderEmail')}
                     required
                     className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
                   />
@@ -389,7 +369,7 @@ const MeetingScheduler = () => {
                 {/* Company */}
                 <div>
                   <Label htmlFor="company" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
-                    <Building2 size={14} /> Company
+                    <Building2 size={14} /> {t('scheduler.labelCompany')}
                   </Label>
                   <Input
                     id="company"
@@ -397,7 +377,7 @@ const MeetingScheduler = () => {
                     data-testid="meeting-company-input"
                     value={formData.company}
                     onChange={handleInputChange}
-                    placeholder="Your company name"
+                    placeholder={t('scheduler.placeholderCompany')}
                     className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)]"
                   />
                 </div>
@@ -405,11 +385,11 @@ const MeetingScheduler = () => {
                 {/* Service Needed */}
                 <div>
                   <Label htmlFor="service" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
-                    <Briefcase size={14} /> Service Needed *
+                    <Briefcase size={14} /> {t('scheduler.labelService')}
                   </Label>
                   <Select value={formData.service} onValueChange={handleSelectChange('service')}>
                     <SelectTrigger id="service" data-testid="meeting-service-input" className={selectTriggerClass}>
-                      <SelectValue placeholder="Select a service" />
+                      <SelectValue placeholder={t('scheduler.placeholderService')} />
                     </SelectTrigger>
                     <SelectContent className={selectContentClass}>
                       {SERVICE_OPTIONS.map(opt => (
@@ -422,11 +402,11 @@ const MeetingScheduler = () => {
                 {/* Project Stage */}
                 <div>
                   <Label htmlFor="projectStage" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
-                    <Layers size={14} /> Project Stage
+                    <Layers size={14} /> {t('scheduler.labelStage')}
                   </Label>
                   <Select value={formData.projectStage} onValueChange={handleSelectChange('projectStage')}>
                     <SelectTrigger id="projectStage" data-testid="meeting-stage-input" className={selectTriggerClass}>
-                      <SelectValue placeholder="Select project stage" />
+                      <SelectValue placeholder={t('scheduler.placeholderStage')} />
                     </SelectTrigger>
                     <SelectContent className={selectContentClass}>
                       {PROJECT_STAGE_OPTIONS.map(opt => (
@@ -439,11 +419,11 @@ const MeetingScheduler = () => {
                 {/* Meeting Focus */}
                 <div>
                   <Label htmlFor="meetingFocus" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
-                    <CalendarIcon size={14} /> Meeting Focus
+                    <CalendarIcon size={14} /> {t('scheduler.labelFocus')}
                   </Label>
                   <Select value={formData.meetingFocus} onValueChange={handleSelectChange('meetingFocus')}>
                     <SelectTrigger id="meetingFocus" data-testid="meeting-focus-input" className={selectTriggerClass}>
-                      <SelectValue placeholder="Select meeting focus" />
+                      <SelectValue placeholder={t('scheduler.placeholderFocus')} />
                     </SelectTrigger>
                     <SelectContent className={selectContentClass}>
                       {MEETING_FOCUS_OPTIONS.map(opt => (
@@ -456,7 +436,7 @@ const MeetingScheduler = () => {
                 {/* Project Notes */}
                 <div>
                   <Label htmlFor="notes" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 flex items-center gap-2">
-                    <FileText size={14} /> Project Notes *
+                    <FileText size={14} /> {t('scheduler.labelNotes')}
                   </Label>
                   <Textarea
                     id="notes"
@@ -464,7 +444,7 @@ const MeetingScheduler = () => {
                     data-testid="meeting-notes-input"
                     value={formData.notes}
                     onChange={handleInputChange}
-                    placeholder="Tell us about your project, BIM scope, disciplines involved, timeline, and required support..."
+                    placeholder={t('scheduler.placeholderNotes')}
                     rows={3}
                     required
                     className="bg-[#0B2A44] border-[rgba(255,255,255,0.1)] text-[#F7F9FB] placeholder:text-[rgba(247,249,251,0.55)] resize-none"
@@ -506,9 +486,9 @@ const MeetingScheduler = () => {
                         <Check size={14} className="text-[#7DE0FF]" />
                       </div>
                       <div>
-                        <p className="text-xs text-[rgba(247,249,251,0.65)] mb-0.5">Selected Time:</p>
+                        <p className="text-xs text-[rgba(247,249,251,0.65)] mb-0.5">{t('scheduler.selectedTime')}</p>
                         <p className="font-mono text-[#39C3FF] text-sm">
-                          {format(selectedDate, 'EEEE, MMMM dd, yyyy')} at {selectedTime}
+                          {format(selectedDate, 'EEEE, MMMM dd, yyyy', { locale: dateLocale })} {i18n.language?.startsWith('pt') ? 'às' : 'at'} {selectedTime}
                         </p>
                       </div>
                     </motion.div>
@@ -525,10 +505,10 @@ const MeetingScheduler = () => {
                     {isSubmitting ? (
                       <>
                         <Loader2 size={16} className="animate-spin" />
-                        Scheduling...
+                        {t('scheduler.submitLoading')}
                       </>
                     ) : (
-                      'Schedule Meeting'
+                      t('scheduler.submitIdle')
                     )}
                   </Button>
                 </motion.div>

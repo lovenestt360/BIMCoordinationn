@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import gsap from 'gsap';
+import { useTranslation } from 'react-i18next';
 import CountUp from './CountUp';
 
 const Hero = () => {
+  const { t } = useTranslation();
   const headlineRefs = useRef([]);
   const fadeRefs = useRef([]);
 
@@ -71,16 +73,16 @@ const Hero = () => {
               className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl lg:text-[82px] xl:text-[96px] leading-[0.98] text-white mb-6"
             >
               <span className="overflow-hidden block">
-                <span ref={addHeadlineRef} className="block">Precision BIM</span>
+                <span ref={addHeadlineRef} className="block">{t('hero.headlineLine1')}</span>
               </span>
               <span className="overflow-hidden block">
-                <span ref={addHeadlineRef} className="block italic text-white/80">for</span>
+                <span ref={addHeadlineRef} className="block italic text-white/80">{t('hero.headlineLine2')}</span>
               </span>
               <span className="overflow-hidden block">
-                <span ref={addHeadlineRef} className="block">Construction-Ready</span>
+                <span ref={addHeadlineRef} className="block">{t('hero.headlineLine3')}</span>
               </span>
               <span className="overflow-hidden block">
-                <span ref={addHeadlineRef} className="block">Delivery</span>
+                <span ref={addHeadlineRef} className="block">{t('hero.headlineLine4')}</span>
               </span>
             </h1>
 
@@ -90,9 +92,7 @@ const Hero = () => {
               data-testid="hero-subtitle"
               className="text-sm md:text-base text-white/65 font-light leading-relaxed max-w-[540px] mb-10"
             >
-              Helping contractors, consultants and project teams coordinate multidisciplinary
-              BIM models, manage issues and improve model reliability before those problems
-              reach construction.
+              {t('hero.subtitle')}
             </p>
 
             {/* CTAs */}
@@ -103,7 +103,7 @@ const Hero = () => {
                 onClick={(e) => scrollToSection(e, '#schedule')}
                 className="group bg-white text-black rounded-full px-7 py-3 text-sm font-medium flex items-center gap-2"
               >
-                Book a Consultation
+                {t('hero.ctaPrimary')}
                 <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
               </a>
               <a
@@ -112,7 +112,7 @@ const Hero = () => {
                 onClick={(e) => scrollToSection(e, '#portfolio')}
                 className="border border-white/30 text-white rounded-full px-7 py-3 text-sm font-medium hover:bg-white/10 hover:border-white/60 transition-colors duration-200"
               >
-                View Projects
+                {t('hero.ctaSecondary')}
               </a>
             </div>
 
@@ -124,15 +124,15 @@ const Hero = () => {
             >
               <div>
                 <CountUp target={10} suffix="+" duration={1600} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
-                <p className="text-xs text-white/50 mt-1">Project Delivered</p>
+                <p className="text-xs text-white/50 mt-1">{t('hero.statProjects')}</p>
               </div>
               <div>
                 <CountUp target={80} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
-                <p className="text-xs text-white/50 mt-1">Efficiency Improvement</p>
+                <p className="text-xs text-white/50 mt-1">{t('hero.statEfficiency')}</p>
               </div>
               <div>
                 <CountUp target={65} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
-                <p className="text-xs text-white/50 mt-1">Cost Optimization</p>
+                <p className="text-xs text-white/50 mt-1">{t('hero.statCost')}</p>
               </div>
             </div>
           </div>
@@ -140,7 +140,7 @@ const Hero = () => {
 
         {/* Scroll cue */}
         <div className="pb-8 flex flex-col items-center gap-2 text-white/50">
-          <span className="text-xs font-light tracking-wide">Scroll to explore</span>
+          <span className="text-xs font-light tracking-wide">{t('hero.scrollCue')}</span>
           <ChevronDown size={16} className="animate-bounce" />
         </div>
       </div>

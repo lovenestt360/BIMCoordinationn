@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HIGHLIGHTS = ['Remote delivery', 'International support', 'Flexible capacity', 'Project-based collaboration'];
+const HIGHLIGHT_KEYS = ['onDemand.highlight1', 'onDemand.highlight2', 'onDemand.highlight3', 'onDemand.highlight4'];
 
 const OnDemandSupport = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -40,25 +42,23 @@ const OnDemandSupport = () => {
 
       <div className="max-w-4xl mx-auto px-6 md:px-12 lg:px-16 relative z-10 text-center">
         <span className="text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-8 block">
-          On-Demand BIM Support
+          {t('onDemand.eyebrow')}
         </span>
         <h2 className="ods-headline font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-10">
-          When your BIM workload increases,
+          {t('onDemand.titleLine1')}
           <br />
-          <span className="italic text-white/70">your project shouldn&apos;t slow down.</span>
+          <span className="italic text-white/70">{t('onDemand.titleLine2')}</span>
         </h2>
 
         <p className="text-white/65 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto mb-14">
-          Klyron works remotely alongside contractors, consultants, BIM managers and internal
-          coordination teams, providing additional BIM capacity during demanding project stages,
-          deadlines and peak workloads.
+          {t('onDemand.body')}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 mb-14">
-          {HIGHLIGHTS.map((h) => (
-            <span key={h} className="text-white/55 text-sm font-light flex items-center gap-2">
+          {HIGHLIGHT_KEYS.map((key) => (
+            <span key={key} className="text-white/55 text-sm font-light flex items-center gap-2">
               <span className="w-1 h-1 rounded-full bg-[#39C3FF]" />
-              {h}
+              {t(key)}
             </span>
           ))}
         </div>

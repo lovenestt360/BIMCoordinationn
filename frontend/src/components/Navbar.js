@@ -1,16 +1,41 @@
 import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import gsap from 'gsap';
+import { useTranslation } from 'react-i18next';
 
 const NAV_LINKS = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'Projects', href: '#portfolio' },
-  { label: 'Contact', href: '#contact' },
+  { key: 'nav.about', href: '#about' },
+  { key: 'nav.services', href: '#services' },
+  { key: 'nav.process', href: '#process' },
+  { key: 'nav.projects', href: '#portfolio' },
+  { key: 'nav.contact', href: '#contact' },
 ];
 
+const LanguageToggle = ({ className = '' }) => {
+  const { i18n, t } = useTranslation();
+  const current = i18n.language?.startsWith('pt') ? 'pt' : 'en';
+
+  const toggle = () => {
+    i18n.changeLanguage(current === 'pt' ? 'en' : 'pt');
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={t('nav.toggleLanguage')}
+      data-testid="language-toggle"
+      className={`flex items-center gap-1.5 font-mono text-xs tracking-wide ${className}`}
+    >
+      <span className={current === 'en' ? 'text-white' : 'text-white/40 hover:text-white/70 transition-colors duration-200'}>EN</span>
+      <span className="text-white/20">/</span>
+      <span className={current === 'pt' ? 'text-white' : 'text-white/40 hover:text-white/70 transition-colors duration-200'}>PT</span>
+    </button>
+  );
+};
+
 const Navbar = () => {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const overlayRef = useRef(null);
@@ -100,32 +125,33 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <a
-                key={link.label}
+                key={link.key}
                 href={link.href}
                 onClick={(e) => scrollToSection(e, link.href)}
                 className="text-white/70 hover:text-white text-sm font-light transition-colors duration-200"
               >
-                {link.label}
+                {t(link.key)}
               </a>
             ))}
           </div>
 
           {/* Right side */}
           <div className="hidden md:flex items-center gap-6">
+            <LanguageToggle className="text-white/50" />
             <a
               href="#schedule"
               onClick={(e) => scrollToSection(e, '#schedule')}
               data-testid="navbar-cta"
               className="bg-white text-black rounded-full px-5 py-2.5 text-sm font-medium hover:bg-[#39C3FF] transition-colors duration-200"
             >
-              Book a Consultation
+              {t('nav.cta')}
             </a>
           </div>
 
           {/* Mobile hamburger */}
           <button
             type="button"
-            aria-label="Toggle menu"
+            aria-label={t('nav.toggleMenu')}
             onClick={() => setIsMobileMenuOpen((v) => !v)}
             className="md:hidden relative w-8 h-6 flex flex-col justify-center items-end"
           >
@@ -167,26 +193,29 @@ const Navbar = () => {
           <span className="text-white font-semibold tracking-tight text-lg" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
             KLYRON<span className="text-[#39C3FF]">.</span>
           </span>
-          <button
-            type="button"
-            aria-label="Close menu"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="w-8 h-8 flex items-center justify-center text-white"
-          >
-            <X size={22} />
-          </button>
+          <div className="flex items-center gap-5">
+            <LanguageToggle className="text-white/60" />
+            <button
+              type="button"
+              aria-label={t('nav.closeMenu')}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-8 h-8 flex items-center justify-center text-white"
+            >
+              <X size={22} />
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 flex flex-col justify-center px-6 gap-1">
           {NAV_LINKS.map((link, i) => (
             <a
-              key={`${link.label}-${i}`}
+              key={link.key}
               ref={(el) => { linkRefs.current[i] = el; }}
               href={link.href}
               onClick={(e) => scrollToSection(e, link.href)}
               className="font-instrument-serif text-4xl sm:text-5xl text-white border-b border-white/10 py-4 transition-[padding] duration-300 hover:pl-4"
             >
-              {link.label}
+              {t(link.key)}
             </a>
           ))}
         </div>
@@ -198,7 +227,7 @@ const Navbar = () => {
             onClick={(e) => scrollToSection(e, '#schedule')}
             className="block w-full text-center bg-white text-black rounded-full py-4 text-sm font-medium"
           >
-            Book a Consultation
+            {t('nav.cta')}
           </a>
         </div>
       </div>
