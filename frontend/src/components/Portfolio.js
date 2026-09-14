@@ -170,9 +170,8 @@ const Portfolio = () => {
         <div className="relative z-10 h-full flex flex-col justify-end px-6 md:px-12 lg:px-16 pb-8">
           <span className="text-white/50 font-mono text-xs tracking-widest uppercase mb-3">{project.number} / {t('portfolio.eyebrow')}</span>
           <h3 className="font-instrument-serif text-3xl sm:text-4xl md:text-5xl text-white mb-3">{project.title}</h3>
-          <div className="flex items-center gap-4 text-white/60 text-sm font-light">
+          <div className="flex flex-col gap-1 text-white/60 text-sm font-light">
             <span>{project.category}</span>
-            <span className="w-1 h-1 rounded-full bg-white/30" />
             <span className="flex items-center gap-1.5"><MapPin size={13} />{project.location}</span>
           </div>
         </div>
@@ -250,6 +249,31 @@ const Portfolio = () => {
               <span className="italic text-white/70">{project.solutionHeadline[1]}</span>
             </h4>
             <p className="proj-fade text-white/65 text-base font-light leading-relaxed max-w-2xl">{project.solutionCopy}</p>
+
+            {project.gallery && (
+              <div className="proj-fade mt-10">
+                <span className="text-white/40 text-xs font-light tracking-[0.2em] uppercase mb-4 block">
+                  {project.galleryEyebrow}
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-testid="academic-project-gallery">
+                  {project.gallery.map((g, i) => (
+                    <figure key={i} className="rounded-sm border border-white/10 bg-white/[0.03] overflow-hidden group">
+                      <div className="aspect-[4/3] overflow-hidden bg-[#0B2A44]">
+                        <img
+                          src={g.src}
+                          alt={g.caption}
+                          loading="lazy"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <figcaption className="px-4 py-3 text-white/60 text-xs font-light leading-relaxed">
+                        {g.caption}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 

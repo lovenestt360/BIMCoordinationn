@@ -11,29 +11,38 @@
     "toggleLanguage": "Switch language"
   },
   "hero": {
-    "headlineLine1": "Precision BIM",
-    "headlineLine2": "for",
-    "headlineLine3": "Construction-Ready",
-    "headlineLine4": "Delivery",
-    "subtitle": "Helping contractors, consultants and project teams coordinate multidisciplinary BIM models, manage issues and improve model reliability before those problems reach construction.",
-    "ctaPrimary": "Book a Consultation",
-    "ctaSecondary": "View Projects",
+    "headlineLine1": "Resolve coordination",
+    "headlineLine2": "problems",
+    "headlineLine3": "before they become",
+    "headlineLine4": "construction problems.",
+    "subtitle": "Klyron works alongside contractors, consultants and internal BIM teams to coordinate multidisciplinary models, prioritise critical issues and drive them through to closure—without adding permanent headcount.",
+    "ctaPrimary": "Book a 15-Minute Consultation",
+    "ctaSecondary": "View Our Work",
+    "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
     "statProjects": "Projects Delivered",
-    "statEfficiency": "Efficiency Improvement",
-    "statCost": "Cost Optimization",
+    "statResponse": "Response Time",
+    "statDisciplines": "Disciplines Coordinated",
     "scrollCue": "Scroll to explore"
+  },
+  "credibility": {
+    "items": [
+      "Project experience in Australia and Mozambique",
+      "Healthcare, education and infrastructure exposure",
+      "Architecture, structure and MEP coordination",
+      "ACC, Navisworks, Revit, Solibri and Bexel workflows",
+      "Remote international project support",
+      "Typical response within 24 hours"
+    ]
   },
   "whyBim": {
     "eyebrow": "The Problem",
-    "titleLine1": "Complex buildings aren't designed by one discipline.",
-    "titleLine2": "They have to work as one.",
-    "body": "Architectural, structural, mechanical, electrical, plumbing and fire protection systems often compete for the same physical space. Without structured coordination, problems can remain unresolved until construction.",
-    "consequence1": "Rework",
-    "consequence2": "Site delays",
-    "consequence3": "Installation conflicts",
-    "consequence4": "Additional labour",
-    "consequence5": "Wasted materials",
-    "consequence6": "Coordination pressure"
+    "titleLine1": "Coordination problems do not begin on site.",
+    "titleLine2": "They arrive there unresolved.",
+    "body": "When architectural, structural and MEP information is developed in isolation, clashes, missing information and unclear responsibilities can remain hidden until procurement or installation. Klyron creates a controlled coordination process before those problems affect construction.",
+    "problem1": "Issues accumulate faster than they are closed.",
+    "problem2": "Subcontractor models require repeated review and follow-up.",
+    "problem3": "Internal BIM teams carry more work than their available capacity.",
+    "problem4": "Critical model problems approach construction unresolved."
   },
   "modelFederation": {
     "eyebrow": "Model Federation",
@@ -49,10 +58,11 @@
     "body": "We combine architectural, structural and MEP models into a coordinated federated environment so spatial relationships, model alignment and multidisciplinary conflicts can be reviewed before construction."
   },
   "clashDetection": {
-    "eyebrow": "Clash Detection",
+    "eyebrow": "Controlled Workflow",
     "titleLine1": "Finding the clash is only the beginning.",
     "titleLine2": "Closing it is what matters.",
-    "body": "Klyron identifies meaningful coordination conflicts, filters priorities, assigns responsibility and tracks issues through resolution rather than simply generating long clash reports."
+    "body": "Klyron turns model findings into managed project actions. Every relevant issue is reviewed, prioritised, assigned, monitored and verified before closure.",
+    "workflowSteps": ["Detection", "Assignment", "Priority", "Follow-up", "Resolution", "Closure"]
   },
   "services": {
     "eyebrow": "What We Deliver",
@@ -140,14 +150,16 @@
     ]
   },
   "onDemand": {
-    "eyebrow": "On-Demand BIM Support",
+    "eyebrow": "Flexible BIM Capacity",
     "titleLine1": "When your BIM workload increases,",
     "titleLine2": "your project shouldn't slow down.",
-    "body": "Klyron works remotely alongside contractors, consultants, BIM managers and internal coordination teams, providing additional BIM capacity during demanding project stages, deadlines and peak workloads.",
-    "highlight1": "Remote delivery",
-    "highlight2": "International support",
-    "highlight3": "Flexible capacity",
-    "highlight4": "Project-based collaboration"
+    "body": "Klyron integrates with your existing team, CDE and coordination procedures to provide additional delivery capacity during demanding project phases, coordination backlogs and short deadlines.",
+    "highlight1": "Short-term project support",
+    "highlight2": "Monthly coordination support",
+    "highlight3": "Urgent model reviews",
+    "highlight4": "Specialist QA/QC and information-management support",
+    "highlight5": "Support for internal BIM departments",
+    "cta": "Check Project Availability"
   },
   "about": {
     "eyebrow": "About Klyron",
@@ -238,6 +250,12 @@
         "scope": ["Federated Model Review", "BIM Coordination", "Clash Detection", "Clash Review & Filtering", "ACC-Based Issue Tracking"],
         "solutionHeadline": ["From model conflicts", "to coordinated decisions."],
         "solutionCopy": "The six discipline models were reviewed within a federated coordination environment to identify meaningful spatial conflicts between systems. Rather than treating every detected interference equally, clashes were reviewed in context and organised according to their coordination relevance, then communicated through Autodesk Construction Cloud so the relevant teams had clear visibility of the location, context and status of each issue.",
+        "galleryEyebrow": "From the coordination review",
+        "gallery": [
+          { "src": "/projects/mhu-clash-review-1.jpg", "caption": "Ductwork clash flagged against structural framing" },
+          { "src": "/projects/mhu-clash-review-2.jpg", "caption": "Clearance conflict between services and roof steel" },
+          { "src": "/projects/mhu-mep-coordination.jpg", "caption": "Coordinated mechanical, electrical and plumbing routing" }
+        ],
         "metrics": [
           { "label": "Disciplines Coordinated" },
           { "label": "Clashes Reviewed" },
@@ -264,6 +282,12 @@
         "scope": ["BIM QA/QC", "Model Validation", "COBie Data Review", "BCF Issue Reporting"],
         "solutionHeadline": ["From model checks", "to reliable information."],
         "solutionCopy": "The model was reviewed in Solibri against defined validation rules, checking element classification, property sets and model consistency. Findings were documented and reported back to the design teams through BCF, giving them a structured, tool-agnostic way to locate and resolve each issue directly within their own modelling software.",
+        "galleryEyebrow": "From the coordination review",
+        "gallery": [
+          { "src": "/projects/school-federated-model.jpg", "caption": "Five discipline models federated for review" },
+          { "src": "/projects/school-cde-files.jpg", "caption": "Model exchange through the CDE, with version control" },
+          { "src": "/projects/school-project-timeline.jpg", "caption": "Project timeline and package sharing across teams" }
+        ],
         "metrics": [
           { "label": "Disciplines Reviewed" },
           { "label": "Model Checks Performed" },
@@ -291,6 +315,12 @@
         "scope": ["Revit Model Development", "Quantity Take-Off", "Cost Assignment", "4D/5D Scheduling"],
         "solutionHeadline": ["From a static model", "to a live cost and schedule view."],
         "solutionCopy": "The infrastructure model was developed in Revit, then linked to Bexel Manager to take off quantities and assign cost directly against model elements. The same model was connected to project scheduling to build 4D/5D workflows — keeping quantities, cost and programme aligned to the model rather than tracked separately.",
+        "galleryEyebrow": "From the model-linked workflow",
+        "gallery": [
+          { "src": "/projects/water-supply-quantity-takeoff.jpg", "caption": "Model-based quantity takeoff by element and category" },
+          { "src": "/projects/water-supply-cost-estimate.jpg", "caption": "Cost assignment linked directly to model quantities" },
+          { "src": "/projects/water-supply-schedule.jpg", "caption": "4D construction schedule tied to the model" }
+        ],
         "metrics": [
           { "label": "Model Elements Quantified" },
           { "label": "Cost Items Assigned" },
@@ -306,6 +336,33 @@
       }
     ]
   },
+  "deliverables": {
+    "eyebrow": "Sample Deliverables",
+    "titleLine1": "Clear coordination requires",
+    "titleLine2": "clear deliverables.",
+    "body": "Every coordination cycle is reported through structured, reviewable outputs—not just a verbal summary of what was found.",
+    "items": [
+      "Coordination review reports",
+      "Clash and issue registers",
+      "BIM QA/QC reports",
+      "Model-validation summaries",
+      "Information delivery trackers",
+      "CDE review notes",
+      "Meeting notes",
+      "Monthly summaries"
+    ],
+    "cta": "Request a Sample Coordination Report",
+    "galleryEyebrow": "From an actual coordination workflow",
+    "gallery": [
+      { "src": "/deliverables/federated-model.png", "caption": "Federated model — architecture, structure and MEP combined for review" },
+      { "src": "/deliverables/clash-matrix.png", "caption": "Clash matrix across disciplines" },
+      { "src": "/deliverables/clash-review-3d.png", "caption": "3D clash review with issue list" },
+      { "src": "/deliverables/qaqc-check-results.png", "caption": "Automated QA/QC checking results" },
+      { "src": "/deliverables/qaqc-ruleset.png", "caption": "QA/QC ruleset behind the checks" },
+      { "src": "/deliverables/issue-tracking.png", "caption": "Issue tracking with priority, assignment and due dates" },
+      { "src": "/deliverables/cde-structure.png", "caption": "Structured CDE folder hierarchy" }
+    ]
+  },
   "qaqc": {
     "eyebrow": "QA/QC & Information",
     "titleLine1": "A coordinated model isn't enough.",
@@ -319,6 +376,18 @@
     "titleLine1": "Coordinate digitally.",
     "titleLine2": "Build with confidence.",
     "body": "The goal of BIM coordination is not a perfect model for its own sake. It is clearer decisions, fewer unresolved conflicts and better information before construction."
+  },
+  "whatsNext": {
+    "eyebrow": "What Happens Next?",
+    "titleLine1": "A controlled way",
+    "titleLine2": "to get started.",
+    "body": "No long procurement process. Just a clear path from first conversation to coordination delivery.",
+    "steps": [
+      { "title": "Initial Project Review", "description": "We discuss your project stage, disciplines, challenge and timeline." },
+      { "title": "Support Recommendation", "description": "We define the scope, deliverables, cycle and support level that fit your project." },
+      { "title": "Controlled Onboarding", "description": "We agree project access, CDE procedures, responsibilities and communication." },
+      { "title": "Coordination Delivery", "description": "We work alongside your team and report through the agreed workflow." }
+    ]
   },
   "scheduler": {
     "eyebrow": "Schedule",
@@ -437,7 +506,9 @@
     "placeholderEmail": "your@email.com",
     "labelCompany": "Company",
     "placeholderCompany": "Your company name",
-    "labelMessage": "Message *",
+    "labelSupport": "Support Required",
+    "placeholderSupport": "Select a service",
+    "labelMessage": "Project Note",
     "placeholderMessage": "Tell us about your project, timeline, and any specific requirements...",
     "errorRequired": "Please fill in all required fields",
     "successMessage": "Message sent successfully! We will get back to you soon.",

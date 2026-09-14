@@ -1,20 +1,32 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import gsap from "gsap";
 import { useGlobalScrollReveal } from "./hooks/useScrollReveal";
+
+// GSAP tweens are driven by JS, not CSS, so the prefers-reduced-motion rules in
+// App.css can't reach them. Collapsing the global timeline makes every GSAP
+// entrance/scroll animation resolve near-instantly for users who asked for less motion,
+// without having to thread a check through every component.
+if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  gsap.globalTimeline.timeScale(200);
+}
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import CredibilityStrip from "./components/CredibilityStrip";
 import WhyBimCoordination from "./components/WhyBimCoordination";
 import ModelFederation from "./components/ModelFederation";
 import ClashDetectionSection from "./components/ClashDetectionSection";
+import Portfolio from "./components/Portfolio";
 import Services from "./components/Services";
+import Deliverables from "./components/Deliverables";
+import OnDemandSupport from "./components/OnDemandSupport";
 import Process from "./components/Process";
 import WhyKlyron from "./components/WhyKlyron";
-import OnDemandSupport from "./components/OnDemandSupport";
 import About from "./components/About";
-import Portfolio from "./components/Portfolio";
 import QAQCSection from "./components/QAQCSection";
 import BimToConstruction from "./components/BimToConstruction";
 import MeetingScheduler from "./components/MeetingScheduler";
+import WhatHappensNext from "./components/WhatHappensNext";
 import FAQ from "./components/FAQ";
 import FinalCTA from "./components/FinalCTA";
 import Contact from "./components/Contact";
@@ -30,18 +42,21 @@ const LandingPage = () => {
       <Navbar />
       <main>
         <Hero />
+        <CredibilityStrip />
         <WhyBimCoordination />
         <ModelFederation />
         <ClashDetectionSection />
+        <Portfolio />
         <Services />
+        <Deliverables />
+        <OnDemandSupport />
         <Process />
         <WhyKlyron />
-        <OnDemandSupport />
-        <About />
-        <Portfolio />
         <QAQCSection />
+        <About />
         <BimToConstruction />
         <MeetingScheduler />
+        <WhatHappensNext />
         <FAQ />
         <FinalCTA />
         <Contact />

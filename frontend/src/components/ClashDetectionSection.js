@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const ClashDetectionSection = () => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
+  const workflowSteps = t('clashDetection.workflowSteps', { returnObjects: true });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -48,9 +50,26 @@ const ClashDetectionSection = () => {
             <br />
             <span className="italic text-white/70">{t('clashDetection.titleLine2')}</span>
           </h2>
-          <p className="text-white/65 text-base font-light leading-relaxed max-w-md">
+          <p className="text-white/65 text-base font-light leading-relaxed max-w-md mb-10">
             {t('clashDetection.body')}
           </p>
+
+          {/* Workflow sequence */}
+          <div
+            data-testid="workflow-sequence"
+            className="flex flex-wrap items-center gap-x-1 gap-y-3"
+          >
+            {workflowSteps.map((step, i) => (
+              <div key={step} className="flex items-center gap-1">
+                <span className="text-white text-xs font-medium tracking-wide uppercase bg-white/[0.06] border border-white/15 rounded-full px-3 py-1.5">
+                  {step}
+                </span>
+                {i < workflowSteps.length - 1 && (
+                  <ArrowRight size={12} className="text-white/30 mx-1 flex-shrink-0" />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

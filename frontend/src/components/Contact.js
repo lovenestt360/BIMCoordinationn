@@ -5,7 +5,12 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../components/ui/select';
 import { supabase } from '../lib/supabase';
+
+const selectTriggerClass = 'w-full h-auto bg-white/[0.04] border-white/10 text-[#F7F9FB] px-3 py-2 text-sm data-[placeholder]:text-white/40 focus:ring-[#39C3FF] focus:ring-offset-0';
+const selectContentClass = 'bg-[#0B2A44] border-white/10 text-[#F7F9FB]';
+const selectItemClass = 'text-white/80 focus:bg-[#39C3FF]/10 focus:text-[#F7F9FB] cursor-pointer';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -15,17 +20,23 @@ const Contact = () => {
     name: '',
     email: '',
     company: '',
+    support: '',
     message: '',
   });
+  const supportOptions = t('scheduler.serviceOptions', { returnObjects: true });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleSupportChange = (value) => {
+    setFormData(prev => ({ ...prev, support: value }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name || !formData.email) {
       setSubmitStatus({ type: 'error', message: t('contact.errorRequired') });
       return;
     }
@@ -34,11 +45,19 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
+      // The contact_messages table has no dedicated "support" column, so the
+      // selected service is folded into the message body rather than requiring
+      // a schema migration on the shared Supabase project.
+      const composedMessage = [
+        formData.support ? `Support needed: ${formData.support}` : null,
+        formData.message || null,
+      ].filter(Boolean).join('\n\n');
+
       const { error } = await supabase.from('contact_messages').insert([{
         name: formData.name,
         email: formData.email,
         company: formData.company || null,
-        message: formData.message,
+        message: composedMessage,
       }]);
 
       if (error) throw error;
@@ -47,7 +66,7 @@ const Contact = () => {
         type: 'success',
         message: t('contact.successMessage'),
       });
-      setFormData({ name: '', email: '', company: '', message: '' });
+      setFormData({ name: '', email: '', company: '', support: '', message: '' });
     } catch (error) {
       setSubmitStatus({
         type: 'error',
@@ -188,19 +207,39 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="contact-company" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
-                  {t('contact.labelCompany')}
-                </Label>
-                <Input
-                  id="contact-company"
-                  name="company"
-                  data-testid="contact-company-input"
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  placeholder={t('contact.placeholderCompany')}
-                  className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <Label htmlFor="contact-company" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
+                    {t('contact.labelCompany')}
+                  </Label>
+                  <Input
+                    id="contact-company"
+                    name="company"
+                    data-testid="contact-company-input"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    placeholder={t('contact.placeholderCompany')}
+                    className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="contact-support" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
+                    {t('contact.labelSupport')}
+                  </Label>
+                  <Select value={formData.support} onValueChange={handleSupportChange}>
+                    <SelectTrigger id="contact-support" data-testid="contact-support-select" className={selectTriggerClass}>
+                      <SelectValue placeholder={t('contact.placeholderSupport')} />
+                    </SelectTrigger>
+                    <SelectContent className={selectContentClass}>
+                      {supportOptions.map((option) => (
+                        <SelectItem key={option} value={option} className={selectItemClass}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               <div>
@@ -215,7 +254,6 @@ const Contact = () => {
                   onChange={handleInputChange}
                   placeholder={t('contact.placeholderMessage')}
                   rows={5}
-                  required
                   className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50 resize-none"
                 />
               </div>

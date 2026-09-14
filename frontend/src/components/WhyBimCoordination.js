@@ -5,13 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CONSEQUENCE_KEYS = [
-  'whyBim.consequence1',
-  'whyBim.consequence2',
-  'whyBim.consequence3',
-  'whyBim.consequence4',
-  'whyBim.consequence5',
-  'whyBim.consequence6',
+const PROBLEM_KEYS = [
+  'whyBim.problem1',
+  'whyBim.problem2',
+  'whyBim.problem3',
+  'whyBim.problem4',
 ];
 
 const WhyBimCoordination = () => {
@@ -75,11 +73,11 @@ const WhyBimCoordination = () => {
           {t('whyBim.body')}
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5 max-w-2xl">
-          {CONSEQUENCE_KEYS.map((key) => (
-            <div key={key} className="wby-item flex items-center gap-3">
-              <span className="w-1 h-1 rounded-full bg-[#FF7A1A] flex-shrink-0" />
-              <span className="text-white/60 text-sm font-light">{t(key)}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5 max-w-3xl">
+          {PROBLEM_KEYS.map((key) => (
+            <div key={key} className="wby-item flex items-start gap-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A1A] flex-shrink-0 mt-2" />
+              <span className="text-white/65 text-sm md:text-base font-light leading-relaxed">{t(key)}</span>
             </div>
           ))}
         </div>

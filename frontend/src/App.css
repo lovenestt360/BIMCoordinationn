@@ -544,6 +544,27 @@ textarea:-webkit-autofill:focus {
   display: none;
 }
 
+/* Reduced motion — respect the user's OS-level preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .sr-hidden {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Print styles */
 @media print {
   .glass,

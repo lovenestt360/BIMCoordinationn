@@ -1,15 +1,27 @@
 import { useEffect, useRef } from 'react';
+import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HIGHLIGHT_KEYS = ['onDemand.highlight1', 'onDemand.highlight2', 'onDemand.highlight3', 'onDemand.highlight4'];
+const HIGHLIGHT_KEYS = [
+  'onDemand.highlight1',
+  'onDemand.highlight2',
+  'onDemand.highlight3',
+  'onDemand.highlight4',
+  'onDemand.highlight5',
+];
 
 const OnDemandSupport = () => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
+
+  const scrollTo = (e, href) => {
+    e.preventDefault();
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -62,6 +74,16 @@ const OnDemandSupport = () => {
             </span>
           ))}
         </div>
+
+        <a
+          href="#schedule"
+          onClick={(e) => scrollTo(e, '#schedule')}
+          data-testid="ondemand-cta"
+          className="group inline-flex items-center gap-2 bg-white text-black rounded-full px-7 py-3 text-sm font-medium"
+        >
+          {t('onDemand.cta')}
+          <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+        </a>
       </div>
     </section>
   );

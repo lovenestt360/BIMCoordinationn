@@ -96,11 +96,12 @@ const Hero = () => {
             </p>
 
             {/* CTAs */}
-            <div ref={addFadeRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-16">
+            <div ref={addFadeRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
               <a
-                href="#schedule"
+                href="https://calendar.app.google/2ZdXEk3kBTXBM2DB7"
+                target="_blank"
+                rel="noopener noreferrer"
                 data-testid="hero-cta-primary"
-                onClick={(e) => scrollToSection(e, '#schedule')}
                 className="group bg-white text-black rounded-full px-7 py-3 text-sm font-medium flex items-center gap-2"
               >
                 {t('hero.ctaPrimary')}
@@ -116,6 +117,11 @@ const Hero = () => {
               </a>
             </div>
 
+            {/* Reassurance */}
+            <p ref={addFadeRef} data-testid="hero-reassurance" className="text-xs text-white/50 font-light mb-16">
+              {t('hero.reassurance')}
+            </p>
+
             {/* Stats */}
             <div
               ref={addFadeRef}
@@ -127,12 +133,12 @@ const Hero = () => {
                 <p className="text-xs text-white/50 mt-1">{t('hero.statProjects')}</p>
               </div>
               <div>
-                <CountUp target={80} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
-                <p className="text-xs text-white/50 mt-1">{t('hero.statEfficiency')}</p>
+                <CountUp target={24} suffix="h" duration={1200} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
+                <p className="text-xs text-white/50 mt-1">{t('hero.statResponse')}</p>
               </div>
               <div>
-                <CountUp target={65} suffix="%" duration={1800} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
-                <p className="text-xs text-white/50 mt-1">{t('hero.statCost')}</p>
+                <CountUp target={6} suffix="+" duration={1000} className="text-2xl font-semibold text-[#39C3FF] font-mono" />
+                <p className="text-xs text-white/50 mt-1">{t('hero.statDisciplines')}</p>
               </div>
             </div>
           </div>

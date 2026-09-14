@@ -11,29 +11,38 @@
     "toggleLanguage": "Mudar idioma"
   },
   "hero": {
-    "headlineLine1": "BIM de Precisão",
-    "headlineLine2": "para",
-    "headlineLine3": "uma Entrega",
-    "headlineLine4": "Pronta a Construir",
-    "subtitle": "Apoiamos empreiteiros, consultores e equipas de projeto na coordenação de modelos BIM multidisciplinares, na gestão de problemas e na melhoria da fiabilidade dos modelos antes de estes chegarem à fase de construção.",
-    "ctaPrimary": "Marcar Consulta",
+    "headlineLine1": "Resolva os problemas",
+    "headlineLine2": "de coordenação",
+    "headlineLine3": "antes que se tornem",
+    "headlineLine4": "problemas em obra.",
+    "subtitle": "A Klyron trabalha ao lado de empreiteiros, consultores e equipas BIM internas para coordenar modelos multidisciplinares, priorizar questões críticas e acompanhá-las até ao encerramento—sem aumentar permanentemente a equipa.",
+    "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
     "ctaSecondary": "Ver Projetos",
+    "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
     "statProjects": "Projetos Entregues",
-    "statEfficiency": "Melhoria de Eficiência",
-    "statCost": "Otimização de Custos",
+    "statResponse": "Tempo de Resposta",
+    "statDisciplines": "Especialidades Coordenadas",
     "scrollCue": "Deslize para explorar"
+  },
+  "credibility": {
+    "items": [
+      "Experiência de projeto na Austrália e em Moçambique",
+      "Exposição em saúde, educação e infraestruturas",
+      "Coordenação de arquitetura, estrutura e MEP",
+      "Fluxos de trabalho ACC, Navisworks, Revit, Solibri e Bexel",
+      "Apoio remoto a projetos internacionais",
+      "Resposta habitual em até 24 horas"
+    ]
   },
   "whyBim": {
     "eyebrow": "O Problema",
-    "titleLine1": "Edifícios complexos não são concebidos por uma única especialidade.",
-    "titleLine2": "Têm de funcionar como um todo.",
-    "body": "Os sistemas de arquitetura, estrutura, mecânica, eletricidade, canalização e proteção contra incêndios competem frequentemente pelo mesmo espaço físico. Sem uma coordenação estruturada, os problemas podem permanecer por resolver até à fase de construção.",
-    "consequence1": "Retrabalho",
-    "consequence2": "Atrasos em obra",
-    "consequence3": "Conflitos de instalação",
-    "consequence4": "Mão de obra adicional",
-    "consequence5": "Desperdício de materiais",
-    "consequence6": "Pressão de coordenação"
+    "titleLine1": "Os problemas de coordenação não começam em obra.",
+    "titleLine2": "Chegam à obra por resolver.",
+    "body": "Quando a informação de arquitetura, estrutura e MEP é desenvolvida de forma isolada, colisões, informação em falta e responsabilidades pouco claras podem permanecer ocultas até ao aprovisionamento ou à instalação. A Klyron cria um processo de coordenação controlado antes que esses problemas afetem a obra.",
+    "problem1": "Os problemas acumulam-se mais depressa do que são encerrados.",
+    "problem2": "Os modelos dos subempreiteiros exigem revisão e acompanhamento repetidos.",
+    "problem3": "As equipas BIM internas têm mais trabalho do que a sua capacidade disponível.",
+    "problem4": "Problemas críticos do modelo chegam à fase de construção por resolver."
   },
   "modelFederation": {
     "eyebrow": "Federação de Modelos",
@@ -49,10 +58,11 @@
     "body": "Combinamos os modelos de arquitetura, estrutura e especialidades técnicas (MEP) num ambiente federado e coordenado, permitindo rever relações espaciais, o alinhamento dos modelos e conflitos multidisciplinares antes da construção."
   },
   "clashDetection": {
-    "eyebrow": "Deteção de Colisões",
+    "eyebrow": "Fluxo Controlado",
     "titleLine1": "Encontrar a colisão é apenas o início.",
     "titleLine2": "Resolvê-la é o que importa.",
-    "body": "A Klyron identifica conflitos de coordenação relevantes, prioriza-os, atribui responsabilidades e acompanha os problemas até à sua resolução, em vez de se limitar a gerar longos relatórios de colisões."
+    "body": "A Klyron transforma os problemas identificados no modelo em ações controladas do projeto. Cada questão relevante é revista, priorizada, atribuída, acompanhada e verificada antes do encerramento.",
+    "workflowSteps": ["Deteção", "Atribuição", "Prioridade", "Acompanhamento", "Resolução", "Encerramento"]
   },
   "services": {
     "eyebrow": "O Que Entregamos",
@@ -140,14 +150,16 @@
     ]
   },
   "onDemand": {
-    "eyebrow": "Suporte BIM Sob Pedido",
+    "eyebrow": "Capacidade BIM Flexível",
     "titleLine1": "Quando a sua carga de trabalho BIM aumenta,",
     "titleLine2": "o seu projeto não deve abrandar.",
-    "body": "A Klyron trabalha remotamente junto de empreiteiros, consultores, gestores BIM e equipas internas de coordenação, disponibilizando capacidade BIM adicional durante fases exigentes do projeto, prazos apertados e picos de trabalho.",
-    "highlight1": "Entrega remota",
-    "highlight2": "Apoio internacional",
-    "highlight3": "Capacidade flexível",
-    "highlight4": "Colaboração por projeto"
+    "body": "A Klyron integra-se com a sua equipa, CDE e procedimentos de coordenação existentes para disponibilizar capacidade de entrega adicional durante fases exigentes do projeto, atrasos de coordenação e prazos apertados.",
+    "highlight1": "Apoio pontual a projetos",
+    "highlight2": "Apoio mensal de coordenação",
+    "highlight3": "Revisões urgentes do modelo",
+    "highlight4": "Apoio especializado em QA/QC e gestão de informação",
+    "highlight5": "Apoio a departamentos BIM internos",
+    "cta": "Verificar Disponibilidade"
   },
   "about": {
     "eyebrow": "Sobre a Klyron",
@@ -238,6 +250,12 @@
         "scope": ["Revisão do Modelo Federado", "Coordenação BIM", "Deteção de Colisões", "Revisão e Filtragem de Colisões", "Acompanhamento de Problemas via ACC"],
         "solutionHeadline": ["De conflitos no modelo", "a decisões coordenadas."],
         "solutionCopy": "Os seis modelos de especialidade foram revistos num ambiente de coordenação federado, de forma a identificar conflitos espaciais relevantes entre sistemas. Em vez de tratar todas as interferências detetadas da mesma forma, as colisões foram analisadas em contexto e organizadas de acordo com a sua relevância para a coordenação, sendo depois comunicadas através do Autodesk Construction Cloud, garantindo às equipas envolvidas uma visão clara da localização, do contexto e do estado de cada problema.",
+        "galleryEyebrow": "Da revisão de coordenação",
+        "gallery": [
+          { "src": "/projects/mhu-clash-review-1.jpg", "caption": "Colisão de condutas assinalada contra a estrutura" },
+          { "src": "/projects/mhu-clash-review-2.jpg", "caption": "Conflito de espaço livre entre especialidades e estrutura de cobertura" },
+          { "src": "/projects/mhu-mep-coordination.jpg", "caption": "Traçado coordenado de mecânica, eletricidade e canalização" }
+        ],
         "metrics": [
           { "label": "Especialidades Coordenadas" },
           { "label": "Colisões Revistas" },
@@ -264,6 +282,12 @@
         "scope": ["QA/QC de BIM", "Validação de Modelos", "Revisão de Dados COBie", "Comunicação de Problemas via BCF"],
         "solutionHeadline": ["De verificações no modelo", "a informação fiável."],
         "solutionCopy": "O modelo foi revisto no Solibri de acordo com regras de validação definidas, verificando a classificação dos elementos, os conjuntos de propriedades e a consistência do modelo. Os resultados foram documentados e comunicados às equipas de projeto através do BCF, dando-lhes uma forma estruturada e independente de software para localizar e resolver cada problema diretamente no seu próprio software de modelação.",
+        "galleryEyebrow": "Da revisão de coordenação",
+        "gallery": [
+          { "src": "/projects/school-federated-model.jpg", "caption": "Cinco modelos de especialidades federados para revisão" },
+          { "src": "/projects/school-cde-files.jpg", "caption": "Troca de modelos através do CDE, com controlo de versões" },
+          { "src": "/projects/school-project-timeline.jpg", "caption": "Cronograma do projeto e partilha de pacotes entre equipas" }
+        ],
         "metrics": [
           { "label": "Especialidades Revistas" },
           { "label": "Verificações de Modelo Realizadas" },
@@ -291,6 +315,12 @@
         "scope": ["Desenvolvimento do Modelo em Revit", "Levantamento de Quantidades", "Atribuição de Custos", "Planeamento 4D/5D"],
         "solutionHeadline": ["De um modelo estático", "a uma visão viva de custos e cronograma."],
         "solutionCopy": "O modelo de infraestrutura foi desenvolvido em Revit e depois ligado ao Bexel Manager para efetuar o levantamento de quantidades e atribuir custos diretamente aos elementos do modelo. O mesmo modelo foi ligado ao cronograma do projeto para construir fluxos de trabalho 4D/5D — mantendo as quantidades, os custos e o programa alinhados com o modelo, em vez de serem acompanhados separadamente.",
+        "galleryEyebrow": "Do fluxo de trabalho ligado ao modelo",
+        "gallery": [
+          { "src": "/projects/water-supply-quantity-takeoff.jpg", "caption": "Levantamento de quantidades por elemento e categoria, a partir do modelo" },
+          { "src": "/projects/water-supply-cost-estimate.jpg", "caption": "Atribuição de custos ligada diretamente às quantidades do modelo" },
+          { "src": "/projects/water-supply-schedule.jpg", "caption": "Cronograma 4D ligado ao modelo" }
+        ],
         "metrics": [
           { "label": "Elementos do Modelo Quantificados" },
           { "label": "Itens de Custo Atribuídos" },
@@ -306,6 +336,33 @@
       }
     ]
   },
+  "deliverables": {
+    "eyebrow": "Entregáveis de Exemplo",
+    "titleLine1": "Uma coordenação clara exige",
+    "titleLine2": "entregáveis claros.",
+    "body": "Cada ciclo de coordenação é reportado através de resultados estruturados e revisíveis — não apenas um resumo verbal do que foi encontrado.",
+    "items": [
+      "Relatórios de revisão de coordenação",
+      "Registos de colisões e problemas",
+      "Relatórios de QA/QC de BIM",
+      "Resumos de validação de modelo",
+      "Painéis de acompanhamento da entrega de informação",
+      "Notas de revisão do CDE",
+      "Notas de reunião",
+      "Resumos mensais"
+    ],
+    "cta": "Pedir um Relatório de Coordenação de Exemplo",
+    "galleryEyebrow": "De um fluxo de coordenação real",
+    "gallery": [
+      { "src": "/deliverables/federated-model.png", "caption": "Modelo federado — arquitetura, estrutura e MEP combinados para revisão" },
+      { "src": "/deliverables/clash-matrix.png", "caption": "Matriz de colisões entre especialidades" },
+      { "src": "/deliverables/clash-review-3d.png", "caption": "Revisão de colisões em 3D com lista de problemas" },
+      { "src": "/deliverables/qaqc-check-results.png", "caption": "Resultados automáticos de verificação QA/QC" },
+      { "src": "/deliverables/qaqc-ruleset.png", "caption": "Conjunto de regras por trás das verificações" },
+      { "src": "/deliverables/issue-tracking.png", "caption": "Acompanhamento de problemas com prioridade, atribuição e prazos" },
+      { "src": "/deliverables/cde-structure.png", "caption": "Estrutura de pastas organizada no CDE" }
+    ]
+  },
   "qaqc": {
     "eyebrow": "QA/QC e Informação",
     "titleLine1": "Um modelo coordenado não é suficiente.",
@@ -319,6 +376,18 @@
     "titleLine1": "Coordenar digitalmente.",
     "titleLine2": "Construir com confiança.",
     "body": "O objetivo da coordenação BIM não é um modelo perfeito por si só. É garantir decisões mais claras, menos conflitos por resolver e melhor informação antes da construção."
+  },
+  "whatsNext": {
+    "eyebrow": "O Que Acontece a Seguir?",
+    "titleLine1": "Uma forma controlada",
+    "titleLine2": "de começar.",
+    "body": "Sem um processo de aquisição longo. Apenas um caminho claro desde a primeira conversa até à entrega da coordenação.",
+    "steps": [
+      { "title": "Revisão Inicial do Projeto", "description": "Discutimos a fase do seu projeto, as especialidades, o desafio e o cronograma." },
+      { "title": "Recomendação de Apoio", "description": "Definimos o âmbito, os entregáveis, o ciclo e o nível de apoio adequados ao seu projeto." },
+      { "title": "Integração Controlada", "description": "Acordamos o acesso ao projeto, os procedimentos do CDE, as responsabilidades e a comunicação." },
+      { "title": "Entrega da Coordenação", "description": "Trabalhamos junto da sua equipa e reportamos através do fluxo de trabalho acordado." }
+    ]
   },
   "scheduler": {
     "eyebrow": "Marcação",
@@ -437,7 +506,9 @@
     "placeholderEmail": "oseu@email.com",
     "labelCompany": "Empresa",
     "placeholderCompany": "Nome da sua empresa",
-    "labelMessage": "Mensagem *",
+    "labelSupport": "Apoio Necessário",
+    "placeholderSupport": "Selecione um serviço",
+    "labelMessage": "Nota do Projeto",
     "placeholderMessage": "Conte-nos sobre o seu projeto, cronograma e quaisquer requisitos específicos...",
     "errorRequired": "Por favor, preencha todos os campos obrigatórios",
     "successMessage": "Mensagem enviada com sucesso! Entraremos em contacto brevemente.",
