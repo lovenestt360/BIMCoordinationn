@@ -166,7 +166,8 @@
     "openingTitleLine1": "Construída para trazer controlo",
     "openingTitleLine2": "a projetos BIM complexos.",
     "openingBody1": "A Klyron Consulting é uma consultoria de Coordenação BIM e Entrega Digital, criada para o ambiente digital cada vez mais complexo por detrás da construção moderna.",
-    "openingBody2": "A Klyron foi criada em torno dessa realidade.",
+    "openingBody2": "Trabalha ao lado de empreiteiros, consultores e equipas BIM internas a nível internacional — coordenando modelos federados, gerindo problemas até ao seu encerramento e validando a informação por trás das decisões do projeto.",
+    "openingBody3": "A Klyron foi criada especificamente para esse papel: um parceiro dedicado e remoto para coordenação e entrega digital — trabalhando ao lado das equipas existentes, não as substituindo.",
     "existsEyebrow": "Porque Existe a Klyron",
     "existsTitleLine1": "Um modelo pode identificar um problema.",
     "existsTitleLine2": "Mas cabe ao projeto resolvê-lo.",
@@ -285,8 +286,8 @@
         "galleryEyebrow": "Da revisão de coordenação",
         "gallery": [
           { "src": "/projects/school-federated-model.jpg", "caption": "Cinco modelos de especialidades federados para revisão" },
-          { "src": "/projects/school-cde-files.jpg", "caption": "Troca de modelos através do CDE, com controlo de versões" },
-          { "src": "/projects/school-project-timeline.jpg", "caption": "Cronograma do projeto e partilha de pacotes entre equipas" }
+          { "src": "/projects/school-checking-results.jpg", "caption": "Resultados automáticos de verificação QA/QC, com a colisão assinalada" },
+          { "src": "/projects/school-issue-tracking.jpg", "caption": "Acompanhamento de problemas em tempo real e estado de resolução entre equipas" }
         ],
         "metrics": [
           { "label": "Especialidades Revistas" },

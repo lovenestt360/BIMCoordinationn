@@ -166,7 +166,8 @@
     "openingTitleLine1": "Built to bring control",
     "openingTitleLine2": "to complex BIM projects.",
     "openingBody1": "Klyron Consulting is a BIM Coordination and Digital Delivery consultancy built for the increasingly complex digital environment behind modern construction.",
-    "openingBody2": "Klyron was created around that reality.",
+    "openingBody2": "It works alongside contractors, consultants and internal BIM teams internationally — coordinating federated models, managing issues through to closure, and validating the information behind project decisions.",
+    "openingBody3": "Klyron was built specifically for that role: a dedicated, remote-first partner for coordination and digital delivery — working alongside existing teams, not replacing them.",
     "existsEyebrow": "Why Klyron Exists",
     "existsTitleLine1": "A model can identify a problem.",
     "existsTitleLine2": "But a project still has to solve it.",
@@ -285,8 +286,8 @@
         "galleryEyebrow": "From the coordination review",
         "gallery": [
           { "src": "/projects/school-federated-model.jpg", "caption": "Five discipline models federated for review" },
-          { "src": "/projects/school-cde-files.jpg", "caption": "Model exchange through the CDE, with version control" },
-          { "src": "/projects/school-project-timeline.jpg", "caption": "Project timeline and package sharing across teams" }
+          { "src": "/projects/school-checking-results.jpg", "caption": "Automated QA/QC checking results, with the flagged clash highlighted" },
+          { "src": "/projects/school-issue-tracking.jpg", "caption": "Live issue tracking and resolution status across teams" }
         ],
         "metrics": [
           { "label": "Disciplines Reviewed" },

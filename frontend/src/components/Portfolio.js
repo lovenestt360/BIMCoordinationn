@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { MapPin, ClipboardList, AlertTriangle, ListChecks, Wrench, BarChart3, Boxes, CheckCircle2, CheckCircle } from 'lucide-react';
+import { MapPin, ClipboardList, AlertTriangle, ListChecks, Wrench, BarChart3, Boxes, CheckCircle2, CheckCircle, Expand } from 'lucide-react';
 import gsap from 'gsap';
 import { useTranslation } from 'react-i18next';
 import CountUp from './CountUp';
+import ImageLightbox from './ImageLightbox';
 
 const PROJECT_META = [
   {
@@ -49,6 +50,7 @@ const Portfolio = () => {
   const { t } = useTranslation();
   const [active, setActive] = useState(0);
   const [stage, setStage] = useState(0);
+  const [lightboxImage, setLightboxImage] = useState(null);
   const imgRefs = useRef([]);
   const bodyRef = useRef(null);
   const sectionRef = useRef(null);
@@ -255,16 +257,23 @@ const Portfolio = () => {
                 <span className="text-white/40 text-xs font-light tracking-[0.2em] uppercase mb-4 block">
                   {project.galleryEyebrow}
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-testid="academic-project-gallery">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-testid="case-study-gallery">
                   {project.gallery.map((g, i) => (
-                    <figure key={i} className="rounded-sm border border-white/10 bg-white/[0.03] overflow-hidden group">
-                      <div className="aspect-[4/3] overflow-hidden bg-[#0B2A44]">
+                    <figure
+                      key={i}
+                      className="rounded-sm border border-white/10 bg-white/[0.03] overflow-hidden group cursor-pointer"
+                      onClick={() => setLightboxImage(g)}
+                    >
+                      <div className="relative aspect-[4/3] overflow-hidden bg-[#0B2A44]">
                         <img
                           src={g.src}
                           alt={g.caption}
                           loading="lazy"
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                         />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors duration-300">
+                          <Expand size={22} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
                       </div>
                       <figcaption className="px-4 py-3 text-white/60 text-xs font-light leading-relaxed">
                         {g.caption}
@@ -342,6 +351,8 @@ const Portfolio = () => {
           </button>
         </div>
       </div>
+
+      <ImageLightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
 
       {/* Request full portfolio */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 pb-16 text-center">

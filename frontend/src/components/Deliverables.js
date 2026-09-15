@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { FileText, ArrowRight } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { FileText, ArrowRight, Expand } from 'lucide-react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
+import ImageLightbox from './ImageLightbox';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +12,7 @@ const Deliverables = () => {
   const sectionRef = useRef(null);
   const items = t('deliverables.items', { returnObjects: true });
   const gallery = t('deliverables.gallery', { returnObjects: true });
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const scrollTo = (e, href) => {
     e.preventDefault();
@@ -73,15 +75,19 @@ const Deliverables = () => {
           {gallery.map((g, i) => (
             <figure
               key={i}
-              className="dlv-gallery-item rounded-sm border border-white/10 bg-white/[0.03] overflow-hidden group"
+              className="dlv-gallery-item rounded-sm border border-white/10 bg-white/[0.03] overflow-hidden group cursor-pointer"
+              onClick={() => setLightboxImage(g)}
             >
-              <div className="aspect-[4/3] overflow-hidden bg-[#0B2A44]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#0B2A44]">
                 <img
                   src={g.src}
                   alt={g.caption}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors duration-300">
+                  <Expand size={22} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
               </div>
               <figcaption className="px-4 py-3 text-white/60 text-xs font-light leading-relaxed">
                 {g.caption}
@@ -89,6 +95,8 @@ const Deliverables = () => {
             </figure>
           ))}
         </div>
+
+        <ImageLightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
 
         <a
           href="#contact"

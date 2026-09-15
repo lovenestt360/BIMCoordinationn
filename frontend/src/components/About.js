@@ -62,18 +62,31 @@ const About = () => {
       <div className="absolute pointer-events-none" style={{ top: '92%', left: '-10%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(57,195,255,0.08) 0%, transparent 70%)' }} />
 
       {/* ================= ABOUT OPENING ================= */}
-      <div className="about-block relative z-10 py-28 lg:py-40 max-w-4xl mx-auto px-6 md:px-12 lg:px-16">
-        <span className="about-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="about-label">
-          {t('about.eyebrow')}
-        </span>
-        <h2 data-testid="about-title" className="about-fade font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-10">
-          {t('about.openingTitleLine1')}
-          <br />
-          <span className="italic text-white/70">{t('about.openingTitleLine2')}</span>
-        </h2>
-        <div className="about-fade text-white/65 text-base md:text-lg font-light leading-relaxed space-y-4 max-w-2xl">
-          <p>{t('about.openingBody1')}</p>
-          <p className="text-white/85">{t('about.openingBody2')}</p>
+      <div className="about-block relative z-10 py-28 lg:py-40 max-w-6xl mx-auto px-6 md:px-12 lg:px-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="lg:col-span-7">
+            <span className="about-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="about-label">
+              {t('about.eyebrow')}
+            </span>
+            <h2 data-testid="about-title" className="about-fade font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-10">
+              {t('about.openingTitleLine1')}
+              <br />
+              <span className="italic text-white/70">{t('about.openingTitleLine2')}</span>
+            </h2>
+            <div className="about-fade text-white/65 text-base md:text-lg font-light leading-relaxed space-y-4 max-w-2xl">
+              <p>{t('about.openingBody1')}</p>
+              <p>{t('about.openingBody2')}</p>
+              <p className="text-white/85">{t('about.openingBody3')}</p>
+            </div>
+          </div>
+          <div className="about-fade lg:col-span-5">
+            <img
+              src="/about-team.jpg"
+              alt="Coordination and digital delivery team collaborating"
+              className="w-full rounded-2xl object-cover border border-white/10"
+              style={{ filter: 'saturate(0.95)' }}
+            />
+          </div>
         </div>
       </div>
 
