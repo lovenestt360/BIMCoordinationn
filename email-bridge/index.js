@@ -25,17 +25,10 @@ function isEmail(value) {
 }
 
 app.get('/api/verify-email', (_req, res) => {
-  const matchingEnvKeys = Object.keys(process.env)
-    .filter((key) => /EMAILABLE|EMAIL/i.test(key))
-    .sort();
-
   res.json({
     ok: true,
     service: 'klyron-emailable-bridge',
     configured: Boolean(process.env.EMAILABLE_API_KEY),
-    matching_env_keys: matchingEnvKeys,
-    vercel_env: process.env.VERCEL_ENV || null,
-    vercel_target_env: process.env.VERCEL_TARGET_ENV || null,
     endpoint: '/api/verify-email',
     method: 'POST'
   });
