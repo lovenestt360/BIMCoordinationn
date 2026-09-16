@@ -18,10 +18,28 @@
       }
     },
     {
+      "source": "/api/process-leads",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/api/process-leads/status",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
       "source": "/(.*)",
       "destination": {
         "service": "frontend"
       }
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/process-leads",
+      "schedule": "0 4 * * *"
     }
   ]
 }
