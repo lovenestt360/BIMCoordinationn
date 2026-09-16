@@ -355,12 +355,12 @@
     "cta": "Pedir um Relatório de Coordenação de Exemplo",
     "galleryEyebrow": "De um fluxo de coordenação real",
     "gallery": [
-      { "src": "/deliverables/federated-model.png", "caption": "Modelo federado — arquitetura, estrutura e MEP combinados para revisão" },
+      { "src": "/deliverables/federated-model.png", "caption": "Modelo federado — arquitetura, mecânica e canalização combinadas para coordenação" },
       { "src": "/deliverables/clash-matrix.png", "caption": "Matriz de colisões entre especialidades" },
       { "src": "/deliverables/clash-review-3d.png", "caption": "Revisão de colisões em 3D com lista de problemas" },
       { "src": "/deliverables/qaqc-check-results.png", "caption": "Resultados automáticos de verificação QA/QC" },
       { "src": "/deliverables/qaqc-ruleset.png", "caption": "Conjunto de regras por trás das verificações" },
-      { "src": "/deliverables/issue-tracking.png", "caption": "Acompanhamento de problemas com prioridade, atribuição e prazos" },
+      { "src": "/deliverables/issue-tracking.png", "caption": "Acompanhamento de problemas em tempo real, com prioridade, atribuição e contexto 3D" },
       { "src": "/deliverables/cde-structure.png", "caption": "Estrutura de pastas organizada no CDE" }
     ]
   },
@@ -541,5 +541,31 @@
     "sendEmail": "Enviar um E-mail",
     "bookConsultation": "Marcar uma Consulta",
     "ariaLabel": "Contacte-nos"
+  },
+  "bimSupport": {
+    "eyebrow": "Para Gestores BIM e Responsáveis de BIM",
+    "headline": "Capacidade adicional de coordenação BIM quando a sua equipa interna está sob pressão.",
+    "subtitle": "Quando os atrasos crescem mais depressa do que a sua equipa consegue resolver, a Klyron trabalha ao lado do seu departamento BIM existente — revendo modelos federados, priorizando problemas e acompanhando-os até ao encerramento — sem aumentar permanentemente a equipa.",
+    "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
+    "ctaSecondary": "Pedir o Dossier de Capacidade BIM",
+    "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
+    "problemEyebrow": "Os Pontos de Pressão",
+    "problemTitleLine1": "Os atrasos não esperam",
+    "problemTitleLine2": "pela sua próxima contratação.",
+    "problemBody": "Espera-se frequentemente que as equipas BIM internas cubram deteção de colisões, QA/QC, entrega de COBie e relatórios de coordenação em todos os projetos ativos ao mesmo tempo. Quando a carga de trabalho ultrapassa a capacidade, a consistência e o encerramento são normalmente os primeiros a falhar.",
+    "problemItems": [
+      "Os atrasos de coordenação acumulam-se em vários projetos ativos em simultâneo.",
+      "A qualidade do modelo e a consistência dos relatórios variam entre membros da equipa.",
+      "As submissões urgentes competem com o trabalho de coordenação do dia-a-dia.",
+      "Os problemas são registados, mas o encerramento fica para trás."
+    ],
+    "caseStudyEyebrow": "Experiência Relacionada",
+    "caseStudyTitle": "Um projeto de saúde multidisciplinar, coordenado sob pressão semelhante.",
+    "caseStudyBody": "Seis modelos de especialidade, revistos e coordenados num ambiente federado — com os problemas relevantes priorizados e acompanhados até ao encerramento, em vez de ficarem apenas num relatório estático de colisões.",
+    "caseStudyCta": "Ver o caso de estudo da Unidade de Saúde Mental",
+    "finalTitleLine1": "Pronto para adicionar capacidade",
+    "finalTitleLine2": "sem aumentar a equipa?",
+    "finalBody": "Conte-nos sobre o seu atraso atual, o tamanho da equipa e as especialidades envolvidas, e recomendaremos o nível de apoio adequado.",
+    "formEyebrow": "Começar"
   }
 }

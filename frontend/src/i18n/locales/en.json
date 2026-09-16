@@ -355,12 +355,12 @@
     "cta": "Request a Sample Coordination Report",
     "galleryEyebrow": "From an actual coordination workflow",
     "gallery": [
-      { "src": "/deliverables/federated-model.png", "caption": "Federated model — architecture, structure and MEP combined for review" },
+      { "src": "/deliverables/federated-model.png", "caption": "Federated model — architecture, mechanical and plumbing combined for coordination" },
       { "src": "/deliverables/clash-matrix.png", "caption": "Clash matrix across disciplines" },
       { "src": "/deliverables/clash-review-3d.png", "caption": "3D clash review with issue list" },
       { "src": "/deliverables/qaqc-check-results.png", "caption": "Automated QA/QC checking results" },
       { "src": "/deliverables/qaqc-ruleset.png", "caption": "QA/QC ruleset behind the checks" },
-      { "src": "/deliverables/issue-tracking.png", "caption": "Issue tracking with priority, assignment and due dates" },
+      { "src": "/deliverables/issue-tracking.png", "caption": "Live issue tracking with priority, assignment and 3D context" },
       { "src": "/deliverables/cde-structure.png", "caption": "Structured CDE folder hierarchy" }
     ]
   },
@@ -541,5 +541,31 @@
     "sendEmail": "Send an Email",
     "bookConsultation": "Book a Consultation",
     "ariaLabel": "Contact us"
+  },
+  "bimSupport": {
+    "eyebrow": "For BIM Managers & Heads of BIM",
+    "headline": "Additional BIM coordination capacity when your internal team is under pressure.",
+    "subtitle": "When backlogs grow faster than your team can close them, Klyron works alongside your existing BIM department — reviewing federated models, prioritising issues and driving them to closure — without adding permanent headcount.",
+    "ctaPrimary": "Book a 15-Minute Consultation",
+    "ctaSecondary": "Request the BIM Capability Pack",
+    "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
+    "problemEyebrow": "The Pressure Points",
+    "problemTitleLine1": "The backlog doesn't wait",
+    "problemTitleLine2": "for your next hire.",
+    "problemBody": "Internal BIM teams are often expected to cover clash detection, QA/QC, COBie delivery and coordination reporting across every live project at once. When workload outpaces capacity, consistency and closure are usually the first things to slip.",
+    "problemItems": [
+      "Coordination backlogs grow across multiple live projects at once.",
+      "Model quality and reporting consistency vary between team members.",
+      "Urgent submissions compete with day-to-day coordination work.",
+      "Issues get logged but closure falls behind."
+    ],
+    "caseStudyEyebrow": "Related Experience",
+    "caseStudyTitle": "A multidisciplinary healthcare project, coordinated under similar pressure.",
+    "caseStudyBody": "Six discipline models, reviewed and coordinated through a federated environment — with meaningful issues prioritised and tracked to closure rather than left as a static clash report.",
+    "caseStudyCta": "View the Mental Health Unit case study",
+    "finalTitleLine1": "Ready to add capacity",
+    "finalTitleLine2": "without adding headcount?",
+    "finalBody": "Tell us about your current backlog, team size and the disciplines involved, and we'll recommend the right level of support.",
+    "formEyebrow": "Get Started"
   }
 }

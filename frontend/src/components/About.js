@@ -91,25 +91,38 @@ const About = () => {
       </div>
 
       {/* ================= WHY KLYRON EXISTS ================= */}
-      <div className="about-block relative z-10 py-20 lg:py-28 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
-        <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-8 block">
-          {t('about.existsEyebrow')}
-        </span>
-        <h3 className="about-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-12 max-w-3xl">
-          {t('about.existsTitleLine1')}
-          <br />
-          <span className="italic text-white/70">{t('about.existsTitleLine2')}</span>
-        </h3>
-        <p className="about-fade text-white/60 text-base font-light leading-relaxed max-w-2xl mb-6">
-          {t('about.existsBodyPrefix')}{' '}
-          <span className="text-white/85">{t('about.existsBodyEmphasis1')}</span>,{' '}
-          <span className="text-white/85">{t('about.existsBodyEmphasis2')}</span>, {t('about.existsBodyConnector')}{' '}
-          <span className="text-white/85">{t('about.existsBodyEmphasis3')}</span>.
-        </p>
+      <div className="about-block relative z-10 py-20 lg:py-28 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="lg:col-span-7">
+            <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-8 block">
+              {t('about.existsEyebrow')}
+            </span>
+            <h3 className="about-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-12 max-w-3xl">
+              {t('about.existsTitleLine1')}
+              <br />
+              <span className="italic text-white/70">{t('about.existsTitleLine2')}</span>
+            </h3>
+            <p className="about-fade text-white/60 text-base font-light leading-relaxed max-w-2xl mb-6">
+              {t('about.existsBodyPrefix')}{' '}
+              <span className="text-white/85">{t('about.existsBodyEmphasis1')}</span>,{' '}
+              <span className="text-white/85">{t('about.existsBodyEmphasis2')}</span>, {t('about.existsBodyConnector')}{' '}
+              <span className="text-white/85">{t('about.existsBodyEmphasis3')}</span>.
+            </p>
 
-        <p className="about-fade text-white/80 text-base font-light leading-relaxed max-w-2xl">
-          {t('about.existsClosing')}
-        </p>
+            <p className="about-fade text-white/80 text-base font-light leading-relaxed max-w-2xl">
+              {t('about.existsClosing')}
+            </p>
+          </div>
+
+          <div className="about-fade lg:col-span-5">
+            <img
+              src="/exists-digital-review.jpg"
+              alt="Reviewing digital building design information in detail"
+              className="w-full rounded-2xl object-cover border border-white/10"
+              style={{ filter: 'saturate(0.95)' }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* ================= KLYRON AT A GLANCE ================= */}

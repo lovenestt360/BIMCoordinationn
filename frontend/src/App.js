@@ -2,6 +2,12 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import gsap from "gsap";
 import { useGlobalScrollReveal } from "./hooks/useScrollReveal";
+import { captureAttribution } from "./lib/attribution";
+
+// Captured once per page load so cold-email UTM/role/pain params are
+// available to any form or tracking call for the rest of the session,
+// regardless of which route the visitor lands on.
+captureAttribution();
 
 // GSAP tweens are driven by JS, not CSS, so the prefers-reduced-motion rules in
 // App.css can't reach them. Collapsing the global timeline makes every GSAP
@@ -33,6 +39,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingContact from "./components/FloatingContact";
 import { Toaster } from "./components/ui/sonner";
+import BimSupportLanding from "./pages/BimSupportLanding";
 
 const LandingPage = () => {
   useGlobalScrollReveal();
@@ -74,6 +81,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/en/bim-support" element={<BimSupportLanding />} />
         </Routes>
       </BrowserRouter>
     </div>

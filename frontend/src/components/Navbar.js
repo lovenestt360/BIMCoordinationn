@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import gsap from 'gsap';
 import { useTranslation } from 'react-i18next';
+import { trackEvent } from '../lib/analytics';
 
 const NAV_LINKS = [
   { key: 'nav.about', href: '#about' },
@@ -16,7 +17,9 @@ const LanguageToggle = ({ className = '' }) => {
   const current = i18n.language?.startsWith('pt') ? 'pt' : 'en';
 
   const toggle = () => {
-    i18n.changeLanguage(current === 'pt' ? 'en' : 'pt');
+    const next = current === 'pt' ? 'en' : 'pt';
+    i18n.changeLanguage(next);
+    trackEvent('language_toggle', { to: next });
   };
 
   return (

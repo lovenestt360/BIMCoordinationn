@@ -7,6 +7,8 @@ import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../components/ui/select';
 import { supabase } from '../lib/supabase';
+import { getAttribution } from '../lib/attribution';
+import { trackEvent } from '../lib/analytics';
 
 const selectTriggerClass = 'w-full h-auto bg-white/[0.04] border-white/10 text-[#F7F9FB] px-3 py-2 text-sm data-[placeholder]:text-white/40 focus:ring-[#39C3FF] focus:ring-offset-0';
 const selectContentClass = 'bg-[#0B2A44] border-white/10 text-[#F7F9FB]';
@@ -45,12 +47,17 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      // The contact_messages table has no dedicated "support" column, so the
-      // selected service is folded into the message body rather than requiring
-      // a schema migration on the shared Supabase project.
+      // The contact_messages table has no dedicated "support" or attribution
+      // columns, so both are folded into the message body rather than
+      // requiring a schema migration on the shared Supabase project.
+      const attribution = getAttribution();
+      const attributionLine = Object.keys(attribution).length
+        ? `Source: ${Object.entries(attribution).map(([k, v]) => `${k}=${v}`).join(', ')}`
+        : null;
       const composedMessage = [
         formData.support ? `Support needed: ${formData.support}` : null,
         formData.message || null,
+        attributionLine,
       ].filter(Boolean).join('\n\n');
 
       const { error } = await supabase.from('contact_messages').insert([{
@@ -62,6 +69,7 @@ const Contact = () => {
 
       if (error) throw error;
 
+      trackEvent('contact_submit', { location: 'contact_section' });
       setSubmitStatus({
         type: 'success',
         message: t('contact.successMessage'),
