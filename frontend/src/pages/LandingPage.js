@@ -43,10 +43,13 @@ const HERO_IMAGES = {
 // Shared shell for every cold-email landing page. Content is driven entirely
 // by i18n under `landingPages.<variantKey>` so adding a new angle only means
 // adding translations, not a new component.
-// The Detection -> Closure clash workflow only reads as evidence on pages
-// whose pain point is actually the clash-resolution cycle itself — showing
-// it on e.g. the QA/QC or procurement pages would be a non-sequitur.
-const SHOW_CLASH_WORKFLOW = ['contractors', 'clashCoordination'];
+// The Detection -> Closure sequence is specifically the issue-management
+// cycle (prioritisation, assignment, tracking, verified closure) — that's
+// Clash Coordination's story. Contractors is about upstream prevention
+// (catching conflicts before they reach procurement/site), which is a
+// different problem than managing an existing issue register, so it
+// doesn't belong there even though both pages are clash-adjacent.
+const SHOW_CLASH_WORKFLOW = ['clashCoordination'];
 
 const LandingPage = ({ variantKey }) => {
   const { t } = useTranslation();
