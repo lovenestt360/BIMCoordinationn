@@ -98,9 +98,8 @@ const Hero = () => {
             {/* CTAs */}
             <div ref={addFadeRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
               <a
-                href="https://calendar.app.google/2ZdXEk3kBTXBM2DB7"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#schedule"
+                onClick={(e) => scrollToSection(e, '#schedule')}
                 data-testid="hero-cta-primary"
                 className="group bg-white text-black rounded-full px-7 py-3 text-sm font-medium flex items-center gap-2"
               >
