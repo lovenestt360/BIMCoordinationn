@@ -1,10 +1,18 @@
 import { useState } from 'react';
 import { Mail, X, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { trackEvent } from '../lib/analytics';
 
 const FloatingContact = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+
+  const handleBookClick = (e) => {
+    e.preventDefault();
+    setOpen(false);
+    document.querySelector('#schedule')?.scrollIntoView({ behavior: 'smooth' });
+    trackEvent('consultation_start', { location: 'floating_contact' });
+  };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
@@ -21,7 +29,7 @@ const FloatingContact = () => {
           </a>
           <a
             href="#schedule"
-            onClick={(e) => { e.preventDefault(); setOpen(false); document.querySelector('#schedule')?.scrollIntoView({ behavior: 'smooth' }); }}
+            onClick={handleBookClick}
             className="flex items-center gap-3 bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] rounded-sm px-4 py-3 text-sm text-[#F7F9FB] hover:border-[#7DE0FF] hover:text-[#7DE0FF] transition-all duration-200 whitespace-nowrap shadow-xl"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >

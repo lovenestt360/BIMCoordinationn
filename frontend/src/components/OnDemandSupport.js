@@ -14,7 +14,7 @@ const HIGHLIGHT_KEYS = [
   'onDemand.highlight5',
 ];
 
-const OnDemandSupport = () => {
+const OnDemandSupport = ({ ctaTarget = '#schedule' }) => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
 
@@ -76,8 +76,8 @@ const OnDemandSupport = () => {
         </div>
 
         <a
-          href="#schedule"
-          onClick={(e) => scrollTo(e, '#schedule')}
+          href={ctaTarget}
+          onClick={(e) => scrollTo(e, ctaTarget)}
           data-testid="ondemand-cta"
           className="group inline-flex items-center gap-2 bg-white text-black rounded-full px-7 py-3 text-sm font-medium"
         >

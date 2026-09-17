@@ -1,4 +1,5 @@
 import "@/App.css";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import gsap from "gsap";
 import { useGlobalScrollReveal } from "./hooks/useScrollReveal";
@@ -39,10 +40,25 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingContact from "./components/FloatingContact";
 import { Toaster } from "./components/ui/sonner";
-import BimSupportLanding from "./pages/BimSupportLanding";
+import LandingPageVariant from "./pages/LandingPage";
 
 const LandingPage = () => {
   useGlobalScrollReveal();
+
+  useEffect(() => {
+    // Landing pages redirect here as e.g. "/#about" when a section only
+    // exists on the homepage. A plain browser navigation tries to scroll to
+    // that hash before React has actually rendered the section, so it
+    // silently lands at the top instead — wait a beat for render, then try.
+    if (window.location.hash) {
+      const id = window.location.hash;
+      const timer = setTimeout(() => {
+        document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, []);
 
   return (
     <div data-testid="landing-page" className="min-h-screen bg-[#04070B]">
@@ -81,7 +97,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/en/bim-support" element={<BimSupportLanding />} />
+          <Route path="/en/bim-managers" element={<LandingPageVariant variantKey="bimManagers" />} />
+          {/* Alias: the master brief originally named this page "bim-support" */}
+          <Route path="/en/bim-support" element={<LandingPageVariant variantKey="bimManagers" />} />
+          <Route path="/en/contractors" element={<LandingPageVariant variantKey="contractors" />} />
+          <Route path="/en/clash-coordination" element={<LandingPageVariant variantKey="clashCoordination" />} />
+          <Route path="/en/model-qa-qc" element={<LandingPageVariant variantKey="modelQaQc" />} />
+          <Route path="/en/preconstruction" element={<LandingPageVariant variantKey="preconstruction" />} />
+          <Route path="/en/digital-delivery" element={<LandingPageVariant variantKey="digitalDelivery" />} />
         </Routes>
       </BrowserRouter>
     </div>

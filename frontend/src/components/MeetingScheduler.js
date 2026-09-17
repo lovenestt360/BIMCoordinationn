@@ -23,7 +23,10 @@ const fieldVariants = {
   show: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] } }),
 };
 
-const MeetingScheduler = () => {
+// `headerOverride` lets a landing page swap the generic "Book a Consultation"
+// heading for its own angle-specific copy (the same copy already used in that
+// page's final CTA), with an optional trust-signal line under the subtitle.
+const MeetingScheduler = ({ headerOverride }) => {
   const { t, i18n } = useTranslation();
   const dateLocale = i18n.language?.startsWith('pt') ? ptLocale : undefined;
 
@@ -167,11 +170,28 @@ const MeetingScheduler = () => {
             data-testid="schedule-title"
             className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6"
           >
-            {t('scheduler.titlePrefix')} <span className="italic text-white/70">{t('scheduler.titleEmphasis')}</span>
+            {headerOverride ? (
+              <>
+                {headerOverride.titleLine1}
+                <br />
+                <span className="italic text-white/70">{headerOverride.titleLine2}</span>
+              </>
+            ) : (
+              <>
+                {t('scheduler.titlePrefix')} <span className="italic text-white/70">{t('scheduler.titleEmphasis')}</span>
+              </>
+            )}
           </h2>
           <p className="text-white/65 text-base md:text-lg font-light max-w-2xl mx-auto">
-            {t('scheduler.subtitle')}
+            {headerOverride ? headerOverride.subtitle : t('scheduler.subtitle')}
           </p>
+
+          {headerOverride?.reassurance && (
+            <div className="mt-8 flex items-center justify-center gap-2 text-white/45 text-xs font-light">
+              <CheckCircle size={14} className="text-[#43D17A]" />
+              {headerOverride.reassurance}
+            </div>
+          )}
         </motion.div>
 
         {/* Step Indicator */}

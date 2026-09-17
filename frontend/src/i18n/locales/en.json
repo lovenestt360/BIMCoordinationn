@@ -542,30 +542,192 @@
     "bookConsultation": "Book a Consultation",
     "ariaLabel": "Contact us"
   },
-  "bimSupport": {
-    "eyebrow": "For BIM Managers & Heads of BIM",
-    "headline": "Additional BIM coordination capacity when your internal team is under pressure.",
-    "subtitle": "When backlogs grow faster than your team can close them, Klyron works alongside your existing BIM department — reviewing federated models, prioritising issues and driving them to closure — without adding permanent headcount.",
-    "ctaPrimary": "Book a 15-Minute Consultation",
-    "ctaSecondary": "Request the BIM Capability Pack",
-    "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
-    "problemEyebrow": "The Pressure Points",
-    "problemTitleLine1": "The backlog doesn't wait",
-    "problemTitleLine2": "for your next hire.",
-    "problemBody": "Internal BIM teams are often expected to cover clash detection, QA/QC, COBie delivery and coordination reporting across every live project at once. When workload outpaces capacity, consistency and closure are usually the first things to slip.",
-    "problemItems": [
-      "Coordination backlogs grow across multiple live projects at once.",
-      "Model quality and reporting consistency vary between team members.",
-      "Urgent submissions compete with day-to-day coordination work.",
-      "Issues get logged but closure falls behind."
-    ],
-    "caseStudyEyebrow": "Related Experience",
-    "caseStudyTitle": "A multidisciplinary healthcare project, coordinated under similar pressure.",
-    "caseStudyBody": "Six discipline models, reviewed and coordinated through a federated environment — with meaningful issues prioritised and tracked to closure rather than left as a static clash report.",
-    "caseStudyCta": "View the Mental Health Unit case study",
-    "finalTitleLine1": "Ready to add capacity",
-    "finalTitleLine2": "without adding headcount?",
-    "finalBody": "Tell us about your current backlog, team size and the disciplines involved, and we'll recommend the right level of support.",
-    "formEyebrow": "Get Started"
+  "landingPages": {
+    "bimManagers": {
+      "eyebrow": "For BIM Managers & Heads of BIM",
+      "headline": "Additional BIM coordination capacity when your internal team is under pressure.",
+      "subtitle": "When backlogs grow faster than your team can close them, Klyron works alongside your existing BIM department — reviewing federated models, prioritising issues and driving them to closure — without adding permanent headcount.",
+      "ctaPrimary": "Book a 15-Minute Consultation",
+      "ctaSecondary": "Request the BIM Capability Pack",
+      "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
+      "problemEyebrow": "The Pressure Points",
+      "problemTitleLine1": "The backlog doesn't wait",
+      "problemTitleLine2": "for your next hire.",
+      "problemBody": "Internal BIM teams are often expected to cover clash detection, QA/QC, COBie delivery and coordination reporting across every live project at once. When workload outpaces capacity, consistency and closure are usually the first things to slip.",
+      "problemItems": [
+        "Coordination backlogs grow across multiple live projects at once.",
+        "Model quality and reporting consistency vary between team members.",
+        "Urgent submissions compete with day-to-day coordination work.",
+        "Issues get logged but closure falls behind."
+      ],
+      "evidenceEyebrow": "Evidence From Similar Work",
+      "evidence": [
+        { "src": "/deliverables/clash-matrix.png", "caption": "Clash matrix across disciplines — the scale of a real coordination backlog" },
+        { "src": "/deliverables/cde-structure.png", "caption": "Structured CDE folder hierarchy for managing multiple live projects" }
+      ],
+      "caseStudyEyebrow": "Related Experience",
+      "caseStudyTitle": "A multidisciplinary healthcare project, coordinated under similar pressure.",
+      "caseStudyBody": "Six discipline models, reviewed and coordinated through a federated environment — with meaningful issues prioritised and tracked to closure rather than left as a static clash report.",
+      "caseStudyCta": "View the Mental Health Unit case study",
+      "caseStudyProject": "mental_health_unit",
+      "finalTitleLine1": "Ready to add capacity",
+      "finalTitleLine2": "without adding headcount?",
+      "finalBody": "Tell us about your current backlog, team size and the disciplines involved, and we'll recommend the right level of support."
+    },
+    "contractors": {
+      "eyebrow": "For MEP & General Contractors",
+      "headline": "Resolve coordination conflicts before they reach the installation stage.",
+      "subtitle": "When architectural, structural and MEP models are coordinated too late, conflicts surface on site instead of on screen. Klyron reviews the federated model before installation — so your crews aren't the ones finding the clash.",
+      "ctaPrimary": "Book a 15-Minute Consultation",
+      "ctaSecondary": "Request a Sample Coordination Report",
+      "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
+      "problemEyebrow": "The Pressure Points",
+      "problemTitleLine1": "A clash found on site",
+      "problemTitleLine2": "costs more than one found on screen.",
+      "problemBody": "Subcontractor models often arrive at different levels of detail, on different schedules, with no single point reviewing how they actually fit together. Without that review, conflicts between disciplines aren't caught until materials are already on order — or on site.",
+      "problemItems": [
+        "Subcontractor models require repeated review and follow-up.",
+        "Clashes surface during installation instead of during design.",
+        "Rework and delays fall on the trades least able to absorb them.",
+        "No single federated view exists until it's too late to change it."
+      ],
+      "evidenceEyebrow": "Evidence From Similar Work",
+      "evidence": [
+        { "src": "/projects/mhu-clash-review-1.jpg", "caption": "Ductwork clash flagged against structural framing before installation" },
+        { "src": "/projects/mhu-clash-review-2.jpg", "caption": "Clearance conflict between services and roof steel, caught before site" }
+      ],
+      "caseStudyEyebrow": "Related Experience",
+      "caseStudyTitle": "A multidisciplinary healthcare project, coordinated before conflicts reached site.",
+      "caseStudyBody": "Six discipline models reviewed in a federated environment, with meaningful clashes prioritised and communicated through Autodesk Construction Cloud before they affected installation.",
+      "caseStudyCta": "View the Mental Health Unit case study",
+      "caseStudyProject": "mental_health_unit",
+      "finalTitleLine1": "Ready to coordinate",
+      "finalTitleLine2": "before installation begins?",
+      "finalBody": "Tell us about your current project stage, disciplines involved and any known conflicts, and we'll recommend the right level of support."
+    },
+    "clashCoordination": {
+      "eyebrow": "For Teams With a Growing Issue Backlog",
+      "headline": "When clashes pile up faster than they're closed.",
+      "subtitle": "Finding the clash is only the beginning. Klyron reviews, prioritises, assigns and tracks every meaningful issue through to verified closure — so your issue register actually shrinks.",
+      "ctaPrimary": "Book a 15-Minute Consultation",
+      "ctaSecondary": "Request a Sample Coordination Report",
+      "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
+      "problemEyebrow": "The Pressure Points",
+      "problemTitleLine1": "An issue that's logged",
+      "problemTitleLine2": "isn't the same as an issue that's closed.",
+      "problemBody": "Clash detection software finds conflicts quickly. Closing them is a different, slower discipline — one that depends on someone reviewing context, assigning ownership and following up until each issue is actually resolved.",
+      "problemItems": [
+        "Issues accumulate faster than they are closed.",
+        "Low-value clashes crowd out the ones that actually matter.",
+        "Assigned issues stall without a clear owner or follow-up.",
+        "Closure gets discussed in meetings but never verified in the model."
+      ],
+      "evidenceEyebrow": "Evidence From Similar Work",
+      "evidence": [
+        { "src": "/deliverables/clash-review-3d.png", "caption": "3D clash review with issue list — detection through to assignment" },
+        { "src": "/deliverables/issue-tracking.png", "caption": "Live issue tracking with priority, assignment and 3D context" }
+      ],
+      "caseStudyEyebrow": "Related Experience",
+      "caseStudyTitle": "A multidisciplinary healthcare project, taken from open issues to verified closure.",
+      "caseStudyBody": "Meaningful spatial conflicts across six discipline models were reviewed, prioritised and tracked through Autodesk Construction Cloud until each issue was verified resolved — not just discussed.",
+      "caseStudyCta": "View the Mental Health Unit case study",
+      "caseStudyProject": "mental_health_unit",
+      "finalTitleLine1": "Ready to close",
+      "finalTitleLine2": "the backlog, not just review it?",
+      "finalBody": "Tell us about your current issue count, disciplines involved and coordination platform, and we'll recommend the right level of support."
+    },
+    "modelQaQc": {
+      "eyebrow": "For Model Requirements & QA/QC Concerns",
+      "headline": "A coordinated model isn't enough. It has to be reliable too.",
+      "subtitle": "Clash detection concerns geometry. Klyron's QA/QC review concerns the information behind it — naming, classification, properties and COBie data — so decisions made from the model can actually be trusted.",
+      "ctaPrimary": "Book a 15-Minute Consultation",
+      "ctaSecondary": "Request a Sample Coordination Report",
+      "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
+      "problemEyebrow": "The Pressure Points",
+      "problemTitleLine1": "A model can look complete",
+      "problemTitleLine2": "and still fail its data requirements.",
+      "problemBody": "Geometry can be visually complete while naming, classification and property data are inconsistent underneath. Those gaps rarely show up in a 3D view — only once the data is expected to support COBie delivery or facility handover.",
+      "problemItems": [
+        "Naming and classification are inconsistent across the model.",
+        "Property sets don't match the project's information requirements.",
+        "COBie data gaps surface late, close to handover.",
+        "Visual review alone misses what a rule-based check would catch."
+      ],
+      "evidenceEyebrow": "Evidence From Similar Work",
+      "evidence": [
+        { "src": "/deliverables/qaqc-check-results.png", "caption": "Automated QA/QC checking results, with the flagged issue highlighted" },
+        { "src": "/deliverables/qaqc-ruleset.png", "caption": "QA/QC ruleset behind the checks" }
+      ],
+      "caseStudyEyebrow": "Related Experience",
+      "caseStudyTitle": "An education-sector project, validated before it had to support COBie delivery.",
+      "caseStudyBody": "The model was reviewed in Solibri against defined validation rules, with findings reported back to the design teams through BCF — supporting a more reliable handover than visual review alone.",
+      "caseStudyCta": "View the School Project case study",
+      "caseStudyProject": "school_project",
+      "finalTitleLine1": "Ready to validate",
+      "finalTitleLine2": "the information behind your model?",
+      "finalBody": "Tell us about your project's information requirements, current model status and delivery timeline, and we'll recommend the right level of support."
+    },
+    "preconstruction": {
+      "eyebrow": "For Preconstruction Managers",
+      "headline": "Improve model coordination before procurement and installation begin.",
+      "subtitle": "Buildability issues found during preconstruction are far cheaper to resolve than the same issues found during procurement or on site. Klyron reviews the federated model while there's still time to act on what it shows.",
+      "ctaPrimary": "Book a 15-Minute Consultation",
+      "ctaSecondary": "Request a Sample Coordination Report",
+      "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
+      "problemEyebrow": "The Pressure Points",
+      "problemTitleLine1": "Procurement decisions",
+      "problemTitleLine2": "are only as good as the model behind them.",
+      "problemBody": "Preconstruction teams are often working against a fixed procurement timeline, with limited capacity to review every discipline model in detail before packages go out. Buildability issues that slip through become expensive changes later.",
+      "problemItems": [
+        "Procurement packages are issued before coordination is complete.",
+        "Buildability conflicts surface after materials are already ordered.",
+        "Internal teams lack the capacity to review every package in depth.",
+        "Quantities and cost estimates are built on an uncoordinated model."
+      ],
+      "evidenceEyebrow": "Evidence From Similar Work",
+      "evidence": [
+        { "src": "/projects/water-supply-quantity-takeoff.jpg", "caption": "Model-based quantity takeoff by element and category" },
+        { "src": "/projects/water-supply-cost-estimate.jpg", "caption": "Cost assignment linked directly to model quantities" }
+      ],
+      "caseStudyEyebrow": "Related Experience",
+      "caseStudyTitle": "An infrastructure project, kept model-linked from planning through to cost and schedule.",
+      "caseStudyBody": "Quantities were taken directly off the model and linked to cost and schedule through Bexel Manager — keeping preconstruction planning aligned to the model rather than a disconnected estimate.",
+      "caseStudyCta": "View the Water Supply System case study",
+      "caseStudyProject": "water_supply_system",
+      "finalTitleLine1": "Ready to coordinate",
+      "finalTitleLine2": "before procurement locks in?",
+      "finalBody": "Tell us about your current project stage, procurement timeline and disciplines involved, and we'll recommend the right level of support."
+    },
+    "digitalDelivery": {
+      "eyebrow": "For Digital Delivery Leads",
+      "headline": "Strengthen the quality and reliability of the information behind project decisions.",
+      "subtitle": "The value of a model isn't what it looks like — it's what your project team can confidently do with the information inside it. Klyron reviews model quality, data consistency and delivery requirements so that information can be trusted.",
+      "ctaPrimary": "Book a 15-Minute Consultation",
+      "ctaSecondary": "Request a Sample Coordination Report",
+      "reassurance": "15-minute project conversation · Response within 24 hours · Remote international support",
+      "problemEyebrow": "The Pressure Points",
+      "problemTitleLine1": "Information requirements",
+      "problemTitleLine2": "are easy to write and hard to enforce.",
+      "problemBody": "BEPs and information requirements set the standard, but verifying that every discipline model actually meets it — consistently, across every delivery cycle — takes dedicated review capacity most digital delivery teams don't have spare.",
+      "problemItems": [
+        "Information requirements exist but aren't consistently verified.",
+        "Model quality varies between disciplines and delivery cycles.",
+        "COBie and asset data reviews compete with other delivery priorities.",
+        "CDE structure and review notes fall behind as projects scale."
+      ],
+      "evidenceEyebrow": "Evidence From Similar Work",
+      "evidence": [
+        { "src": "/projects/school-checking-results.jpg", "caption": "Automated QA/QC checking results, with the flagged clash highlighted" },
+        { "src": "/projects/school-issue-tracking.jpg", "caption": "Live issue tracking and resolution status across teams" }
+      ],
+      "caseStudyEyebrow": "Related Experience",
+      "caseStudyTitle": "An education-sector project, with model and data quality verified against defined requirements.",
+      "caseStudyBody": "Element classification, property sets and model consistency were checked against defined validation rules, with findings reported back to design teams through BCF — supporting a more reliable delivery of information.",
+      "caseStudyCta": "View the School Project case study",
+      "caseStudyProject": "school_project",
+      "finalTitleLine1": "Ready to strengthen",
+      "finalTitleLine2": "the information behind your decisions?",
+      "finalBody": "Tell us about your information requirements, current delivery stage and disciplines involved, and we'll recommend the right level of support."
+    }
   }
 }

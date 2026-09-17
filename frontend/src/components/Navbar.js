@@ -102,7 +102,17 @@ const Navbar = () => {
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      return;
     }
+    // Not present on this page (e.g. #about clicked from a cold-email
+    // landing page, which doesn't have that section) — go to the homepage
+    // and let it scroll to the anchor once its sections have rendered.
+    window.location.href = `/${href}`;
+  };
+
+  const handleCtaClick = (e, location) => {
+    scrollToSection(e, '#schedule');
+    trackEvent('consultation_start', { location });
   };
 
   return (
@@ -143,7 +153,7 @@ const Navbar = () => {
             <LanguageToggle className="text-white/50" />
             <a
               href="#schedule"
-              onClick={(e) => scrollToSection(e, '#schedule')}
+              onClick={(e) => handleCtaClick(e, 'navbar')}
               data-testid="navbar-cta"
               className="bg-white text-black rounded-full px-5 py-2.5 text-sm font-medium hover:bg-[#39C3FF] transition-colors duration-200"
             >
@@ -227,7 +237,7 @@ const Navbar = () => {
           <a
             ref={ctaRef}
             href="#schedule"
-            onClick={(e) => scrollToSection(e, '#schedule')}
+            onClick={(e) => handleCtaClick(e, 'navbar_mobile')}
             className="block w-full text-center bg-white text-black rounded-full py-4 text-sm font-medium"
           >
             {t('nav.cta')}

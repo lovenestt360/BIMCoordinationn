@@ -542,30 +542,192 @@
     "bookConsultation": "Marcar uma Consulta",
     "ariaLabel": "Contacte-nos"
   },
-  "bimSupport": {
-    "eyebrow": "Para Gestores BIM e Responsáveis de BIM",
-    "headline": "Capacidade adicional de coordenação BIM quando a sua equipa interna está sob pressão.",
-    "subtitle": "Quando os atrasos crescem mais depressa do que a sua equipa consegue resolver, a Klyron trabalha ao lado do seu departamento BIM existente — revendo modelos federados, priorizando problemas e acompanhando-os até ao encerramento — sem aumentar permanentemente a equipa.",
-    "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
-    "ctaSecondary": "Pedir o Dossier de Capacidade BIM",
-    "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
-    "problemEyebrow": "Os Pontos de Pressão",
-    "problemTitleLine1": "Os atrasos não esperam",
-    "problemTitleLine2": "pela sua próxima contratação.",
-    "problemBody": "Espera-se frequentemente que as equipas BIM internas cubram deteção de colisões, QA/QC, entrega de COBie e relatórios de coordenação em todos os projetos ativos ao mesmo tempo. Quando a carga de trabalho ultrapassa a capacidade, a consistência e o encerramento são normalmente os primeiros a falhar.",
-    "problemItems": [
-      "Os atrasos de coordenação acumulam-se em vários projetos ativos em simultâneo.",
-      "A qualidade do modelo e a consistência dos relatórios variam entre membros da equipa.",
-      "As submissões urgentes competem com o trabalho de coordenação do dia-a-dia.",
-      "Os problemas são registados, mas o encerramento fica para trás."
-    ],
-    "caseStudyEyebrow": "Experiência Relacionada",
-    "caseStudyTitle": "Um projeto de saúde multidisciplinar, coordenado sob pressão semelhante.",
-    "caseStudyBody": "Seis modelos de especialidade, revistos e coordenados num ambiente federado — com os problemas relevantes priorizados e acompanhados até ao encerramento, em vez de ficarem apenas num relatório estático de colisões.",
-    "caseStudyCta": "Ver o caso de estudo da Unidade de Saúde Mental",
-    "finalTitleLine1": "Pronto para adicionar capacidade",
-    "finalTitleLine2": "sem aumentar a equipa?",
-    "finalBody": "Conte-nos sobre o seu atraso atual, o tamanho da equipa e as especialidades envolvidas, e recomendaremos o nível de apoio adequado.",
-    "formEyebrow": "Começar"
+  "landingPages": {
+    "bimManagers": {
+      "eyebrow": "Para Gestores BIM e Responsáveis de BIM",
+      "headline": "Capacidade adicional de coordenação BIM quando a sua equipa interna está sob pressão.",
+      "subtitle": "Quando os atrasos crescem mais depressa do que a sua equipa consegue resolver, a Klyron trabalha ao lado do seu departamento BIM existente — revendo modelos federados, priorizando problemas e acompanhando-os até ao encerramento — sem aumentar permanentemente a equipa.",
+      "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
+      "ctaSecondary": "Pedir o Dossier de Capacidade BIM",
+      "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
+      "problemEyebrow": "Os Pontos de Pressão",
+      "problemTitleLine1": "Os atrasos não esperam",
+      "problemTitleLine2": "pela sua próxima contratação.",
+      "problemBody": "Espera-se frequentemente que as equipas BIM internas cubram deteção de colisões, QA/QC, entrega de COBie e relatórios de coordenação em todos os projetos ativos ao mesmo tempo. Quando a carga de trabalho ultrapassa a capacidade, a consistência e o encerramento são normalmente os primeiros a falhar.",
+      "problemItems": [
+        "Os atrasos de coordenação acumulam-se em vários projetos ativos em simultâneo.",
+        "A qualidade do modelo e a consistência dos relatórios variam entre membros da equipa.",
+        "As submissões urgentes competem com o trabalho de coordenação do dia-a-dia.",
+        "Os problemas são registados, mas o encerramento fica para trás."
+      ],
+      "evidenceEyebrow": "Evidência de Trabalho Semelhante",
+      "evidence": [
+        { "src": "/deliverables/clash-matrix.png", "caption": "Matriz de colisões entre especialidades — a escala real de um atraso de coordenação" },
+        { "src": "/deliverables/cde-structure.png", "caption": "Estrutura de pastas organizada no CDE para gerir vários projetos ativos" }
+      ],
+      "caseStudyEyebrow": "Experiência Relacionada",
+      "caseStudyTitle": "Um projeto de saúde multidisciplinar, coordenado sob pressão semelhante.",
+      "caseStudyBody": "Seis modelos de especialidade, revistos e coordenados num ambiente federado — com os problemas relevantes priorizados e acompanhados até ao encerramento, em vez de ficarem apenas num relatório estático de colisões.",
+      "caseStudyCta": "Ver o caso de estudo da Unidade de Saúde Mental",
+      "caseStudyProject": "mental_health_unit",
+      "finalTitleLine1": "Pronto para adicionar capacidade",
+      "finalTitleLine2": "sem aumentar a equipa?",
+      "finalBody": "Conte-nos sobre o seu atraso atual, o tamanho da equipa e as especialidades envolvidas, e recomendaremos o nível de apoio adequado."
+    },
+    "contractors": {
+      "eyebrow": "Para Empreiteiros de MEP e Empreiteiros Gerais",
+      "headline": "Resolva conflitos de coordenação antes que cheguem à fase de instalação.",
+      "subtitle": "Quando os modelos de arquitetura, estrutura e MEP são coordenados tarde demais, os conflitos surgem em obra em vez de no ecrã. A Klyron revê o modelo federado antes da instalação — para que não sejam as suas equipas em obra a encontrar a colisão.",
+      "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
+      "ctaSecondary": "Pedir um Relatório de Coordenação de Exemplo",
+      "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
+      "problemEyebrow": "Os Pontos de Pressão",
+      "problemTitleLine1": "Uma colisão encontrada em obra",
+      "problemTitleLine2": "custa mais do que uma encontrada no ecrã.",
+      "problemBody": "Os modelos dos subempreiteiros chegam frequentemente com níveis de detalhe diferentes, em calendários diferentes, sem um ponto único a rever como realmente se encaixam. Sem essa revisão, os conflitos entre especialidades só são detetados quando os materiais já foram encomendados — ou já estão em obra.",
+      "problemItems": [
+        "Os modelos dos subempreiteiros exigem revisão e acompanhamento repetidos.",
+        "As colisões surgem durante a instalação em vez de durante o projeto.",
+        "O retrabalho e os atrasos recaem sobre as equipas menos preparadas para os absorver.",
+        "Não existe uma vista federada única até já ser tarde para alterar algo."
+      ],
+      "evidenceEyebrow": "Evidência de Trabalho Semelhante",
+      "evidence": [
+        { "src": "/projects/mhu-clash-review-1.jpg", "caption": "Colisão de condutas assinalada contra a estrutura, antes da instalação" },
+        { "src": "/projects/mhu-clash-review-2.jpg", "caption": "Conflito de espaço livre entre especialidades e estrutura de cobertura, detetado antes da obra" }
+      ],
+      "caseStudyEyebrow": "Experiência Relacionada",
+      "caseStudyTitle": "Um projeto de saúde multidisciplinar, coordenado antes de os conflitos chegarem à obra.",
+      "caseStudyBody": "Seis modelos de especialidade revistos num ambiente federado, com as colisões relevantes priorizadas e comunicadas através do Autodesk Construction Cloud antes de afetarem a instalação.",
+      "caseStudyCta": "Ver o caso de estudo da Unidade de Saúde Mental",
+      "caseStudyProject": "mental_health_unit",
+      "finalTitleLine1": "Pronto para coordenar",
+      "finalTitleLine2": "antes de a instalação começar?",
+      "finalBody": "Conte-nos sobre a fase atual do seu projeto, as especialidades envolvidas e quaisquer conflitos já conhecidos, e recomendaremos o nível de apoio adequado."
+    },
+    "clashCoordination": {
+      "eyebrow": "Para Equipas com um Atraso de Problemas Crescente",
+      "headline": "Quando as colisões se acumulam mais depressa do que são resolvidas.",
+      "subtitle": "Encontrar a colisão é apenas o início. A Klyron revê, prioriza, atribui e acompanha cada problema relevante até ao encerramento verificado — para que o seu registo de problemas realmente diminua.",
+      "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
+      "ctaSecondary": "Pedir um Relatório de Coordenação de Exemplo",
+      "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
+      "problemEyebrow": "Os Pontos de Pressão",
+      "problemTitleLine1": "Um problema registado",
+      "problemTitleLine2": "não é o mesmo que um problema encerrado.",
+      "problemBody": "O software de deteção de colisões encontra conflitos rapidamente. Encerrá-los é uma disciplina diferente e mais lenta — que depende de alguém rever o contexto, atribuir responsabilidade e acompanhar até cada problema estar realmente resolvido.",
+      "problemItems": [
+        "Os problemas acumulam-se mais depressa do que são encerrados.",
+        "As colisões de baixo valor ocupam espaço às que realmente importam.",
+        "Os problemas atribuídos estagnam sem um responsável claro ou acompanhamento.",
+        "O encerramento é discutido em reuniões, mas nunca verificado no modelo."
+      ],
+      "evidenceEyebrow": "Evidência de Trabalho Semelhante",
+      "evidence": [
+        { "src": "/deliverables/clash-review-3d.png", "caption": "Revisão de colisões em 3D com lista de problemas — da deteção à atribuição" },
+        { "src": "/deliverables/issue-tracking.png", "caption": "Acompanhamento de problemas em tempo real, com prioridade, atribuição e contexto 3D" }
+      ],
+      "caseStudyEyebrow": "Experiência Relacionada",
+      "caseStudyTitle": "Um projeto de saúde multidisciplinar, levado de problemas em aberto a encerramento verificado.",
+      "caseStudyBody": "Conflitos espaciais relevantes em seis modelos de especialidade foram revistos, priorizados e acompanhados através do Autodesk Construction Cloud até cada problema ser verificado como resolvido — não apenas discutido.",
+      "caseStudyCta": "Ver o caso de estudo da Unidade de Saúde Mental",
+      "caseStudyProject": "mental_health_unit",
+      "finalTitleLine1": "Pronto para encerrar",
+      "finalTitleLine2": "o atraso, não apenas revê-lo?",
+      "finalBody": "Conte-nos sobre o número atual de problemas, as especialidades envolvidas e a plataforma de coordenação, e recomendaremos o nível de apoio adequado."
+    },
+    "modelQaQc": {
+      "eyebrow": "Para Requisitos de Modelo e Preocupações de QA/QC",
+      "headline": "Um modelo coordenado não basta. Também tem de ser fiável.",
+      "subtitle": "A deteção de colisões diz respeito à geometria. A revisão de QA/QC da Klyron diz respeito à informação por trás dela — nomenclatura, classificação, propriedades e dados COBie — para que as decisões tomadas a partir do modelo possam realmente ser confiáveis.",
+      "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
+      "ctaSecondary": "Pedir um Relatório de Coordenação de Exemplo",
+      "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
+      "problemEyebrow": "Os Pontos de Pressão",
+      "problemTitleLine1": "Um modelo pode parecer completo",
+      "problemTitleLine2": "e ainda assim falhar os seus requisitos de dados.",
+      "problemBody": "A geometria pode estar visualmente completa enquanto a nomenclatura, a classificação e os dados de propriedades estão inconsistentes por baixo. Essas lacunas raramente aparecem numa vista 3D — só quando se espera que os dados suportem a entrega de COBie ou o handover do edifício.",
+      "problemItems": [
+        "A nomenclatura e a classificação são inconsistentes em todo o modelo.",
+        "Os conjuntos de propriedades não correspondem aos requisitos de informação do projeto.",
+        "As lacunas de dados COBie surgem tarde, perto do handover.",
+        "A revisão visual, por si só, não deteta o que uma verificação baseada em regras detetaria."
+      ],
+      "evidenceEyebrow": "Evidência de Trabalho Semelhante",
+      "evidence": [
+        { "src": "/deliverables/qaqc-check-results.png", "caption": "Resultados automáticos de verificação QA/QC, com o problema assinalado" },
+        { "src": "/deliverables/qaqc-ruleset.png", "caption": "Conjunto de regras por trás das verificações" }
+      ],
+      "caseStudyEyebrow": "Experiência Relacionada",
+      "caseStudyTitle": "Um projeto do setor da educação, validado antes de ter de suportar a entrega de COBie.",
+      "caseStudyBody": "O modelo foi revisto no Solibri de acordo com regras de validação definidas, com os resultados comunicados às equipas de projeto através do BCF — apoiando um handover mais fiável do que a revisão visual isolada.",
+      "caseStudyCta": "Ver o caso de estudo do School Project",
+      "caseStudyProject": "school_project",
+      "finalTitleLine1": "Pronto para validar",
+      "finalTitleLine2": "a informação por trás do seu modelo?",
+      "finalBody": "Conte-nos sobre os requisitos de informação do seu projeto, o estado atual do modelo e o cronograma de entrega, e recomendaremos o nível de apoio adequado."
+    },
+    "preconstruction": {
+      "eyebrow": "Para Gestores de Pré-Construção",
+      "headline": "Melhore a coordenação do modelo antes de o aprovisionamento e a instalação começarem.",
+      "subtitle": "Os problemas de construtibilidade encontrados durante a pré-construção são muito mais baratos de resolver do que os mesmos problemas encontrados durante o aprovisionamento ou em obra. A Klyron revê o modelo federado enquanto ainda há tempo para agir sobre o que ele mostra.",
+      "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
+      "ctaSecondary": "Pedir um Relatório de Coordenação de Exemplo",
+      "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
+      "problemEyebrow": "Os Pontos de Pressão",
+      "problemTitleLine1": "As decisões de aprovisionamento",
+      "problemTitleLine2": "só são tão boas quanto o modelo por trás delas.",
+      "problemBody": "As equipas de pré-construção trabalham frequentemente contra um cronograma de aprovisionamento fixo, com capacidade limitada para rever cada modelo de especialidade em detalhe antes de os pacotes serem emitidos. Os problemas de construtibilidade que passam despercebidos tornam-se alterações dispendiosas mais tarde.",
+      "problemItems": [
+        "Os pacotes de aprovisionamento são emitidos antes de a coordenação estar concluída.",
+        "Os conflitos de construtibilidade surgem depois de os materiais já terem sido encomendados.",
+        "As equipas internas não têm capacidade para rever cada pacote em profundidade.",
+        "As quantidades e estimativas de custo são construídas sobre um modelo não coordenado."
+      ],
+      "evidenceEyebrow": "Evidência de Trabalho Semelhante",
+      "evidence": [
+        { "src": "/projects/water-supply-quantity-takeoff.jpg", "caption": "Levantamento de quantidades por elemento e categoria, a partir do modelo" },
+        { "src": "/projects/water-supply-cost-estimate.jpg", "caption": "Atribuição de custos ligada diretamente às quantidades do modelo" }
+      ],
+      "caseStudyEyebrow": "Experiência Relacionada",
+      "caseStudyTitle": "Um projeto de infraestrutura, mantido ligado ao modelo desde o planeamento até ao custo e cronograma.",
+      "caseStudyBody": "As quantidades foram retiradas diretamente do modelo e ligadas ao custo e ao cronograma através do Bexel Manager — mantendo o planeamento de pré-construção alinhado com o modelo, em vez de uma estimativa desligada.",
+      "caseStudyCta": "Ver o caso de estudo do Water Supply System",
+      "caseStudyProject": "water_supply_system",
+      "finalTitleLine1": "Pronto para coordenar",
+      "finalTitleLine2": "antes de o aprovisionamento ficar fechado?",
+      "finalBody": "Conte-nos sobre a fase atual do seu projeto, o cronograma de aprovisionamento e as especialidades envolvidas, e recomendaremos o nível de apoio adequado."
+    },
+    "digitalDelivery": {
+      "eyebrow": "Para Responsáveis de Entrega Digital",
+      "headline": "Reforce a qualidade e a fiabilidade da informação por trás das decisões do projeto.",
+      "subtitle": "O valor de um modelo não é o seu aspeto — é o que a sua equipa de projeto consegue fazer com confiança a partir da informação que ele contém. A Klyron revê a qualidade do modelo, a consistência dos dados e os requisitos de entrega para que essa informação possa ser confiável.",
+      "ctaPrimary": "Marcar uma Conversa de 15 Minutos",
+      "ctaSecondary": "Pedir um Relatório de Coordenação de Exemplo",
+      "reassurance": "Conversa inicial de 15 minutos · Resposta em até 24 horas · Apoio remoto internacional",
+      "problemEyebrow": "Os Pontos de Pressão",
+      "problemTitleLine1": "Os requisitos de informação",
+      "problemTitleLine2": "são fáceis de escrever e difíceis de fazer cumprir.",
+      "problemBody": "Os BEPs e os requisitos de informação definem o padrão, mas verificar se cada modelo de especialidade realmente o cumpre — de forma consistente, em cada ciclo de entrega — exige capacidade de revisão dedicada que a maioria das equipas de entrega digital não tem disponível.",
+      "problemItems": [
+        "Os requisitos de informação existem mas não são verificados de forma consistente.",
+        "A qualidade do modelo varia entre especialidades e ciclos de entrega.",
+        "As revisões de dados COBie e de ativos competem com outras prioridades de entrega.",
+        "A estrutura do CDE e as notas de revisão ficam para trás à medida que os projetos crescem."
+      ],
+      "evidenceEyebrow": "Evidência de Trabalho Semelhante",
+      "evidence": [
+        { "src": "/projects/school-checking-results.jpg", "caption": "Resultados automáticos de verificação QA/QC, com a colisão assinalada" },
+        { "src": "/projects/school-issue-tracking.jpg", "caption": "Acompanhamento de problemas em tempo real e estado de resolução entre equipas" }
+      ],
+      "caseStudyEyebrow": "Experiência Relacionada",
+      "caseStudyTitle": "Um projeto do setor da educação, com a qualidade do modelo e dos dados verificada face a requisitos definidos.",
+      "caseStudyBody": "A classificação dos elementos, os conjuntos de propriedades e a consistência do modelo foram verificados face a regras de validação definidas, com os resultados comunicados às equipas de projeto através do BCF — apoiando uma entrega de informação mais fiável.",
+      "caseStudyCta": "Ver o caso de estudo do School Project",
+      "caseStudyProject": "school_project",
+      "finalTitleLine1": "Pronto para reforçar",
+      "finalTitleLine2": "a informação por trás das suas decisões?",
+      "finalBody": "Conte-nos sobre os seus requisitos de informação, a fase atual de entrega e as especialidades envolvidas, e recomendaremos o nível de apoio adequado."
+    }
   }
 }
