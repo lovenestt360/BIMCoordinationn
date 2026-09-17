@@ -43,6 +43,11 @@ const HERO_IMAGES = {
 // Shared shell for every cold-email landing page. Content is driven entirely
 // by i18n under `landingPages.<variantKey>` so adding a new angle only means
 // adding translations, not a new component.
+// The Detection -> Closure clash workflow only reads as evidence on pages
+// whose pain point is actually the clash-resolution cycle itself — showing
+// it on e.g. the QA/QC or procurement pages would be a non-sequitur.
+const SHOW_CLASH_WORKFLOW = ['contractors', 'clashCoordination'];
+
 const LandingPage = ({ variantKey }) => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
@@ -51,6 +56,7 @@ const LandingPage = ({ variantKey }) => {
   const problemItems = t(`landingPages.${variantKey}.problemItems`, { returnObjects: true });
   const caseStudyProject = t(`landingPages.${variantKey}.caseStudyProject`);
   const evidence = t(`landingPages.${variantKey}.evidence`, { returnObjects: true });
+  const workflowSteps = t('clashDetection.workflowSteps', { returnObjects: true });
 
   useEffect(() => {
     const attribution = getAttribution();
@@ -152,6 +158,26 @@ const LandingPage = ({ variantKey }) => {
                 </div>
               ))}
             </div>
+
+            {/* Clash-resolution workflow — same visual language as the homepage's
+                Clash Detection section, shown only where it's directly relevant */}
+            {SHOW_CLASH_WORKFLOW.includes(variantKey) && (
+              <div
+                data-testid="landing-workflow-sequence"
+                className="lp-fade flex flex-wrap items-center gap-x-1 gap-y-3 mb-16"
+              >
+                {workflowSteps.map((step, i) => (
+                  <div key={step} className="flex items-center gap-1">
+                    <span className="text-white text-xs font-medium tracking-wide uppercase bg-white/[0.06] border border-white/15 rounded-full px-3 py-1.5">
+                      {step}
+                    </span>
+                    {i < workflowSteps.length - 1 && (
+                      <ArrowRight size={12} className="text-white/30 mx-1 flex-shrink-0" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Evidence — real screenshots, not just claims */}
             <span className="lp-fade text-white/40 text-xs font-light tracking-[0.2em] uppercase mb-5 block">
