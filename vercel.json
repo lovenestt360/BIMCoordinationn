@@ -1,9 +1,45 @@
 {
-  "experimentalServices": {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
     "frontend": {
-      "entrypoint": "frontend",
-      "routePrefix": "/",
+      "root": "frontend/",
       "framework": "create-react-app"
+    },
+    "email_bridge": {
+      "root": "email-bridge/",
+      "framework": "express"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/verify-email",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/api/process-leads",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/api/process-leads/status",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/process-leads",
+      "schedule": "0 4 * * *"
+    }
+  ]
 }
