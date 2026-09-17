@@ -432,11 +432,15 @@ function clientEmailHtml(record: any, meetLink: string): string {
 }
 
 async function sendEmail(to: string, subject: string, html: string) {
-  await fetch("https://api.resend.com/emails", {
+  const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
     body: JSON.stringify({ from: "Klyron Consulting <contact@klyronconsulting.com>", to: [to], subject, html }),
   });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Resend API error ${res.status} sending to ${to}: ${body}`);
+  }
 }
 
 serve(async (req) => {

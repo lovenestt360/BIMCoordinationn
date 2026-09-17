@@ -157,6 +157,11 @@ serve(async (req) => {
       }),
     });
 
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`Resend API error ${res.status}: ${body}`);
+    }
+
     const data = await res.json();
     return new Response(JSON.stringify({ success: true, data }), {
       headers: { "Content-Type": "application/json" },
