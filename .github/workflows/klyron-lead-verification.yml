@@ -1,0 +1,25 @@
+name: Klyron Continuous Lead Verification
+
+on:
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: klyron-lead-verification
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger protected Klyron verification processor
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          test -n "$CRON_SECRET" || { echo "::error::CRON_SECRET is not configured"; exit 1; }
+          tmp="$(mktemp)"
+          code="$(curl --silent --show-error --location --retry 3 --retry-all-errors --retry-delay 10 --connect-timeout 15 --max-time 330 --output "$tmp" --write-out "%{http_code}" -H "Authorization: Bearer $CRON_SECRET" -H "Accept: application/json" "https://bim-coordinationn.vercel.app/api/process-leads")"
+          cat "$tmp"
+          test "$code" -ge 200 -a "$code" -lt 300 || { echo "::error::Processor returned HTTP $code"; exit 1; }
