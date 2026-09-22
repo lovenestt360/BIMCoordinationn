@@ -8,7 +8,9 @@ const CONTROL = 'tbl3vQuQDfxP2x5NP';
 function normDomain(v=''){return String(v).trim().toLowerCase().replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0].split(':')[0]}
 function normName(v=''){return String(v).trim().toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function companyKey(f){return normDomain(f['Company Domain']) || normName(f.Company)}
-function checkboxChecked(v){return v === true || v === 1}\n// Airtable omits unchecked checkbox fields from REST responses. Absence therefore means unchecked/false.\nfunction checkboxClear(v){return !checkboxChecked(v)}
+function checkboxChecked(v){return v === true || v === 1}
+// Airtable omits unchecked checkbox fields from REST responses. Absence therefore means unchecked/false.
+function checkboxClear(v){return !checkboxChecked(v)}
 async function at(path, options={}){
  const token=process.env.AIRTABLE_PAT;if(!token) throw new Error('AIRTABLE_PAT missing');
  const r=await fetch(`${AIRTABLE_API_URL}/${BASE_ID}/${path}`,{...options,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',Accept:'application/json',...(options.headers||{})}});
