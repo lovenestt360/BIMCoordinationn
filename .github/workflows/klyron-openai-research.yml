@@ -1,6 +1,6 @@
 name: Klyron Continuous OpenAI Research
 # One-record validation: Daniel Nicholson / Plasmor Ltd
-# Manual validation trigger: diagnostic retry
+# Manual validation trigger: execute corrected worker now
 
 on:
   push:
