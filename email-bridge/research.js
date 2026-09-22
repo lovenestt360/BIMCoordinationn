@@ -98,7 +98,7 @@ async function syncFinal(){
  const controls=await list(CONTROL,['Control','Stage','Command','Status','Target','Current Count'],null,100);
  const pool=controls.find(x=>x.fields?.Stage==='Pool Building'||/build.*2k|2k.*pool/i.test(x.fields?.Control||''));const launch=controls.find(x=>x.fields?.Stage==='Outreach'||/launch.*outreach/i.test(x.fields?.Control||''));
  if(pool){const pf={'Current Count':approved,'Last Action At':new Date().toISOString()};if(approved>=2000){pf.Status='Complete';pf.Command='Idle'}await patch(CONTROL,[{id:pool.id,fields:pf}])}
- if(approved>=2000&&launch)await patch(CONTROL,[{id:launch.id,fields:{Status:'Ready','Command':'Idle','Last Action At':new Date().toISOString()}}]);
+ if(approved>=2000&&launch&&launch.fields?.Command==='Idle'&&launch.fields?.Status==='Locked')await patch(CONTROL,[{id:launch.id,fields:{Status:'Ready','Last Action At':new Date().toISOString()}}]);
  return {approved,updated:updates.length,complete:approved>=2000}
 }
 const DISPATCH_LIMIT = 100;
