@@ -1,3 +1,4 @@
+import { registerResearchRoutes } from './research.js';
 import express from 'express';
 
 const app = express();
@@ -443,5 +444,7 @@ app.get('/api/process-leads', async (req, res) => {
     });
   }
 });
+
+registerResearchRoutes(app);
 
 export default app;
