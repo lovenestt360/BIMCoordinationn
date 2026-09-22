@@ -1,5 +1,6 @@
 name: Klyron Continuous OpenAI Research
 # One-record validation: Daniel Nicholson / Plasmor Ltd
+# Manual validation trigger: 2026-09-22 validation run 2
 
 on:
   push:
