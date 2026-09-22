@@ -12,6 +12,18 @@
   },
   "rewrites": [
     {
+      "source": "/api/process-research/status",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/api/process-research",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
       "source": "/api/verify-email",
       "destination": {
         "service": "email_bridge"
