@@ -1,6 +1,6 @@
 name: Klyron Continuous OpenAI Research
 # One-record validation: Daniel Nicholson / Plasmor Ltd
-# Manual validation trigger: 2026-09-22 validation run 2
+# Manual validation trigger: diagnostic retry
 
 on:
   push:
@@ -26,6 +26,6 @@ jobs:
         run: |
           test -n "$CRON_SECRET" || { echo "::error::CRON_SECRET is not configured"; exit 1; }
           tmp="$(mktemp)"
-          code="$(curl --silent --show-error --location --retry 2 --retry-all-errors --retry-delay 10 --connect-timeout 15 --max-time 3200 --output "$tmp" --write-out "%{http_code}" -H "Authorization: Bearer $CRON_SECRET" -H "Accept: application/json" "https://bim-coordinationn.vercel.app/api/process-research?limit=1\&recordId=rec7lFG1JHAePcARJ")"
+          code="$(curl --silent --show-error --location --retry 2 --retry-all-errors --retry-delay 10 --connect-timeout 15 --max-time 3200 --output "$tmp" --write-out "%{http_code}" -H "Authorization: Bearer $CRON_SECRET" -H "Accept: application/json" "https://bim-coordinationn.vercel.app/api/process-research?limit=1&recordId=rec7lFG1JHAePcARJ")"
           cat "$tmp"
           test "$code" -ge 200 -a "$code" -lt 300 || { echo "::error::Research worker returned HTTP $code"; exit 1; }
