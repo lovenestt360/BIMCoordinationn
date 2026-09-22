@@ -12,6 +12,24 @@
   },
   "rewrites": [
     {
+      "source": "/api/process-research/openai-test",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/api/process-research/finalize",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/api/process-research/dispatch",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
       "source": "/api/process-research/status",
       "destination": {
         "service": "email_bridge"
