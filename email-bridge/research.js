@@ -102,6 +102,16 @@ async function syncFinal(){
  return {approved,updated:updates.length,complete:approved>=2000}
 }
 export function registerResearchRoutes(app){
+ app.get('/api/process-research/openai-test',async(req,res)=>{
+  if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
+  if(!process.env.OPENAI_API_KEY)return res.status(503).json({success:false,error:'OPENAI_API_KEY missing'});
+  try{
+   const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',input:'Return exactly: KLYRON_OPENAI_OK'})});
+   const b=await r.json().catch(()=>({}));const output=(b.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('\\n');
+   console.log('Klyron OpenAI connectivity test',r.status,output||b?.error?.message||'no output');
+   return res.status(r.ok?200:r.status).json({success:r.ok,status:r.status,model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',output:r.ok?output:undefined,error:r.ok?undefined:(b?.error?.message||'OpenAI request failed')});
+  }catch(e){console.error('Klyron OpenAI connectivity test failed',String(e.message||e));return res.status(500).json({success:false,error:String(e.message||e)})}
+ });
  app.get('/api/process-research/status',(_req,res)=>res.json({ok:true,service:'klyron-openai-research-worker',openai_configured:Boolean(process.env.OPENAI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT),model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna'}));
  app.get('/api/process-research',async(req,res)=>{
   if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
