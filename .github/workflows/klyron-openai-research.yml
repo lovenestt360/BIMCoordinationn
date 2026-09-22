@@ -1,0 +1,25 @@
+name: Klyron Continuous OpenAI Research
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: klyron-openai-research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Trigger protected Klyron OpenAI research worker
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          test -n "$CRON_SECRET" || { echo "::error::CRON_SECRET is not configured"; exit 1; }
+          tmp="$(mktemp)"
+          code="$(curl --silent --show-error --location --retry 2 --retry-all-errors --retry-delay 10 --connect-timeout 15 --max-time 3200 --output "$tmp" --write-out "%{http_code}" -H "Authorization: Bearer $CRON_SECRET" -H "Accept: application/json" "https://bim-coordinationn.vercel.app/api/process-research?limit=40")"
+          cat "$tmp"
+          test "$code" -ge 200 -a "$code" -lt 300 || { echo "::error::Research worker returned HTTP $code"; exit 1; }
