@@ -26,7 +26,7 @@ function parseJson(text){
  const s=String(text||'').trim().replace(/^\`\`\`json\s*/i,'').replace(/\`\`\`$/,'').trim();
  try{return JSON.parse(s)}catch{const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a>=0&&b>a)return JSON.parse(s.slice(a,b+1));throw new Error('Model returned non-JSON output')}
 }
-async function researchWithOpenAI(lead){
+async function researchWithOpenAI(lead, companyCache){
  const key=process.env.OPENAI_API_KEY;if(!key) throw new Error('OPENAI_API_KEY missing');
  const f=lead.fields||{};
  const prompt=`You are the research worker for Klyron Consulting's strict 2K prospect pool.
@@ -60,7 +60,7 @@ negative_signals: string;
 source_urls: array of public URLs actually used;
 confidence: integer 0-100.
 Qualification may be Qualified only if company fit, person fit, need evidence and Klyron solution fit all pass. If evidence is weak, use Insufficient Data/Hold rather than guessing.`;
- const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',tools:[{type:'web_search',search_context_size:'medium'}],input:prompt})});
+ const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',tools:[{type:'web_search',search_context_size:'medium'}],input:prompt}),signal:AbortSignal.timeout(90000)});
  const b=await r.json().catch(()=>({}));if(!r.ok){console.error('Klyron OpenAI error',r.status,b?.error?.code||'',b?.error?.message||'');throw new Error(b?.error?.message||`OpenAI HTTP ${r.status}`);}
  const text=(b.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('\n');
  return parseJson(text)
@@ -101,28 +101,80 @@ async function syncFinal(){
  if(approved>=2000&&launch)await patch(CONTROL,[{id:launch.id,fields:{Status:'Ready','Command':'Idle','Last Action At':new Date().toISOString()}}]);
  return {approved,updated:updates.length,complete:approved>=2000}
 }
+const DISPATCH_LIMIT = 100;
+const BATCH_SIZE = 2;
+function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
+function eligible(f){return f.Company && f['Job Title'] && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
+async function dispatch(){
+ const leads=await list(LEADS,['First Name','Last Name','Job Title','Company','Company Domain','Research Status','Last Researched'],null,10000);
+ const selected=leads.filter(x=>eligible(x.fields||{})).slice(0,DISPATCH_LIMIT);
+ // Keep people from the same company adjacent so the second person can reuse its evidence.
+ const groups=new Map();
+ for(const lead of selected){const key=companyKey(lead.fields||{})||lead.id;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(lead.id)}
+ const ordered=[...groups.values()].flat();
+ const batches=[];for(let i=0;i<ordered.length;i+=BATCH_SIZE)batches.push({index:batches.length,ids:ordered.slice(i,i+BATCH_SIZE)});
+ return {selected:selected.length,batches};
+}
+async function processBatch(ids){
+ const summary={selected:ids.length,researched:0,qualified:0,processed:[],errors:[]};
+ const cache=new Map();
+ for(const id of ids){
+  let claimed=false;
+  try{
+   const lead=await at(`${LEADS}/${encodeURIComponent(id)}`);
+   if(!eligible(lead.fields||{}))continue;
+   const key=companyKey(lead.fields||{});
+   if(key&&!cache.has(key)){
+    const formula=`{Company Key}="${key.replace(/\\/g,'\\\\').replace(/"/g,'\\"')}"`;
+    const found=await list(COMPANY_RESEARCH,[],formula,1);
+    if(found[0])cache.set(key,found[0]);
+   }
+   await patch(LEADS,[{id,fields:{'Research Status':'Researching','Qualification':'Researching','Company Research Gate':'Researching','Person Role Gate':'Researching','Last Researched':new Date().toISOString()}}]);claimed=true;
+   const r=await researchWithOpenAI(lead,cache.get(key)?.fields);
+   await upsertCompany(lead,r,cache);
+   await patch(LEADS,[{id,fields:leadUpdate(r)}]);
+   summary.researched++;if(r.qualification==='Qualified')summary.qualified++;
+   summary.processed.push({id,qualification:r.qualification,research_status:r.research_status,company_icp:r.company_icp,person_role_gate:r.person_role_gate,need_evidence_gate:r.need_evidence_gate,confidence:r.confidence});
+  }catch(e){
+   console.error('Klyron research lead failed',id,String(e.message||e));
+   summary.errors.push({id,error:String(e.message||e).slice(0,300)});
+   if(claimed)await patch(LEADS,[{id,fields:{'Research Status':'Pending','Qualification':'New','Company Research Gate':'Pending','Person Role Gate':'Pending'}}]).catch(()=>{});
+  }
+ }
+ return summary;
+}
 export function registerResearchRoutes(app){
  app.get('/api/process-research/openai-test',async(req,res)=>{
-  if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
+  if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
   if(!process.env.OPENAI_API_KEY)return res.status(503).json({success:false,error:'OPENAI_API_KEY missing'});
   try{
    const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',input:'Return exactly: KLYRON_OPENAI_OK'})});
    const b=await r.json().catch(()=>({}));const output=(b.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('\\n');
-   console.log('Klyron OpenAI connectivity test',r.status,output||b?.error?.message||'no output');
-   return res.status(r.ok?200:r.status).json({success:r.ok,status:r.status,model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',output:r.ok?output:undefined,error:r.ok?undefined:(b?.error?.message||'OpenAI request failed')});
-  }catch(e){console.error('Klyron OpenAI connectivity test failed',String(e.message||e));return res.status(500).json({success:false,error:String(e.message||e)})}
+   return res.status(r.ok?200:r.status).json({success:r.ok,status:r.status,output:r.ok?output:undefined,error:r.ok?undefined:b?.error?.message});
+  }catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
  });
- app.get('/api/process-research/status',(_req,res)=>res.json({ok:true,service:'klyron-openai-research-worker',openai_configured:Boolean(process.env.OPENAI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT),model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna'}));
+ app.get('/api/process-research/status',(_req,res)=>res.json({ok:true,service:'klyron-openai-research-worker',openai_configured:Boolean(process.env.OPENAI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT),model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',hourly_target:DISPATCH_LIMIT,batch_size:BATCH_SIZE}));
+ app.get('/api/process-research/dispatch',async(req,res)=>{
+  if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
+  if(!process.env.OPENAI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing'});
+  try{return res.json({success:true,...await dispatch()})}catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
+ });
+ app.post('/api/process-research',async(req,res)=>{
+  if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
+  if(!process.env.OPENAI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing'});
+  const ids=req.body?.ids;
+  if(!Array.isArray(ids)||!ids.length||ids.length>BATCH_SIZE||ids.some(x=>typeof x!=='string'||!/^rec[a-zA-Z0-9]+$/.test(x))||new Set(ids).size!==ids.length)return res.status(400).json({success:false,error:'Expected one or two unique Airtable lead IDs'});
+  try{const result=await processBatch(ids);return res.status(result.errors.length?207:200).json({success:result.errors.length===0,...result})}
+  catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
+ });
+ // Legacy GET cannot start a large blocking run. Retain a small protected manual path.
  app.get('/api/process-research',async(req,res)=>{
-  if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
-  if(!process.env.OPENAI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing',openai_configured:Boolean(process.env.OPENAI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT)});
-  const limit=Math.max(1,Math.min(40,Number(req.query.limit)||40));const testRecordId=String(req.query.recordId||'').trim();const summary={selected:0,researched:0,qualified:0,processed:[],errors:[]};
-  try{
-   const [leads,companies]=await Promise.all([list(LEADS,['First Name','Last Name','Job Title','Company','Company Domain','LinkedIn URL','Country','Research Status','Verification Status','Accept All','Role Email','Company ICP Status','Company Research Gate','Person Role Gate','Need Evidence Gate','Qualification','Final 2K Gate'],null,10000),list(COMPANY_RESEARCH,[],null,10000)]);
-   const cache=new Map(companies.map(x=>[String(x.fields?.['Company Key']||'').toLowerCase(),x]).filter(x=>x[0]));
-   const eligible=leads.filter(x=>(!testRecordId||x.id===testRecordId)&&['Pending','Researching',undefined].includes(x.fields?.['Research Status'])&&x.fields?.Company&&x.fields?.['Job Title']).slice(0,limit);summary.selected=eligible.length;
-   for(const lead of eligible){try{await patch(LEADS,[{id:lead.id,fields:{'Research Status':'Researching','Qualification':'Researching','Company Research Gate':'Researching','Person Role Gate':'Researching'}}]);const r=await researchWithOpenAI(lead);await upsertCompany(lead,r,cache);await patch(LEADS,[{id:lead.id,fields:leadUpdate(r)}]);summary.researched++;summary.processed.push({id:lead.id,name:[lead.fields?.['First Name'],lead.fields?.['Last Name']].filter(Boolean).join(' '),company:lead.fields?.Company,qualification:r.qualification,research_status:r.research_status,company_icp:r.company_icp,company_research_gate:r.company_research_gate,person_role_gate:r.person_role_gate,need_evidence_gate:r.need_evidence_gate,confidence:r.confidence});if(r.qualification==='Qualified')summary.qualified++}catch(e){console.error('Klyron research lead failed',lead.id,String(e.message||e));summary.errors.push({id:lead.id,error:String(e.message||e).slice(0,300)});await patch(LEADS,[{id:lead.id,fields:{'Research Status':'Pending','Qualification':'New','Company Research Gate':'Pending','Person Role Gate':'Pending'}}]).catch(()=>{})}}
-   const final=await syncFinal();console.log('Klyron research summary',JSON.stringify({...summary,final}));return res.json({success:summary.errors.length===0,...summary,final})
-  }catch(e){return res.status(500).json({success:false,error:String(e.message||e),...summary})}
+  if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
+  try{const d=await dispatch();const ids=d.batches[0]?.ids||[];const result=await processBatch(ids);return res.json({success:result.errors.length===0,...result})}
+  catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
+ });
+ app.post('/api/process-research/finalize',async(req,res)=>{
+  if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
+  try{return res.json({success:true,final:await syncFinal()})}catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
  });
 }
