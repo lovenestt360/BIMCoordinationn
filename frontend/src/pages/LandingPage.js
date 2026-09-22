@@ -11,6 +11,7 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import FloatingContact from '../components/FloatingContact';
 import ImageLightbox from '../components/ImageLightbox';
+import PlatformsStrip from '../components/PlatformsStrip';
 import { Toaster } from '../components/ui/sonner';
 import { getAttribution } from '../lib/attribution';
 import { trackEvent } from '../lib/analytics';
@@ -209,6 +210,10 @@ const LandingPage = ({ variantKey }) => {
                   </figcaption>
                 </figure>
               ))}
+            </div>
+
+            <div className="lp-fade mt-10">
+              <PlatformsStrip />
             </div>
           </div>
         </section>

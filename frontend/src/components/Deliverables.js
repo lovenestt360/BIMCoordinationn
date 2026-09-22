@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
 import ImageLightbox from './ImageLightbox';
+import PlatformsStrip from './PlatformsStrip';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -97,6 +98,10 @@ const Deliverables = () => {
         </div>
 
         <ImageLightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
+
+        <div className="mb-10">
+          <PlatformsStrip />
+        </div>
 
         <a
           href="#contact"
