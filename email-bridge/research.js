@@ -31,7 +31,7 @@ async function researchWithOpenAI(lead, companyCache){
  const f=lead.fields||{};
  const companyEvidence=companyCache?.['Research Status']==='Complete' ? JSON.stringify({company:companyCache.Company,industry:companyCache['Industry / Delivery Context'],bim:companyCache['BIM / Digital Evidence'],needs:companyCache['Need Signals'],projects:companyCache['Vacancy / Project Signals'],pain:companyCache['Pain Point Evidence'],sources:companyCache['Source URLs'],researched:companyCache['Last Researched']}).slice(0,6500) : 'No completed company cache.';
  const prompt=`You are the research worker for Klyron Consulting's strict 2K prospect pool.
-For this ONE supplied lead, make exactly one combined web search that uses the person's full name, job title, company and domain to seek company and person evidence together. Use the returned sources to assess company fit, person role and need. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources. If one search cannot establish a gate, mark it Insufficient Data/Hold rather than inventing evidence.
+Research this company and person using current public web sources. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources.
 PERSON: ${f['First Name']||''} ${f['Last Name']||''}
 TITLE: ${f['Job Title']||''}
 COMPANY: ${f.Company||''}
@@ -63,7 +63,7 @@ negative_signals: string;
 source_urls: array of public URLs actually used;
 confidence: integer 0-100.
 Qualification may be Qualified only if company fit, person fit, need evidence and Klyron solution fit all pass. If evidence is weak, use Insufficient Data/Hold rather than guessing.`;
- const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',reasoning:{effort:'low'},tools:[{type:'web_search',search_context_size:'low'}],tool_choice:'required',max_tool_calls:1,input:prompt}),signal:AbortSignal.timeout(90000)});
+ const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',reasoning:{effort:'low'},tools:[{type:'web_search',search_context_size:'low'}],input:prompt}),signal:AbortSignal.timeout(90000)});
  const b=await r.json().catch(()=>({}));if(!r.ok){console.error('Klyron OpenAI error',r.status,b?.error?.code||'',b?.error?.message||'');throw new Error(b?.error?.message||`OpenAI HTTP ${r.status}`);}
  console.log('Klyron research usage',JSON.stringify({lead:lead.id,model:b.model||process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',input_tokens:b.usage?.input_tokens||0,output_tokens:b.usage?.output_tokens||0,web_search_calls:(b.output||[]).filter(x=>x.type==='web_search_call').length}));
  const text=(b.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('\n');
