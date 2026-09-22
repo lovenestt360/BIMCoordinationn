@@ -29,6 +29,7 @@ function parseJson(text){
 async function researchWithOpenAI(lead, companyCache){
  const key=process.env.OPENAI_API_KEY;if(!key) throw new Error('OPENAI_API_KEY missing');
  const f=lead.fields||{};
+ const companyEvidence=companyCache?.['Research Status']==='Complete' ? JSON.stringify({company:companyCache.Company,industry:companyCache['Industry / Delivery Context'],bim:companyCache['BIM / Digital Evidence'],needs:companyCache['Need Signals'],projects:companyCache['Vacancy / Project Signals'],pain:companyCache['Pain Point Evidence'],sources:companyCache['Source URLs'],researched:companyCache['Last Researched']}).slice(0,6500) : 'No completed company cache.';
  const prompt=`You are the research worker for Klyron Consulting's strict 2K prospect pool.
 Research this company and person using current public web sources. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources.
 PERSON: ${f['First Name']||''} ${f['Last Name']||''}
@@ -37,6 +38,8 @@ COMPANY: ${f.Company||''}
 DOMAIN: ${f['Company Domain']||''}
 LINKEDIN: ${f['LinkedIn URL']||''}
 COUNTRY: ${f.Country||''}
+COMPANY RESEARCH CACHE: ${companyEvidence}
+If the cache contains reliable company evidence, reuse its cited findings. Focus any new web searches on this person's current role or specific missing/fresh facts. Avoid repeating general company searches. Preserve relevant cached source URLs in the evidence.
 
 Strict ICP: person physically UK/Ireland/Netherlands; company 51-5000 employees; built-environment construction/civil/general contractor/specialty trade/MEP/building-services or clearly relevant engineering/consultancy; relevant decision-maker in BIM/digital/design/preconstruction/MEP/project delivery. Reject generic manufacturing, machinery, fashion, marine, industrial automation, generic mechanical/industrial engineering unless reliable evidence proves built-environment relevance.
 Look for BIM/digital delivery, Revit/Navisworks/ACC/ISO 19650/coordination, projects/contracts/frameworks/mobilisation/expansion/technology adoption/vacancies. Vacancy itself is not a pain point: infer operational pressure only from responsibilities, capabilities, workload, technologies or project environment. Separate observed evidence from inference. Never invent.
@@ -60,8 +63,9 @@ negative_signals: string;
 source_urls: array of public URLs actually used;
 confidence: integer 0-100.
 Qualification may be Qualified only if company fit, person fit, need evidence and Klyron solution fit all pass. If evidence is weak, use Insufficient Data/Hold rather than guessing.`;
- const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',tools:[{type:'web_search',search_context_size:'medium'}],input:prompt}),signal:AbortSignal.timeout(90000)});
+ const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',reasoning:{effort:'low'},tools:[{type:'web_search',search_context_size:'low'}],input:prompt}),signal:AbortSignal.timeout(90000)});
  const b=await r.json().catch(()=>({}));if(!r.ok){console.error('Klyron OpenAI error',r.status,b?.error?.code||'',b?.error?.message||'');throw new Error(b?.error?.message||`OpenAI HTTP ${r.status}`);}
+ console.log('Klyron research usage',JSON.stringify({lead:lead.id,model:b.model||process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',input_tokens:b.usage?.input_tokens||0,output_tokens:b.usage?.output_tokens||0,web_search_calls:(b.output||[]).filter(x=>x.type==='web_search_call').length}));
  const text=(b.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('\n');
  return parseJson(text)
 }
@@ -104,9 +108,9 @@ async function syncFinal(){
 const DISPATCH_LIMIT = 100;
 const BATCH_SIZE = 2;
 function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
-function eligible(f){return f.Company && f['Job Title'] && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
+function eligible(f){return f.Company && f['Job Title'] && !['Invalid','Risky','Catch-all'].includes(f['Verification Status']) && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
 async function dispatch(){
- const leads=await list(LEADS,['First Name','Last Name','Job Title','Company','Company Domain','Research Status','Last Researched'],null,10000);
+ const leads=await list(LEADS,['First Name','Last Name','Job Title','Company','Company Domain','Verification Status','Accept All','Role Email','Research Status','Last Researched'],null,10000);
  const selected=leads.filter(x=>eligible(x.fields||{})).slice(0,DISPATCH_LIMIT);
  // Keep people from the same company adjacent so the second person can reuse its evidence.
  const groups=new Map();
