@@ -32,7 +32,7 @@ async function researchWithGemini(lead, companyCache){
  const f=lead.fields||{};
  const companyEvidence=companyCache?.['Research Status']==='Complete' ? JSON.stringify({company:companyCache.Company,industry:companyCache['Industry / Delivery Context'],bim:companyCache['BIM / Digital Evidence'],needs:companyCache['Need Signals'],projects:companyCache['Vacancy / Project Signals'],pain:companyCache['Pain Point Evidence'],sources:companyCache['Source URLs'],researched:companyCache['Last Researched']}).slice(0,6500) : 'No completed company cache.';
  const prompt=`You are Gemini, the research worker for Klyron Consulting's strict 2K prospect pool. Research ONLY this supplied Airtable person and their current employer; never suggest or create new prospects.
-Research this company and person using current public web sources. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources.
+Research this company and person using current public web sources. You MUST invoke Google Search and ground the answer in the returned search evidence; do not rely on model memory. If Google Search returns no grounding evidence, return Insufficient Data/Hold. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources.
 PERSON: ${f['First Name']||''} ${f['Last Name']||''}
 TITLE: ${f['Job Title']||''}
 COMPANY: ${f.Company||''}
@@ -107,7 +107,7 @@ async function upsertCompany(lead,r,cache){
   'Research Status':r.company_research_gate==='Approved'?'Complete':'Insufficient Data','Industry / Delivery Context':r.industry_context||'','BIM / Digital Evidence':r.bim_digital_evidence||'',
   'Need Signals':r.need_signals||'','Vacancy / Project Signals':r.vacancy_project_signals||'','Pain Point Evidence':r.pain_point_evidence||'',
   'Source URLs':(r.source_urls||[]).join('\n'),'Research Confidence':Math.max(0,Math.min(100,Number(r.confidence)||0)),'Last Researched':new Date().toISOString(),
-  'Cache Notes':'Gemini Google-Search-grounded research worker; observed evidence must remain separate from inference.'};
+  'Cache Notes':r.grounding_used?'Gemini Google-Search-grounded research worker; observed evidence must remain separate from inference.':'Gemini response had no Google Search grounding and was held as insufficient data.'};
  Object.keys(fields).forEach(k=>fields[k]===undefined&&delete fields[k]);
  if(cache.has(key)&&cache.get(key).fields?.['Research Status']==='Complete'&&r.company_research_gate!=='Approved')return;
  if(cache.has(key)){await patch(COMPANY_RESEARCH,[{id:cache.get(key).id,fields}]);cache.get(key).fields={...cache.get(key).fields,...fields}}
