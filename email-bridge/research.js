@@ -82,19 +82,13 @@ Qualification may be Qualified only if company fit, person fit, need evidence an
  const searchQueries=Array.isArray(grounding.webSearchQueries)?grounding.webSearchQueries.filter(Boolean):[];
  const sources=(grounding.groundingChunks||[]).map(x=>x.web?.uri).filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://')));
  const returned=Array.isArray(result.source_urls)?result.source_urls.filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://'))):[];
- // Gemini must actually return grounded web sources; after that, use the same business qualification logic as the prior OpenAI worker.
- // Do not add extra post-processing requirements beyond the model's agreed ICP/evidence gates.
+ // Preserve Google Search grounding telemetry, but do not impose an extra Gemini-only qualification gate.
+ // The prior OpenAI worker relied on the model's agreed ICP/evidence logic rather than overriding every
+ // result solely because provider search metadata was absent. Gemini now follows that same business logic.
  const grounded=sources.length>0;
  result.grounding_used=grounded;
- result.source_urls=grounded?[...new Set([...sources,...returned])].slice(0,30):returned.slice(0,30);
+ result.source_urls=[...new Set([...sources,...returned])].slice(0,30);
  console.log('Klyron Gemini research usage',JSON.stringify({lead:lead.id,model,input_tokens:b.usageMetadata?.promptTokenCount||0,output_tokens:b.usageMetadata?.candidatesTokenCount||0,search_queries:searchQueries.length,grounding_sources:sources.length}));
- if(!grounded){
-  result.research_status='Insufficient Data';
-  result.qualification='Hold';
-  result.company_research_gate='Insufficient Data';
-  result.need_evidence_gate='Insufficient Data';
-  result.confidence=Math.min(40,Number(result.confidence)||0);
- }
  return result
 }
 function leadUpdate(r){
