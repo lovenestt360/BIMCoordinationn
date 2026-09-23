@@ -1,16 +1,17 @@
-name: Klyron Continuous OpenAI Research
+name: Klyron Continuous Gemini Research
 # Select at most 100 existing Airtable leads each hour; process in two-lead Vercel calls.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/klyron-openai-research.yml'
   schedule:
     - cron: '17 * * * *'
   workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Existing Airtable leads to test (maximum 100)'
+        required: false
+        default: '2'
 
 concurrency:
-  group: klyron-openai-research
+  group: klyron-gemini-research
   cancel-in-progress: false
 
 jobs:
@@ -24,16 +25,17 @@ jobs:
         id: select
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SELECT_LIMIT: ${{ github.event_name == 'workflow_dispatch' && inputs.limit || '100' }}
         run: |
           test -n "$CRON_SECRET" || { echo "::error::CRON_SECRET is not configured"; exit 1; }
           base="https://bim-coordinationn.vercel.app/api/process-research"
           for attempt in $(seq 1 30); do
             status="$(curl --silent --show-error --connect-timeout 10 --max-time 20 "$base/status" || true)"
-            if echo "$status" | jq -e '.hourly_target == 100 and .batch_size == 2 and .openai_configured == true and .airtable_configured == true' > /dev/null; then break; fi
+            if echo "$status" | jq -e '.hourly_target == 100 and .batch_size == 2 and .gemini_configured == true and .airtable_configured == true' > /dev/null; then break; fi
             if [ "$attempt" -eq 30 ]; then echo "::error::Research deployment not ready"; exit 1; fi
             sleep 20
           done
-          response="$(curl --fail-with-body --silent --show-error --retry 2 --connect-timeout 15 --max-time 120 -H "Authorization: Bearer $CRON_SECRET" "$base/dispatch")"
+          response="$(curl --fail-with-body --silent --show-error --retry 2 --connect-timeout 15 --max-time 120 -H "Authorization: Bearer $CRON_SECRET" "$base/dispatch?limit=$SELECT_LIMIT")"
           echo "$response" | jq -e '.success == true and .selected <= 100 and (.batches | type == "array")' > /dev/null
           echo "Selected $(echo "$response" | jq -r '.selected') existing leads in $(echo "$response" | jq -r '.batches | length') small jobs."
           echo "matrix=$(echo "$response" | jq -c '{include:.batches}')" >> "$GITHUB_OUTPUT"
