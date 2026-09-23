@@ -137,7 +137,7 @@ async function syncFinal(){
  return {approved,updated:updates.length,complete:approved>=2000}
 }
 // Production research capacity: 62 leads per hourly dispatch.
-const DISPATCH_LIMIT = 62;
+const DISPATCH_LIMIT = 2; // Safety lock: raise only after a grounded protected test passes.
 const BATCH_SIZE = 2;
 function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
 function eligible(f){return f.Company && f['Job Title'] && !['Invalid','Risky','Catch-all'].includes(f['Verification Status']) && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
