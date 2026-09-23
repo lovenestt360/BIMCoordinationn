@@ -43,7 +43,9 @@ COMPANY RESEARCH CACHE: ${companyEvidence}
 If the cache contains reliable company evidence, reuse its cited findings. Focus any new web searches on this person's current role or specific missing/fresh facts. Avoid repeating general company searches. Preserve relevant cached source URLs in the evidence.
 
 Strict ICP: person physically UK/Ireland/Netherlands; company 51-5000 employees; built-environment construction/civil/general contractor/specialty trade/MEP/building-services or clearly relevant engineering/consultancy; relevant decision-maker in BIM/digital/design/preconstruction/MEP/project delivery. Reject generic manufacturing, machinery, fashion, marine, industrial automation, generic mechanical/industrial engineering unless reliable evidence proves built-environment relevance.
-Look for BIM/digital delivery, Revit/Navisworks/ACC/ISO 19650/coordination, projects/contracts/frameworks/mobilisation/expansion/technology adoption/vacancies. Vacancy itself is not a pain point: infer operational pressure only from responsibilities, capabilities, workload, technologies or project environment. Separate observed evidence from inference. Never invent.
+Look for BIM/digital delivery, Revit/Navisworks/ACC/ISO 19650/coordination, projects/contracts/frameworks/mobilisation/expansion/technology adoption/vacancies. Vacancy itself is not a pain point. Separate OBSERVED EVIDENCE from INFERENCE and never invent.
+NEED-EVIDENCE RULE: need_evidence_gate may be Approved ONLY when at least one concrete, current public signal supports a specific operational pressure relevant to Klyron. Acceptable signals include a named live/recent project or framework with coordination/digital-delivery complexity; a relevant vacancy whose responsibilities reveal workload/capacity/coordination pressure; documented expansion/mobilisation; explicit BIM/digital/ISO 19650/model-coordination requirement; technology adoption/change; multidisciplinary/subcontractor coordination responsibility; or another source-backed delivery trigger. Generic statements such as 'complex projects create coordination pressure', job-title responsibilities alone, company size, sector fit, or a merely plausible BIM pain are NOT enough.
+PAIN QUALITY RULE: pain_point_evidence must state the concrete observed signal(s) and source context. pain_point_hypothesis must then explain the likely operational consequence for THIS role/company and how Klyron's controlled BIM workflow/flexible coordination capacity could address it. Do not claim the inferred consequence as a fact. If you cannot identify a concrete source-backed trigger, set need_evidence_gate="Insufficient Data", qualification="Hold", and confidence no higher than 70. The email must have enough evidence to feel personally relevant and motivate a reply without pretending to know a private problem.
 Return ONLY one JSON object with:
 company_icp: "Approved"|"Rejected";
 company_research_gate: "Approved"|"Insufficient Data"|"Rejected";
@@ -80,11 +82,13 @@ Qualification may be Qualified only if company fit, person fit, need evidence an
  const returned=Array.isArray(result.source_urls)?result.source_urls.filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://'))):[];
  result.source_urls=[...new Set([...returned,...sources])].slice(0,30);
  console.log('Klyron Gemini research usage',JSON.stringify({lead:lead.id,model,input_tokens:b.usageMetadata?.promptTokenCount||0,output_tokens:b.usageMetadata?.candidatesTokenCount||0,search_queries:candidate.groundingMetadata?.webSearchQueries?.length||0}));
- // Fail closed: a model assertion without public evidence, person context or need cannot qualify.
- if(!result.source_urls.length||!result.person_role_evidence||!result.industry_context||!result.pain_point_evidence){
+ // Fail closed: qualification requires public sources, person context, company context, and a concrete need signal.
+ const weakNeed = !result.need_signals || !String(result.need_signals).trim() || !result.vacancy_project_signals || !String(result.vacancy_project_signals).trim();
+ if(!result.source_urls.length||!result.person_role_evidence||!result.industry_context||!result.pain_point_evidence||weakNeed){
   result.research_status='Insufficient Data';result.qualification='Hold';
   if(result.company_research_gate==='Approved'&&!result.industry_context)result.company_research_gate='Insufficient Data';
-  if(result.need_evidence_gate==='Approved'&&!result.pain_point_evidence)result.need_evidence_gate='Insufficient Data';
+  if(result.need_evidence_gate==='Approved'&&(!result.pain_point_evidence||weakNeed))result.need_evidence_gate='Insufficient Data';
+  if(weakNeed) result.confidence=Math.min(70,Number(result.confidence)||0);
  }
  return result
 }
