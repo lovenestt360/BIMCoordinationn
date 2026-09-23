@@ -31,8 +31,9 @@ async function researchWithGemini(lead, companyCache){
  const key=process.env.GEMINI_API_KEY;if(!key) throw new Error('GEMINI_API_KEY missing');
  const f=lead.fields||{};
  const companyEvidence=companyCache?.['Research Status']==='Complete' ? JSON.stringify({company:companyCache.Company,industry:companyCache['Industry / Delivery Context'],bim:companyCache['BIM / Digital Evidence'],needs:companyCache['Need Signals'],projects:companyCache['Vacancy / Project Signals'],pain:companyCache['Pain Point Evidence'],sources:companyCache['Source URLs'],researched:companyCache['Last Researched']}).slice(0,6500) : 'No completed company cache.';
- const prompt=`You are Gemini, the research worker for Klyron Consulting's strict 2K prospect pool. Research ONLY this supplied Airtable person and their current employer; never suggest or create new prospects.
-Research this company and person using current public web sources. You MUST invoke Google Search and ground the answer in the returned search evidence; do not rely on model memory. If Google Search returns no grounding evidence, return Insufficient Data/Hold. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources.
+ const prompt=`You are the research worker for Klyron Consulting's strict 2K prospect pool.
+Research ONLY this supplied Airtable person and their current employer; never suggest or create new prospects.
+Research this company and person using current public web sources. You MUST invoke Google Search and ground the answer in returned web evidence. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources.
 PERSON: ${f['First Name']||''} ${f['Last Name']||''}
 TITLE: ${f['Job Title']||''}
 COMPANY: ${f.Company||''}
@@ -43,9 +44,8 @@ COMPANY RESEARCH CACHE: ${companyEvidence}
 If the cache contains reliable company evidence, reuse its cited findings. Focus any new web searches on this person's current role or specific missing/fresh facts. Avoid repeating general company searches. Preserve relevant cached source URLs in the evidence.
 
 Strict ICP: person physically UK/Ireland/Netherlands; company 51-5000 employees; built-environment construction/civil/general contractor/specialty trade/MEP/building-services or clearly relevant engineering/consultancy; relevant decision-maker in BIM/digital/design/preconstruction/MEP/project delivery. Reject generic manufacturing, machinery, fashion, marine, industrial automation, generic mechanical/industrial engineering unless reliable evidence proves built-environment relevance.
-Look for BIM/digital delivery, Revit/Navisworks/ACC/ISO 19650/coordination, projects/contracts/frameworks/mobilisation/expansion/technology adoption/vacancies. Vacancy itself is not a pain point. Separate OBSERVED EVIDENCE from INFERENCE and never invent.
-NEED-EVIDENCE RULE: need_evidence_gate may be Approved ONLY when at least one concrete, current public signal supports a specific operational pressure relevant to Klyron. Acceptable signals include a named live/recent project or framework with coordination/digital-delivery complexity; a relevant vacancy whose responsibilities reveal workload/capacity/coordination pressure; documented expansion/mobilisation; explicit BIM/digital/ISO 19650/model-coordination requirement; technology adoption/change; multidisciplinary/subcontractor coordination responsibility; or another source-backed delivery trigger. Generic statements such as 'complex projects create coordination pressure', job-title responsibilities alone, company size, sector fit, or a merely plausible BIM pain are NOT enough.
-PAIN QUALITY RULE: pain_point_evidence must state the concrete observed signal(s) and source context. pain_point_hypothesis must then explain the likely operational consequence for THIS role/company and how Klyron's controlled BIM workflow/flexible coordination capacity could address it. Do not claim the inferred consequence as a fact. If you cannot identify a concrete source-backed trigger, set need_evidence_gate="Insufficient Data", qualification="Hold", and confidence no higher than 70. A single strong source-backed trigger is sufficient; do NOT require both a vacancy and a project signal. Put any concrete trigger in need_signals, and use vacancy_project_signals only when a vacancy/project/framework signal actually exists. The email must have enough evidence to feel personally relevant and motivate a reply without pretending to know a private problem.
+Look for BIM/digital delivery, Revit/Navisworks/ACC/ISO 19650/coordination, projects/contracts/frameworks/mobilisation/expansion/technology adoption/vacancies. Vacancy itself is not a pain point: infer operational pressure only from responsibilities, capabilities, workload, technologies or project environment. Separate OBSERVED EVIDENCE from INFERENCE. Never invent.
+
 Return ONLY one JSON object with:
 company_icp: "Approved"|"Rejected";
 company_research_gate: "Approved"|"Insufficient Data"|"Rejected";
@@ -65,7 +65,7 @@ positive_signals: string;
 negative_signals: string;
 source_urls: array of public URLs actually used (never fabricate links);
 confidence: integer 0-100.
-Qualification may be Qualified only if company fit, person fit, need evidence and Klyron solution fit all pass. If evidence is weak, use Insufficient Data/Hold rather than guessing.`;
+Qualification may be Qualified only if company fit, person fit, need evidence and Klyron solution fit all pass. If evidence is weak, use Insufficient Data/Hold rather than guessing.`
  const model=process.env.GEMINI_RESEARCH_MODEL||GEMINI_MODEL;
  const r=await fetch(`${GEMINI_API_URL}/${encodeURIComponent(model)}:generateContent`,{
   method:'POST',headers:{'x-goog-api-key':key,'Content-Type':'application/json'},
@@ -82,27 +82,18 @@ Qualification may be Qualified only if company fit, person fit, need evidence an
  const searchQueries=Array.isArray(grounding.webSearchQueries)?grounding.webSearchQueries.filter(Boolean):[];
  const sources=(grounding.groundingChunks||[]).map(x=>x.web?.uri).filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://')));
  const returned=Array.isArray(result.source_urls)?result.source_urls.filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://'))):[];
- // Treat concrete grounded source URLs as the authoritative proof of web grounding.
- // webSearchQueries is useful telemetry but may be omitted even when Gemini returns grounded chunks.
+ // Gemini must actually return grounded web sources; after that, use the same business qualification logic as the prior OpenAI worker.
+ // Do not add extra post-processing requirements beyond the model's agreed ICP/evidence gates.
  const grounded=sources.length>0;
  result.grounding_used=grounded;
- result.source_urls=grounded?[...new Set([...sources,...returned])].slice(0,30):[];
+ result.source_urls=grounded?[...new Set([...sources,...returned])].slice(0,30):returned.slice(0,30);
  console.log('Klyron Gemini research usage',JSON.stringify({lead:lead.id,model,input_tokens:b.usageMetadata?.promptTokenCount||0,output_tokens:b.usageMetadata?.candidatesTokenCount||0,search_queries:searchQueries.length,grounding_sources:sources.length}));
- // Fail closed: qualification requires actual Google Search grounding plus concrete person, company and need evidence.
- // A lead needs at least ONE concrete source-backed delivery/need trigger.
- // Do not require both a vacancy signal AND a project signal; that was stricter than the agreed rule.
- const hasNeedSignal =
-   Boolean(result.need_signals && String(result.need_signals).trim()) ||
-   Boolean(result.vacancy_project_signals && String(result.vacancy_project_signals).trim());
- const weakNeed = !hasNeedSignal;
- if(!grounded||!result.person_role_evidence||!result.industry_context||!result.pain_point_evidence||weakNeed){
-  result.research_status='Insufficient Data';result.qualification='Hold';
-  if(!grounded){result.company_research_gate='Insufficient Data';result.person_role_gate='Pending';result.need_evidence_gate='Insufficient Data';result.confidence=Math.min(40,Number(result.confidence)||0);}
-  else {
-   if(result.company_research_gate==='Approved'&&!result.industry_context)result.company_research_gate='Insufficient Data';
-   if(result.need_evidence_gate==='Approved'&&(!result.pain_point_evidence||weakNeed))result.need_evidence_gate='Insufficient Data';
-   if(weakNeed)result.confidence=Math.min(70,Number(result.confidence)||0);
-  }
+ if(!grounded){
+  result.research_status='Insufficient Data';
+  result.qualification='Hold';
+  result.company_research_gate='Insufficient Data';
+  result.need_evidence_gate='Insufficient Data';
+  result.confidence=Math.min(40,Number(result.confidence)||0);
  }
  return result
 }
@@ -118,12 +109,11 @@ function leadUpdate(r){
 async function upsertCompany(lead,r,cache){
  const f=lead.fields||{}, key=companyKey(f);if(!key)return;
  const fields={'Company Key':key,'Company':f.Company||'','Domain':f['Company Domain']||undefined,'Country / Markets':f.Country||'','ICP Fit':r.company_icp,
-  'Research Status':r.company_research_gate==='Approved'?'Complete':'Insufficient Data','Industry / Delivery Context':r.industry_context||'','BIM / Digital Evidence':r.bim_digital_evidence||'',
+  'Research Status':r.research_status==='Complete'?'Complete':'Insufficient Data','Industry / Delivery Context':r.industry_context||'','BIM / Digital Evidence':r.bim_digital_evidence||'',
   'Need Signals':r.need_signals||'','Vacancy / Project Signals':r.vacancy_project_signals||'','Pain Point Evidence':r.pain_point_evidence||'',
   'Source URLs':(r.source_urls||[]).join('\n'),'Research Confidence':Math.max(0,Math.min(100,Number(r.confidence)||0)),'Last Researched':new Date().toISOString(),
   'Cache Notes':r.grounding_used?'Gemini Google-Search-grounded research worker; observed evidence must remain separate from inference.':'Gemini response had no Google Search grounding and was held as insufficient data.'};
  Object.keys(fields).forEach(k=>fields[k]===undefined&&delete fields[k]);
- if(cache.has(key)&&cache.get(key).fields?.['Research Status']==='Complete'&&r.company_research_gate!=='Approved')return;
  if(cache.has(key)){await patch(COMPANY_RESEARCH,[{id:cache.get(key).id,fields}]);cache.get(key).fields={...cache.get(key).fields,...fields}}
  else{const c=await create(COMPANY_RESEARCH,fields);const rec=c.records?.[0];if(rec)cache.set(key,rec)}
 }
