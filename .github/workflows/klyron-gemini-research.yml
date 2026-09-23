@@ -1,0 +1,75 @@
+name: Klyron Continuous Gemini Research
+# Select at most 100 existing Airtable leads each hour; process in two-lead Vercel calls.
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Existing Airtable leads to test (maximum 100)'
+        required: false
+        default: '2'
+
+concurrency:
+  group: klyron-gemini-research
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - name: Select existing pending Airtable leads
+        id: select
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SELECT_LIMIT: ${{ github.event_name == 'workflow_dispatch' && inputs.limit || '100' }}
+        run: |
+          test -n "$CRON_SECRET" || { echo "::error::CRON_SECRET is not configured"; exit 1; }
+          base="https://bim-coordinationn.vercel.app/api/process-research"
+          for attempt in $(seq 1 30); do
+            status="$(curl --silent --show-error --connect-timeout 10 --max-time 20 "$base/status" || true)"
+            if echo "$status" | jq -e '.hourly_target == 100 and .batch_size == 2 and .gemini_configured == true and .airtable_configured == true' > /dev/null; then break; fi
+            if [ "$attempt" -eq 30 ]; then echo "::error::Research deployment not ready"; exit 1; fi
+            sleep 20
+          done
+          response="$(curl --fail-with-body --silent --show-error --retry 2 --connect-timeout 15 --max-time 120 -H "Authorization: Bearer $CRON_SECRET" "$base/dispatch?limit=$SELECT_LIMIT")"
+          echo "$response" | jq -e '.success == true and .selected <= 100 and (.batches | type == "array")' > /dev/null
+          echo "Selected $(echo "$response" | jq -r '.selected') existing leads in $(echo "$response" | jq -r '.batches | length') small jobs."
+          echo "matrix=$(echo "$response" | jq -c '{include:.batches}')" >> "$GITHUB_OUTPUT"
+
+  research:
+    needs: dispatch
+    if: ${{ needs.dispatch.outputs.matrix != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix: ${{ fromJSON(needs.dispatch.outputs.matrix) }}
+    steps:
+      - name: Research two existing Airtable leads
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          IDS_JSON: ${{ toJSON(matrix.ids) }}
+        run: |
+          tmp="$(mktemp)"
+          payload="$(jq -nc --argjson ids "$IDS_JSON" '{ids:$ids}')"
+          code="$(curl --silent --show-error --location --connect-timeout 15 --max-time 270 --output "$tmp" --write-out "%{http_code}" -X POST -H "Authorization: Bearer $CRON_SECRET" -H "Content-Type: application/json" --data "$payload" "https://bim-coordinationn.vercel.app/api/process-research")"
+          cat "$tmp"
+          test "$code" = 200 && jq -e '.success == true' "$tmp" > /dev/null || { echo "::error::Research batch failed HTTP $code"; exit 1; }
+
+  finalize:
+    needs: [dispatch, research]
+    if: ${{ always() && needs.dispatch.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Reconcile Final 2K Gate and count
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error --connect-timeout 15 --max-time 240 -X POST -H "Authorization: Bearer $CRON_SECRET" "https://bim-coordinationn.vercel.app/api/process-research/finalize"
+          test "${{ needs.research.result }}" = "success" || test "${{ needs.research.result }}" = "skipped" || { echo "::error::One or more research batches failed"; exit 1; }
