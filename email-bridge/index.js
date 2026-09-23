@@ -8,6 +8,7 @@ const EMAILABLE_URL = 'https://api.emailable.com/v1/verify';
 const AIRTABLE_API_URL = 'https://api.airtable.com/v0';
 const AIRTABLE_BASE_ID = 'appB5ZouRh0zksgbR';
 const LEADS_TABLE_ID = 'tblUwhxkMX3GmmjYL';
+const PROSPECTING_QUEUE_TABLE_ID = 'tbl8khcFfgtOnw4ed';
 const SUPPRESSION_TABLE_ID = 'tblpPtB3Gob5WLvFV';
 const MAX_PROCESS_PER_RUN = 1000;
 const VERIFY_CONCURRENCY = 20;
@@ -174,6 +175,31 @@ async function getSuppressionSets() {
   }
 
   return { emails, domains };
+}
+
+async function promoteReadyProspectsToLeads(limit = 1000) {
+  const [queue, leads] = await Promise.all([
+    listAirtableRecords(PROSPECTING_QUEUE_TABLE_ID, { fields: ['Prospect ID','First Name','Last Name','Job Title','Company','Company Domain','Work Email','LinkedIn URL','Country','Queue Status','Suppression Status','Duplicate Status'], maxRecords: 10000 }),
+    listAirtableRecords(LEADS_TABLE_ID, { fields: ['Work Email'], maxRecords: 10000 })
+  ]);
+  const existing = new Set(leads.map(r => normalizeEmail(r.fields?.['Work Email'])).filter(Boolean));
+  const ready = queue.filter(r => r.fields?.['Queue Status'] === 'Suppression Checked' && r.fields?.['Suppression Status'] === 'Clear' && r.fields?.['Duplicate Status'] === 'Unique' && isEmail(r.fields?.['Work Email']) && !existing.has(normalizeEmail(r.fields?.['Work Email']))).slice(0, limit);
+  let promoted = 0;
+  for (let i=0;i<ready.length;i+=10) {
+    const chunk=ready.slice(i,i+10);
+    const records=chunk.map(r=>({fields:{
+      'Lead ID': r.fields?.['Prospect ID'] || `K2K-${r.id}`,
+      'First Name': r.fields?.['First Name'] || '', 'Last Name': r.fields?.['Last Name'] || '',
+      'Job Title': r.fields?.['Job Title'] || '', 'Company': r.fields?.['Company'] || '',
+      'Company Domain': r.fields?.['Company Domain'] || undefined, 'Work Email': normalizeEmail(r.fields?.['Work Email']),
+      'LinkedIn URL': r.fields?.['LinkedIn URL'] || undefined, 'Country': r.fields?.['Country'] || '',
+      'Verification Status':'Not checked','Research Status':'Pending','Campaign Status':'Verification Pending'
+    }}));
+    await airtableRequest(LEADS_TABLE_ID,{method:'POST',body:JSON.stringify({records,typecast:true})});
+    await airtableRequest(PROSPECTING_QUEUE_TABLE_ID,{method:'PATCH',body:JSON.stringify({records:chunk.map(r=>({id:r.id,fields:{'Queue Status':'Moved to Leads','Processed At':new Date().toISOString()}})),typecast:true})});
+    chunk.forEach(r=>existing.add(normalizeEmail(r.fields?.['Work Email']))); promoted+=chunk.length;
+  }
+  return promoted;
 }
 
 async function getLeadIndexAndPending() {
@@ -395,6 +421,8 @@ app.get('/api/process-leads', async (req, res) => {
   };
 
   try {
+    const promoted = await promoteReadyProspectsToLeads(MAX_PROCESS_PER_RUN);
+    summary.promoted_from_queue = promoted;
     const [suppression, leadData] = await Promise.all([
       getSuppressionSets(),
       getLeadIndexAndPending()
