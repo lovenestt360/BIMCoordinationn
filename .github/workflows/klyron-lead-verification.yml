@@ -7,6 +7,10 @@ on:
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/verification-trigger.txt'
 
 concurrency:
   group: klyron-lead-verification
@@ -26,5 +30,3 @@ jobs:
           code="$(curl --silent --show-error --location --retry 3 --retry-all-errors --retry-delay 10 --connect-timeout 15 --max-time 330 --output "$tmp" --write-out "%{http_code}" -H "Authorization: Bearer $CRON_SECRET" -H "Accept: application/json" "https://bim-coordinationn.vercel.app/api/process-leads")"
           cat "$tmp"
           test "$code" -ge 200 -a "$code" -lt 300 || { echo "::error::Processor returned HTTP $code"; exit 1; }
-
-# Manual verification test trigger 2026-09-24
