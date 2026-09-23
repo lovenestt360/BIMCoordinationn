@@ -1,12 +1,7 @@
 name: Klyron Continuous OpenAI Research
 # Select at most 100 existing Airtable leads each hour; process in two-lead Vercel calls.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/klyron-openai-research.yml'
-  schedule:
-    - cron: '17 * * * *'
+  # Automatic legacy OpenAI research is paused while credits are exhausted and Gemini cutover is validated.
   workflow_dispatch:
 
 concurrency:
