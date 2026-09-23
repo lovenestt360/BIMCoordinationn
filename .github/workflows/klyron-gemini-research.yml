@@ -1,5 +1,5 @@
 name: Klyron Continuous Gemini Research
-# Select at most 100 existing Airtable leads each hour; process in two-lead Vercel calls.
+# Start with at most two existing Airtable leads per hour; raise to 100 only after protected review.
 on:
   schedule:
     - cron: '17 * * * *'
