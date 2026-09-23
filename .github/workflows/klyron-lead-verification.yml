@@ -1,8 +1,11 @@
 name: Klyron Continuous Lead Verification
 
+# Verification is intentionally independent of the research cadence.
+# It continuously fills Airtable with Emailable-verified leads so Gemini
+# research can select only leads that have already passed verification.
 on:
   schedule:
-    - cron: '7 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 concurrency:
