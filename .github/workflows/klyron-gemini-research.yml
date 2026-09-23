@@ -1,8 +1,9 @@
 name: Klyron Continuous Gemini Research
 # Approved production target: up to 62 existing Airtable leads per hourly run.
+# Verification runs independently in parallel at the same hourly trigger minute.
 on:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '7 * * * *'
   workflow_dispatch:
     inputs:
       limit:
