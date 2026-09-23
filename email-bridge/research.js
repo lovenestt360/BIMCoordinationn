@@ -131,7 +131,7 @@ async function syncFinal(){
 const DISPATCH_LIMIT = 62; // Approved production target: up to 62 existing Airtable leads per hourly dispatch.
 const BATCH_SIZE = 2;
 function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
-function eligible(f){return f.Company && f['Job Title'] && !['Invalid','Risky','Catch-all'].includes(f['Verification Status']) && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
+function eligible(f){return f.Company && f['Job Title'] && f['Verification Status']==='Valid' && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
 async function dispatch(limit=DISPATCH_LIMIT){
  const leads=await list(LEADS,['First Name','Last Name','Job Title','Company','Company Domain','Verification Status','Accept All','Role Email','Research Status','Last Researched'],null,10000);
  const selected=leads.filter(x=>eligible(x.fields||{})).slice(0,limit);
