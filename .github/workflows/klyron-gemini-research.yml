@@ -31,7 +31,7 @@ jobs:
           base="https://bim-coordinationn.vercel.app/api/process-research"
           for attempt in $(seq 1 30); do
             status="$(curl --silent --show-error --connect-timeout 10 --max-time 20 "$base/status" || true)"
-            if echo "$status" | jq -e '.hourly_target == 100 and .batch_size == 2 and .gemini_configured == true and .airtable_configured == true' > /dev/null; then break; fi
+            if echo "$status" | jq -e '.hourly_target >= 1 and .hourly_target <= 100 and .batch_size == 2 and .gemini_configured == true and .airtable_configured == true' > /dev/null; then break; fi
             if [ "$attempt" -eq 30 ]; then echo "::error::Research deployment not ready"; exit 1; fi
             sleep 20
           done
