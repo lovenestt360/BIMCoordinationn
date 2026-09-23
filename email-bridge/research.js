@@ -125,7 +125,8 @@ async function syncFinal(){
  if(approved>=2000&&launch&&launch.fields?.Command==='Idle'&&launch.fields?.Status==='Locked')await patch(CONTROL,[{id:launch.id,fields:{Status:'Ready','Last Action At':new Date().toISOString()}}]);
  return {approved,updated:updates.length,complete:approved>=2000}
 }
-const DISPATCH_LIMIT = 100;
+// Start with a bounded test even after deployment; enable 100/hour only after evidence/cost review.
+const DISPATCH_LIMIT = process.env.GEMINI_RESEARCH_FULL_CAPACITY === 'true' ? 100 : 2;
 const BATCH_SIZE = 2;
 function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
 function eligible(f){return f.Company && f['Job Title'] && !['Invalid','Risky','Catch-all'].includes(f['Verification Status']) && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
@@ -178,7 +179,7 @@ export function registerResearchRoutes(app){
    return res.status(r.ok?200:r.status).json({success:r.ok,status:r.status,model,output:r.ok?output:undefined,error:r.ok?undefined:b?.error?.message});
   }catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
  });
- app.get('/api/process-research/status',(_req,res)=>res.json({ok:true,service:'klyron-gemini-research-worker',gemini_configured:Boolean(process.env.GEMINI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT),model:process.env.GEMINI_RESEARCH_MODEL||GEMINI_MODEL,hourly_target:DISPATCH_LIMIT,batch_size:BATCH_SIZE}));
+ app.get('/api/process-research/status',(_req,res)=>res.json({ok:true,service:'klyron-gemini-research-worker',gemini_configured:Boolean(process.env.GEMINI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT),model:process.env.GEMINI_RESEARCH_MODEL||GEMINI_MODEL,hourly_target:DISPATCH_LIMIT,batch_size:BATCH_SIZE,full_capacity:DISPATCH_LIMIT===100}));
  app.get('/api/process-research/dispatch',async(req,res)=>{
   if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
   if(!process.env.GEMINI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing'});
