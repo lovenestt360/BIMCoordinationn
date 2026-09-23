@@ -12,7 +12,7 @@
   },
   "rewrites": [
     {
-      "source": "/api/process-research/openai-test",
+      "source": "/api/process-research/gemini-test",
       "destination": {
         "service": "email_bridge"
       }
