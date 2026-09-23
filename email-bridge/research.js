@@ -129,8 +129,8 @@ async function syncFinal(){
  if(approved>=2000&&launch&&launch.fields?.Command==='Idle'&&launch.fields?.Status==='Locked')await patch(CONTROL,[{id:launch.id,fields:{Status:'Ready','Last Action At':new Date().toISOString()}}]);
  return {approved,updated:updates.length,complete:approved>=2000}
 }
-// Start with a bounded test even after deployment; enable 100/hour only after evidence/cost review.
-const DISPATCH_LIMIT = process.env.GEMINI_RESEARCH_FULL_CAPACITY === 'true' ? 100 : 2;
+// Start with a bounded test even after deployment; enable 62/hour only after evidence/cost review.
+const DISPATCH_LIMIT = process.env.GEMINI_RESEARCH_FULL_CAPACITY === 'true' ? 62 : 2;
 const BATCH_SIZE = 2;
 function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
 function eligible(f){return f.Company && f['Job Title'] && !['Invalid','Risky','Catch-all'].includes(f['Verification Status']) && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
