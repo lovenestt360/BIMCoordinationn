@@ -80,3 +80,5 @@ jobs:
           else
             test "${{ needs.research.result }}" = "success" || { echo "::error::One or more research batches failed"; exit 1; }
           fi
+
+# Manual recovery trigger: 2026-09-24
