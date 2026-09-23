@@ -1,4 +1,5 @@
-const OPENAI_URL = 'https://api.openai.com/v1/responses';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+const GEMINI_MODEL = 'gemini-2.5-flash-lite';
 const AIRTABLE_API_URL = 'https://api.airtable.com/v0';
 const BASE_ID = 'appB5ZouRh0zksgbR';
 const LEADS = 'tblUwhxkMX3GmmjYL';
@@ -26,11 +27,11 @@ function parseJson(text){
  const s=String(text||'').trim().replace(/^\`\`\`json\s*/i,'').replace(/\`\`\`$/,'').trim();
  try{return JSON.parse(s)}catch{const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a>=0&&b>a)return JSON.parse(s.slice(a,b+1));throw new Error('Model returned non-JSON output')}
 }
-async function researchWithOpenAI(lead, companyCache){
- const key=process.env.OPENAI_API_KEY;if(!key) throw new Error('OPENAI_API_KEY missing');
+async function researchWithGemini(lead, companyCache){
+ const key=process.env.GEMINI_API_KEY;if(!key) throw new Error('GEMINI_API_KEY missing');
  const f=lead.fields||{};
  const companyEvidence=companyCache?.['Research Status']==='Complete' ? JSON.stringify({company:companyCache.Company,industry:companyCache['Industry / Delivery Context'],bim:companyCache['BIM / Digital Evidence'],needs:companyCache['Need Signals'],projects:companyCache['Vacancy / Project Signals'],pain:companyCache['Pain Point Evidence'],sources:companyCache['Source URLs'],researched:companyCache['Last Researched']}).slice(0,6500) : 'No completed company cache.';
- const prompt=`You are the research worker for Klyron Consulting's strict 2K prospect pool.
+ const prompt=`You are Gemini, the research worker for Klyron Consulting's strict 2K prospect pool. Research ONLY this supplied Airtable person and their current employer; never suggest or create new prospects.
 Research this company and person using current public web sources. Prefer official company website/projects/news/careers, then professional/LinkedIn public information, credible project/industry sources, then other web sources.
 PERSON: ${f['First Name']||''} ${f['Last Name']||''}
 TITLE: ${f['Job Title']||''}
@@ -60,14 +61,32 @@ person_role_evidence: string;
 pain_point_hypothesis: string;
 positive_signals: string;
 negative_signals: string;
-source_urls: array of public URLs actually used;
+source_urls: array of public URLs actually used (never fabricate links);
 confidence: integer 0-100.
 Qualification may be Qualified only if company fit, person fit, need evidence and Klyron solution fit all pass. If evidence is weak, use Insufficient Data/Hold rather than guessing.`;
- const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',reasoning:{effort:'low'},tools:[{type:'web_search',search_context_size:'low'}],input:prompt}),signal:AbortSignal.timeout(90000)});
- const b=await r.json().catch(()=>({}));if(!r.ok){console.error('Klyron OpenAI error',r.status,b?.error?.code||'',b?.error?.message||'');throw new Error(b?.error?.message||`OpenAI HTTP ${r.status}`);}
- console.log('Klyron research usage',JSON.stringify({lead:lead.id,model:b.model||process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',input_tokens:b.usage?.input_tokens||0,output_tokens:b.usage?.output_tokens||0,web_search_calls:(b.output||[]).filter(x=>x.type==='web_search_call').length}));
- const text=(b.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('\n');
- return parseJson(text)
+ const model=process.env.GEMINI_RESEARCH_MODEL||GEMINI_MODEL;
+ const r=await fetch(`${GEMINI_API_URL}/${encodeURIComponent(model)}:generateContent`,{
+  method:'POST',headers:{'x-goog-api-key':key,'Content-Type':'application/json'},
+  body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],tools:[{google_search:{}}],generationConfig:{temperature:0.2,maxOutputTokens:4096}}),
+  signal:AbortSignal.timeout(90000)
+ });
+ const b=await r.json().catch(()=>({}));
+ if(!r.ok){console.error('Klyron Gemini error',r.status,b?.error?.status||'',b?.error?.message||'');throw new Error(b?.error?.message||`Gemini HTTP ${r.status}`)}
+ const candidate=b.candidates?.[0]||{};
+ if(candidate.finishReason && candidate.finishReason!=='STOP')throw new Error(`Gemini finish reason: ${candidate.finishReason}`);
+ const text=(candidate.content?.parts||[]).filter(x=>!x.thought&&typeof x.text==='string').map(x=>x.text).join('\n');
+ const result=parseJson(text);
+ const sources=(candidate.groundingMetadata?.groundingChunks||[]).map(x=>x.web?.uri).filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://')));
+ const returned=Array.isArray(result.source_urls)?result.source_urls.filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://'))):[];
+ result.source_urls=[...new Set([...returned,...sources])].slice(0,30);
+ console.log('Klyron Gemini research usage',JSON.stringify({lead:lead.id,model,input_tokens:b.usageMetadata?.promptTokenCount||0,output_tokens:b.usageMetadata?.candidatesTokenCount||0,search_queries:candidate.groundingMetadata?.webSearchQueries?.length||0}));
+ // Fail closed: a model assertion without public evidence, person context or need cannot qualify.
+ if(!result.source_urls.length||!result.person_role_evidence||!result.industry_context||!result.pain_point_evidence){
+  result.research_status='Insufficient Data';result.qualification='Hold';
+  if(result.company_research_gate==='Approved'&&!result.industry_context)result.company_research_gate='Insufficient Data';
+  if(result.need_evidence_gate==='Approved'&&!result.pain_point_evidence)result.need_evidence_gate='Insufficient Data';
+ }
+ return result
 }
 function leadUpdate(r){
  const evidence=[r.industry_context,r.bim_digital_evidence,r.need_signals,r.vacancy_project_signals,r.person_role_evidence,(r.source_urls||[]).join('\n')].filter(Boolean).join('\n\n').slice(0,95000);
@@ -81,11 +100,12 @@ function leadUpdate(r){
 async function upsertCompany(lead,r,cache){
  const f=lead.fields||{}, key=companyKey(f);if(!key)return;
  const fields={'Company Key':key,'Company':f.Company||'','Domain':f['Company Domain']||undefined,'Country / Markets':f.Country||'','ICP Fit':r.company_icp,
-  'Research Status':r.research_status==='Complete'?'Complete':'Insufficient Data','Industry / Delivery Context':r.industry_context||'','BIM / Digital Evidence':r.bim_digital_evidence||'',
+  'Research Status':r.company_research_gate==='Approved'?'Complete':'Insufficient Data','Industry / Delivery Context':r.industry_context||'','BIM / Digital Evidence':r.bim_digital_evidence||'',
   'Need Signals':r.need_signals||'','Vacancy / Project Signals':r.vacancy_project_signals||'','Pain Point Evidence':r.pain_point_evidence||'',
   'Source URLs':(r.source_urls||[]).join('\n'),'Research Confidence':Math.max(0,Math.min(100,Number(r.confidence)||0)),'Last Researched':new Date().toISOString(),
-  'Cache Notes':'OpenAI web-research worker; observed evidence must remain separate from inference.'};
+  'Cache Notes':'Gemini Google-Search-grounded research worker; observed evidence must remain separate from inference.'};
  Object.keys(fields).forEach(k=>fields[k]===undefined&&delete fields[k]);
+ if(cache.has(key)&&cache.get(key).fields?.['Research Status']==='Complete'&&r.company_research_gate!=='Approved')return;
  if(cache.has(key)){await patch(COMPANY_RESEARCH,[{id:cache.get(key).id,fields}]);cache.get(key).fields={...cache.get(key).fields,...fields}}
  else{const c=await create(COMPANY_RESEARCH,fields);const rec=c.records?.[0];if(rec)cache.set(key,rec)}
 }
@@ -109,9 +129,9 @@ const DISPATCH_LIMIT = 100;
 const BATCH_SIZE = 2;
 function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
 function eligible(f){return f.Company && f['Job Title'] && !['Invalid','Risky','Catch-all'].includes(f['Verification Status']) && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
-async function dispatch(){
+async function dispatch(limit=DISPATCH_LIMIT){
  const leads=await list(LEADS,['First Name','Last Name','Job Title','Company','Company Domain','Verification Status','Accept All','Role Email','Research Status','Last Researched'],null,10000);
- const selected=leads.filter(x=>eligible(x.fields||{})).slice(0,DISPATCH_LIMIT);
+ const selected=leads.filter(x=>eligible(x.fields||{})).slice(0,limit);
  // Keep people from the same company adjacent so the second person can reuse its evidence.
  const groups=new Map();
  for(const lead of selected){const key=companyKey(lead.fields||{})||lead.id;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(lead.id)}
@@ -134,7 +154,7 @@ async function processBatch(ids){
     if(found[0])cache.set(key,found[0]);
    }
    await patch(LEADS,[{id,fields:{'Research Status':'Researching','Qualification':'Researching','Company Research Gate':'Researching','Person Role Gate':'Researching','Last Researched':new Date().toISOString()}}]);claimed=true;
-   const r=await researchWithOpenAI(lead,cache.get(key)?.fields);
+   const r=await researchWithGemini(lead,cache.get(key)?.fields);
    await upsertCompany(lead,r,cache);
    await patch(LEADS,[{id,fields:leadUpdate(r)}]);
    summary.researched++;if(r.qualification==='Qualified')summary.qualified++;
@@ -148,24 +168,25 @@ async function processBatch(ids){
  return summary;
 }
 export function registerResearchRoutes(app){
- app.get('/api/process-research/openai-test',async(req,res)=>{
+ app.get('/api/process-research/gemini-test',async(req,res)=>{
   if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
-  if(!process.env.OPENAI_API_KEY)return res.status(503).json({success:false,error:'OPENAI_API_KEY missing'});
+  if(!process.env.GEMINI_API_KEY)return res.status(503).json({success:false,error:'GEMINI_API_KEY missing'});
+  const model=process.env.GEMINI_RESEARCH_MODEL||GEMINI_MODEL;
   try{
-   const r=await fetch(OPENAI_URL,{method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',input:'Return exactly: KLYRON_OPENAI_OK'})});
-   const b=await r.json().catch(()=>({}));const output=(b.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('\\n');
-   return res.status(r.ok?200:r.status).json({success:r.ok,status:r.status,output:r.ok?output:undefined,error:r.ok?undefined:b?.error?.message});
+   const r=await fetch(`${GEMINI_API_URL}/${encodeURIComponent(model)}:generateContent`,{method:'POST',headers:{'x-goog-api-key':process.env.GEMINI_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:'Return exactly: KLYRON_GEMINI_OK'}]}]}),signal:AbortSignal.timeout(30000)});
+   const b=await r.json().catch(()=>({}));const output=(b.candidates?.[0]?.content?.parts||[]).filter(x=>!x.thought).map(x=>x.text||'').join('\n');
+   return res.status(r.ok?200:r.status).json({success:r.ok,status:r.status,model,output:r.ok?output:undefined,error:r.ok?undefined:b?.error?.message});
   }catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
  });
- app.get('/api/process-research/status',(_req,res)=>res.json({ok:true,service:'klyron-openai-research-worker',openai_configured:Boolean(process.env.OPENAI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT),model:process.env.OPENAI_RESEARCH_MODEL||'gpt-5.6-luna',hourly_target:DISPATCH_LIMIT,batch_size:BATCH_SIZE}));
+ app.get('/api/process-research/status',(_req,res)=>res.json({ok:true,service:'klyron-gemini-research-worker',gemini_configured:Boolean(process.env.GEMINI_API_KEY),airtable_configured:Boolean(process.env.AIRTABLE_PAT),model:process.env.GEMINI_RESEARCH_MODEL||GEMINI_MODEL,hourly_target:DISPATCH_LIMIT,batch_size:BATCH_SIZE}));
  app.get('/api/process-research/dispatch',async(req,res)=>{
   if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
-  if(!process.env.OPENAI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing'});
-  try{return res.json({success:true,...await dispatch()})}catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
+  if(!process.env.GEMINI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing'});
+  try{return res.json({success:true,...await dispatch(Math.min(DISPATCH_LIMIT,Math.max(1,Number.parseInt(req.query.limit,10)||DISPATCH_LIMIT)))})}catch(e){return res.status(500).json({success:false,error:String(e.message||e)})}
  });
  app.post('/api/process-research',async(req,res)=>{
   if(!authorized(req))return res.status(401).json({success:false,error:'Unauthorized'});
-  if(!process.env.OPENAI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing'});
+  if(!process.env.GEMINI_API_KEY||!process.env.AIRTABLE_PAT)return res.status(503).json({success:false,error:'Required credentials missing'});
   const ids=req.body?.ids;
   if(!Array.isArray(ids)||!ids.length||ids.length>BATCH_SIZE||ids.some(x=>typeof x!=='string'||!/^rec[a-zA-Z0-9]+$/.test(x))||new Set(ids).size!==ids.length)return res.status(400).json({success:false,error:'Expected one or two unique Airtable lead IDs'});
   try{const result=await processBatch(ids);return res.status(result.errors.length?207:200).json({success:result.errors.length===0,...result})}
