@@ -1,6 +1,6 @@
 name: Klyron Continuous Gemini Research
 # Approved production target: up to 62 existing Airtable leads per hourly run.
-# Verification runs independently in parallel at the same hourly trigger minute.
+# Emailable verification runs continuously upstream; this workflow researches only already-verified leads.
 on:
   schedule:
     - cron: '7 * * * *'
@@ -21,6 +21,7 @@ jobs:
     timeout-minutes: 15
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
+      selected: ${{ steps.select.outputs.selected }}
     steps:
       - name: Select existing pending Airtable leads
         id: select
@@ -39,11 +40,12 @@ jobs:
           response="$(curl --fail-with-body --silent --show-error --retry 2 --connect-timeout 15 --max-time 120 -H "Authorization: Bearer $CRON_SECRET" "$base/dispatch?limit=$SELECT_LIMIT")"
           echo "$response" | jq -e '.success == true and .selected <= 62 and (.batches | type == "array")' > /dev/null
           echo "Selected $(echo "$response" | jq -r '.selected') existing leads in $(echo "$response" | jq -r '.batches | length') small jobs."
+          echo "selected=$(echo "$response" | jq -r '.selected')" >> "$GITHUB_OUTPUT"
           echo "matrix=$(echo "$response" | jq -c '{include:.batches}')" >> "$GITHUB_OUTPUT"
 
   research:
     needs: dispatch
-    if: ${{ needs.dispatch.outputs.matrix != '' }}
+    if: ${{ needs.dispatch.outputs.selected != '0' && needs.dispatch.outputs.matrix != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
@@ -73,4 +75,8 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           curl --fail-with-body --silent --show-error --connect-timeout 15 --max-time 240 -X POST -H "Authorization: Bearer $CRON_SECRET" "https://bim-coordinationn.vercel.app/api/process-research/finalize"
-          test "${{ needs.research.result }}" = "success" || test "${{ needs.research.result }}" = "skipped" || { echo "::error::One or more research batches failed"; exit 1; }
+          if [ "${{ needs.dispatch.outputs.selected }}" = "0" ]; then
+            echo "No verified research-eligible leads were available; finalize completed normally."
+          else
+            test "${{ needs.research.result }}" = "success" || { echo "::error::One or more research batches failed"; exit 1; }
+          fi
