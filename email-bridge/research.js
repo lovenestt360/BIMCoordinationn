@@ -78,17 +78,24 @@ Qualification may be Qualified only if company fit, person fit, need evidence an
  if(candidate.finishReason && candidate.finishReason!=='STOP')throw new Error(`Gemini finish reason: ${candidate.finishReason}`);
  const text=(candidate.content?.parts||[]).filter(x=>!x.thought&&typeof x.text==='string').map(x=>x.text).join('\n');
  const result=parseJson(text);
- const sources=(candidate.groundingMetadata?.groundingChunks||[]).map(x=>x.web?.uri).filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://')));
+ const grounding=candidate.groundingMetadata||{};
+ const searchQueries=Array.isArray(grounding.webSearchQueries)?grounding.webSearchQueries.filter(Boolean):[];
+ const sources=(grounding.groundingChunks||[]).map(x=>x.web?.uri).filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://')));
  const returned=Array.isArray(result.source_urls)?result.source_urls.filter(x=>typeof x==='string'&&(x.startsWith('https://')||x.startsWith('http://'))):[];
- result.source_urls=[...new Set([...returned,...sources])].slice(0,30);
- console.log('Klyron Gemini research usage',JSON.stringify({lead:lead.id,model,input_tokens:b.usageMetadata?.promptTokenCount||0,output_tokens:b.usageMetadata?.candidatesTokenCount||0,search_queries:candidate.groundingMetadata?.webSearchQueries?.length||0}));
- // Fail closed: qualification requires public sources, person context, company context, and a concrete need signal.
+ const grounded=searchQueries.length>0&&sources.length>0;
+ result.grounding_used=grounded;
+ result.source_urls=grounded?[...new Set([...sources,...returned])].slice(0,30):[];
+ console.log('Klyron Gemini research usage',JSON.stringify({lead:lead.id,model,input_tokens:b.usageMetadata?.promptTokenCount||0,output_tokens:b.usageMetadata?.candidatesTokenCount||0,search_queries:searchQueries.length,grounding_sources:sources.length}));
+ // Fail closed: qualification requires actual Google Search grounding plus concrete person, company and need evidence.
  const weakNeed = !result.need_signals || !String(result.need_signals).trim() || !result.vacancy_project_signals || !String(result.vacancy_project_signals).trim();
- if(!result.source_urls.length||!result.person_role_evidence||!result.industry_context||!result.pain_point_evidence||weakNeed){
+ if(!grounded||!result.person_role_evidence||!result.industry_context||!result.pain_point_evidence||weakNeed){
   result.research_status='Insufficient Data';result.qualification='Hold';
-  if(result.company_research_gate==='Approved'&&!result.industry_context)result.company_research_gate='Insufficient Data';
-  if(result.need_evidence_gate==='Approved'&&(!result.pain_point_evidence||weakNeed))result.need_evidence_gate='Insufficient Data';
-  if(weakNeed) result.confidence=Math.min(70,Number(result.confidence)||0);
+  if(!grounded){result.company_research_gate='Insufficient Data';result.person_role_gate='Pending';result.need_evidence_gate='Insufficient Data';result.confidence=Math.min(40,Number(result.confidence)||0);}
+  else {
+   if(result.company_research_gate==='Approved'&&!result.industry_context)result.company_research_gate='Insufficient Data';
+   if(result.need_evidence_gate==='Approved'&&(!result.pain_point_evidence||weakNeed))result.need_evidence_gate='Insufficient Data';
+   if(weakNeed)result.confidence=Math.min(70,Number(result.confidence)||0);
+  }
  }
  return result
 }
