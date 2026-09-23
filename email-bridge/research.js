@@ -1,5 +1,5 @@
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
-const GEMINI_MODEL = 'gemini-2.5-flash-lite';
+const GEMINI_MODEL = 'gemini-3.5-flash-lite';
 const AIRTABLE_API_URL = 'https://api.airtable.com/v0';
 const BASE_ID = 'appB5ZouRh0zksgbR';
 const LEADS = 'tblUwhxkMX3GmmjYL';
