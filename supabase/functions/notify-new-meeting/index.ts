@@ -454,6 +454,9 @@ serve(async (req) => {
     // rather than losing the notification entirely.
     let meetLink = "";
     let calendarLink = "";
+    // Surfaced in the response so a silently skipped Meet link can be
+    // diagnosed without digging through function logs.
+    let calendarStatus = "skipped: google credentials not configured";
     if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_REFRESH_TOKEN) {
       try {
         const accessToken = await getAccessToken();
@@ -462,7 +465,9 @@ serve(async (req) => {
           (ep: any) => ep.entryPointType === "video"
         )?.uri || "";
         calendarLink = calendarEvent.htmlLink || "";
+        calendarStatus = meetLink ? "ok" : "created without a Meet link";
       } catch (calendarError) {
+        calendarStatus = `failed: ${calendarError.message}`;
         console.error("Calendar event creation failed, continuing without it:", calendarError.message);
       }
     }
@@ -479,7 +484,7 @@ serve(async (req) => {
       clientEmailHtml(record, meetLink)
     );
 
-    return new Response(JSON.stringify({ success: true, meetLink }), {
+    return new Response(JSON.stringify({ success: true, meetLink, calendarStatus }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
