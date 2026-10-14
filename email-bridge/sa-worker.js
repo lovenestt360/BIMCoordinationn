@@ -175,6 +175,7 @@ export function registerSARoutes(app){
    if(!process.env.SA_OUTREACH_LIVE_ENABLED||process.env.SA_OUTREACH_LIVE_ENABLED!=='true')blockers.push('LIVE_SENDING_DISABLED');
    if(suppression.length===0||suppression.some(r=>!r.fields.Email&&!r.fields.Domain))blockers.push('SUPPRESSION_UNAVAILABLE');
    if(senderConfigured.some(x=>!x.smtpConfigured))blockers.push('SENDER_CREDENTIALS_MISSING');
+   blockers.push('ATOMIC_RATE_LIMIT_LOCK_NOT_IMPLEMENTED','SEND_JOURNAL_NOT_CONNECTED','INBOUND_STOP_EVENTS_NOT_VALIDATED');
    return res.json({success:true,mode:'read-only',sendingEnabled:false,sourceRecords:rows.length,eligible:eligible.length,senders:senderConfigured,campaigns:saCampaigns,blockers});
   }catch(e){return res.status(500).json({success:false,error:String(e.message).slice(0,300)});}
  });
