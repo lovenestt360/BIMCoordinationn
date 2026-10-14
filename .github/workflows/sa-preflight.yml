@@ -20,7 +20,9 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
+      - run: npm install --prefix email-bridge --no-audit --no-fund
+      - run: node --check email-bridge/sa-smtp-transport.js
       - run: node --check email-bridge/sa-worker.js
       - run: node --check email-bridge/sa-outbound-preflight.js
       - run: node --check email-bridge/sa-sending-plan.js
-      - run: node --test email-bridge/sa-outbound-preflight.test.js email-bridge/sa-sending-plan.test.js
+      - run: node --test email-bridge/sa-outbound-preflight.test.js email-bridge/sa-sending-plan.test.js email-bridge/sa-smtp-transport.test.js
