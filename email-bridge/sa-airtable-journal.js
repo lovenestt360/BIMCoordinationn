@@ -11,10 +11,6 @@ export async function recordSAAttempt({leadId,attemptId,sender,step='S01',outcom
  if(!/^rec[a-zA-Z0-9]+$/.test(leadId)||!/^[-a-zA-Z0-9]{12,128}$/.test(attemptId)||!['accepted','uncertain','failed'].includes(outcome))throw new Error('INVALID_LOG_EVENT');
  const event={fields:{'Activity ID':'sa-'+attemptId,'Lead ID':leadId,'Timestamp':at,'Event Type':outcome==='accepted'?'SA_SEND_CONFIRMED':'SA_SEND_UNCERTAIN','Details':JSON.stringify({attemptId,sender,step,outcome,messageId}),'Source':'SA worker'}};
  await requester(LOG,{method:'POST',body:JSON.stringify({records:[event]})});
- // Airtable read after log; never mark a sent email if provider acceptance is uncertain.
- if(outcome!=='accepted')return {logged:true,leadUpdated:false};
- const fields={'Outreach Status':'In progress'};
- // Sequence-specific sent timestamp fields are intentionally excluded until schema is confirmed.
- await requester(PIPELINE,{method:'PATCH',body:JSON.stringify({records:[{id:leadId,fields}]})});
- return {logged:true,leadUpdated:true};
+ // Do not mutate pipeline status until exact allowed field values and stop rules are verified.
+ return {logged:true,leadUpdated:false,requiresReconciliation:outcome==='accepted'};
 }
