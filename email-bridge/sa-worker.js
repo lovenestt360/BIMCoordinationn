@@ -4,7 +4,11 @@ const norm=v=>String(v||'').trim().toLowerCase();
 const isEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||'');
 const domain=v=>norm(v).replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0].split(':')[0];
 async function at(path,options={}){
- const r=await fetch(`https://api.airtable.com/v0/${BASE}/${path}`,{...options,headers:{Authorization:`Bearer ${process.env.AIRTABLE_PAT}`,'Content-Type':'application/json',...(options.headers||{})},signal:AbortSignal.timeout(30000)});
+ let r;for(let attempt=0;attempt<4;attempt++){
+  r=await fetch(`https://api.airtable.com/v0/${BASE}/${path}`,{...options,headers:{Authorization:`Bearer ${process.env.AIRTABLE_PAT}`,'Content-Type':'application/json',...(options.headers||{})},signal:AbortSignal.timeout(30000)});
+  if(r.status!==429&&(r.status<500||options.method==='POST'))break;
+  if(attempt<3)await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));
+ }
  const b=await r.json().catch(()=>({}));if(!r.ok)throw new Error(`Airtable ${r.status}: ${b.error?.message||b.error?.type||'request failed'}`);return b;
 }
 async function list(table){
@@ -170,3 +174,4 @@ export function registerSARoutes(app){
  app.get('/api/process-research',wrap(async(_req,res)=>{const d=await dispatchSA(2);const r=await researchSA(d.batches[0]?.ids||[]);return res.status(r.success?200:207).json(r);}));
  app.post('/api/process-research/finalize',wrap(async(_req,res)=>res.json({success:true,mode:'SA',final:await syncSA()})));
 }
+
