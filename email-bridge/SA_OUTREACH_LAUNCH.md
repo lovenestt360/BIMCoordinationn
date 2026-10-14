@@ -2,7 +2,15 @@
 
 Status: **not authorized for live sending**. This branch adds previews and an isolated SMTP transport, not a production sender loop.
 
-## Hostinger environment variables (Vercel production, encrypted)
+## Existing mailbox infrastructure: preserve, do not reset
+
+Both Hostinger Mail inboxes are already connected and were tested successfully through the ChatGPT Hostinger Mail connector. **Do not change their mailbox passwords, delete those connections, or alter domain DNS records.** The Hostinger connector authorization is held by the connected app and is not a credential available to Vercel server functions.
+
+The original UK/EU send transport has **not** been located in the inspected `BIMCoordinationn` GitHub branches or the connected Vercel team's projects. The prior version of this checklist incorrectly implied that the existing mailboxes had no authentication; the only unconfigured credentials are for the *new, optional* direct SMTP transport on this development branch.
+
+Before adding any SMTP secrets, first identify whether the previous active sender was a separate tool, local process, hosted automation, or the ChatGPT Hostinger connector. Reuse that sender if it supports safe SA automation. Never claim automated Vercel delivery is operational based only on connector tests.
+
+## Optional direct SMTP transport variables (only if the old sender cannot be reused)
 - `SA_SMTP_MARIO_USER=mario@klyronconsulting.cc`
 - `SA_SMTP_MARIO_PASSWORD` (Hostinger mailbox SMTP password; secret)
 - `SA_SMTP_CONTACT_USER=contact@klyronconsulting.com`
