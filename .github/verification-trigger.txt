@@ -1,1 +1,1 @@
-Run verification recovery: 2026-09-28 03:31 Maputo
+Run SA verification after full 2058-source reconciliation and SA-worker deployment: 2026-10-14
