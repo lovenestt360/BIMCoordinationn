@@ -1,3 +1,4 @@
+import {planSA} from './sa-sending-plan.js';
 import {SENDERS,evaluateSA} from './sa-outbound-preflight.js';
 const BASE='appB5ZouRh0zksgbR', PIPELINE='tbl0oArumIYj71OFC', SUPPRESSION='tblpPtB3Gob5WLvFV', CONTROL='tbl3vQuQDfxP2x5NP', LOG='tblh7K2naDbWw8dNV';
 import {poolPermission,pausedResult} from './pool-control.js';
@@ -148,6 +149,16 @@ export function registerSARoutes(app){
    await handler(req,res);
   }catch(e){return res.status(500).json({success:false,mode:'SA',error:String(e.message).slice(0,1000)});}
  };
+ // Preview uses present Airtable eligibility, drafts, suppressions and sent evidence.
+ app.get('/api/sa-outreach/preview',async(req,res)=>{
+  if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
+  try{
+   const [leads,suppression,activities]=await Promise.all([list(PIPELINE),list(SUPPRESSION),list(LOG)]);
+   const recentEvents=activities.filter(a=>a.fields['Event Type']==='SA_SEND_CONFIRMED').map(a=>({sender:a.fields.Source,sentAt:a.fields.Timestamp}));
+   const plan=planSA({leads,suppressions:suppression,recentEvents});
+   return res.json({...plan,schedule:plan.schedule.slice(0,40)});
+  }catch(e){return res.status(500).json({success:false,error:String(e.message).slice(0,300)});}
+ });
  // Read-only, authenticated SA readiness report. Works even while Launch Outreach is paused.
  app.get('/api/sa-outreach/readiness',async(req,res)=>{
   if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
