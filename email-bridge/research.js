@@ -1,3 +1,4 @@
+import { poolPermission, pausedResult } from './pool-control.js';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 const GEMINI_MODEL = 'gemini-3.5-flash-lite';
 const AIRTABLE_API_URL = 'https://api.airtable.com/v0';
@@ -117,6 +118,8 @@ function finalState(f){
  return ok?'Approved':hardFail(f)?'Rejected':'Pending'
 }
 async function syncFinal(){
+ const permission=await poolPermission();
+ if(!permission.allowed)return {skipped:true,processing_status:'blocked',reason:permission.reason};
  const fields=['Verification Status','Accept All','Role Email','Company ICP Status','Company Research Gate','Person Role Gate','Need Evidence Gate','Research Status','Qualification','Final 2K Gate','Final Gate At'];
  const leads=await list(LEADS,fields,null,10000), updates=[];let approved=0;
  for(const x of leads){const next=finalState(x.fields||{});if(next==='Approved')approved++;if((x.fields?.['Final 2K Gate']||'Pending')!==next){const u={'Final 2K Gate':next};if(next==='Approved'&&!x.fields?.['Final Gate At'])u['Final Gate At']=new Date().toISOString();updates.push({id:x.id,fields:u})}}
@@ -133,6 +136,8 @@ const BATCH_SIZE = 2;
 function authorized(req){return Boolean(process.env.CRON_SECRET) && req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`}
 function eligible(f){return f.Company && f['Job Title'] && f['Verification Status']==='Valid' && checkboxClear(f['Accept All']) && checkboxClear(f['Role Email']) && (!f['Research Status'] || f['Research Status']==='Pending' || (f['Research Status']==='Researching' && (!f['Last Researched'] || Date.now()-Date.parse(f['Last Researched'])>30*60*1000)))}
 async function dispatch(limit=DISPATCH_LIMIT){
+ const permission=await poolPermission();
+ if(!permission.allowed)return pausedResult(permission,{selected:0,batches:[]});
  const leads=await list(LEADS,['First Name','Last Name','Job Title','Company','Company Domain','Verification Status','Accept All','Role Email','Research Status','Last Researched'],null,10000);
  const selected=leads.filter(x=>eligible(x.fields||{})).slice(0,limit);
  // Keep people from the same company adjacent so the second person can reuse its evidence.
@@ -144,6 +149,8 @@ async function dispatch(limit=DISPATCH_LIMIT){
 }
 async function processBatch(ids){
  const summary={selected:ids.length,researched:0,qualified:0,processed:[],errors:[]};
+ const permission=await poolPermission();
+ if(!permission.allowed)return {...summary,skipped:true,processing_status:'blocked',reason:permission.reason};
  const cache=new Map();
  for(const id of ids){
   let claimed=false;

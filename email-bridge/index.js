@@ -1,3 +1,4 @@
+import { poolPermission, pausedResult } from './pool-control.js';
 import { registerResearchRoutes } from './research.js';
 import express from 'express';
 
@@ -421,6 +422,8 @@ app.get('/api/process-leads', async (req, res) => {
   };
 
   try {
+    const permission = await poolPermission();
+    if (!permission.allowed) return res.json(pausedResult(permission, {duration_ms: Date.now() - startedAt, ...summary}));
     const promoted = await promoteReadyProspectsToLeads(MAX_PROCESS_PER_RUN);
     summary.promoted_from_queue = promoted;
     const [suppression, leadData] = await Promise.all([
