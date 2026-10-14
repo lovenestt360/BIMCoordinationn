@@ -1,0 +1,25 @@
+name: SA outreach preflight checks
+on:
+  push:
+    branches:
+      - feature/sa-outreach-safety-validation-20261014
+  pull_request:
+    paths:
+      - 'email-bridge/sa-*'
+      - 'vercel.json'
+      - '.github/workflows/sa-preflight.yml'
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: node --check email-bridge/sa-worker.js
+      - run: node --check email-bridge/sa-outbound-preflight.js
+      - run: node --test email-bridge/sa-outbound-preflight.test.js
