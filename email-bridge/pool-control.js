@@ -3,7 +3,7 @@ const CONTROL = 'tbl3vQuQDfxP2x5NP';
 
 // Always inspect the control plane before touching legacy lead tables or providers.
 // SA migration requires a separate schema adapter; never run the UK/EU processor on SA.
-export async function poolPermission() {
+export async function poolPermission({allowSA=false}={}) {
   const token = process.env.AIRTABLE_PAT;
   if (!token) throw new Error('AIRTABLE_PAT is not configured.');
   const params = new URLSearchParams({pageSize: '100'});
@@ -17,12 +17,13 @@ export async function poolPermission() {
   const pools = (body.records || []).filter(r => r.fields?.Stage === 'Pool Building');
   if (body.offset || pools.length !== 1) return {allowed:false, reason:'POOL_CONTROL_AMBIGUOUS'};
   const f = pools[0].fields;
-  if (f.Command !== 'Start') return {allowed:false, reason:'POOL_STOPPED', command:f.Command || 'Unset'};
-  if (!['Ready','Running'].includes(f.Status)) return {allowed:false, reason:'POOL_NOT_READY', status:f.Status || 'Unset'};
-  if (/south africa|SA-CON|SA-PM/i.test(f.Audience || '')) {
+  const mode = /south africa|SA-CON|SA-PM/i.test(f.Audience || '') ? 'SA' : 'Legacy';
+  if (f.Command !== 'Start') return {allowed:false, reason:'POOL_STOPPED', mode, command:f.Command || 'Unset'};
+  if (!['Ready','Running'].includes(f.Status)) return {allowed:false, reason:'POOL_NOT_READY', mode, status:f.Status || 'Unset'};
+  if (mode === 'SA' && !allowSA) {
     return {allowed:false, reason:'SA_MIGRATION_REQUIRES_SCHEMA_ADAPTER'};
   }
-  return {allowed:true};
+  return {allowed:true, mode};
 }
 
 export function pausedResult(permission, extra = {}) {

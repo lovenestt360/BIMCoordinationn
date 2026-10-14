@@ -1,9 +1,11 @@
+import { registerSARoutes } from './sa-worker.js';
 import { poolPermission, pausedResult } from './pool-control.js';
 import { registerResearchRoutes } from './research.js';
 import express from 'express';
 
 const app = express();
 app.use(express.json({ limit: '32kb' }));
+registerSARoutes(app);
 
 const EMAILABLE_URL = 'https://api.emailable.com/v1/verify';
 const AIRTABLE_API_URL = 'https://api.airtable.com/v0';
