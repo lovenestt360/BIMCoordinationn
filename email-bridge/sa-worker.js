@@ -69,12 +69,12 @@ async function verifySA(){
   if(Object.entries(gates).some(([k,v])=>f[k]!==v))fixes.push({id:r.id,fields:gates});
  }
  await patch(PIPELINE,fixes);
- const pending=records.filter(r=>canonical.has(r.id)&&isEmail(norm(r.fields.Email))&&!isSuppressed(norm(r.fields.Email),s)&&r.fields.Company&&r.fields['Job Title']&&r.fields.Country==='South Africa'&&['SA-CON','SA-PM'].includes(r.fields['Campaign Key'])&&(!r.fields['Email Verification']||r.fields['Email Verification']==='Not checked')).slice(0,100);
+ const pending=records.filter(r=>canonical.has(r.id)&&isEmail(norm(r.fields.Email))&&!isSuppressed(norm(r.fields.Email),s)&&r.fields.Company&&r.fields['Job Title']&&r.fields.Country==='South Africa'&&['SA-CON','SA-PM'].includes(r.fields['Campaign Key'])&&(!r.fields['Email Verification']||r.fields['Email Verification']==='Not checked')).slice(0,1000);
  summary.pending_found=pending.length;
- for(let i=0;i<pending.length;i+=5){
+ for(let i=0;i<pending.length;i+=20){
   if(Date.now()-start>240000){summary.stopped_for_time_budget=true;break;}
   const permission=await poolPermission({allowSA:true});if(!permission.allowed||permission.mode!=='SA'){summary.stopped_by_control=true;break;}
-  const results=await Promise.all(pending.slice(i,i+5).map(async r=>{
+  const results=await Promise.all(pending.slice(i,i+20).map(async r=>{
    const email=norm(r.fields.Email),date=new Date().toISOString();
    try{
     const q=new URLSearchParams({email,smtp:'true',accept_all:'true',timeout:'10'});
