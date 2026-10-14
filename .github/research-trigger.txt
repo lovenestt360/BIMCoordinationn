@@ -1,1 +1,1 @@
-Run the existing SA Gemini research workflow for up to 62 eligible existing SA-CON/SA-PM contacts with primary email. Preserve qualification and suppression checks, user-authorized unchecked-email waiver, and leave outbound outreach paused. Trigger: 2026-10-14 manual research cycle 3.
+Run next SA Gemini research batch, up to 62 existing eligible SA-CON/SA-PM records with primary email. 315 stale Rejected+Pending records were returned to the research queue, preserving verification and suppression evidence. No outbound email. Trigger 2026-10-14 reconciliation cycle 4.
