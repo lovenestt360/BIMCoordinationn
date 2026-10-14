@@ -23,4 +23,4 @@ jobs:
       - run: node --check email-bridge/sa-worker.js
       - run: node --check email-bridge/sa-outbound-preflight.js
       - run: node --check email-bridge/sa-sending-plan.js
-      - run: node --test email-bridge/sa-outbound-preflight.test.js
+      - run: node --test email-bridge/sa-outbound-preflight.test.js email-bridge/sa-sending-plan.test.js
