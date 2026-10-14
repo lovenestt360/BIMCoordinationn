@@ -8,7 +8,7 @@ export const MIN_CROSS_SENDER_GAP_MS=3*60_000;
 export const MAX_CROSS_SENDER_GAP_MS=5*60_000;
 const val = value => typeof value==='object'&&value!==null&&'name'in value?value.name:value;
 const norm = value => String(value||'').trim().toLowerCase();
-const emailOK = value => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(value);
+const emailOK = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 export function evaluateSA(lead, suppressions=[], previouslySent=new Set()){
   const f=lead?.fields||lead||{},email=norm(f.Email),domain=email.split('@')[1]||'';
   const blocked=suppressions.some(r=>{
