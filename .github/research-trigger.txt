@@ -1,1 +1,1 @@
-Run the existing SA Gemini 62-lead research workflow using the approved unchecked-email bypass, retained source and suppression data; keep outreach paused. Trigger: 2026-10-14 repair cycle 2.
+Run the existing SA Gemini research workflow for up to 62 eligible existing SA-CON/SA-PM contacts with primary email. Preserve qualification and suppression checks, user-authorized unchecked-email waiver, and leave outbound outreach paused. Trigger: 2026-10-14 manual research cycle 3.
