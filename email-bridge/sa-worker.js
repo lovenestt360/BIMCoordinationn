@@ -54,7 +54,6 @@ async function syncSA(){
  return {approved:count,source_records:rows.length,counts,complete:count>=2000};
 }
 async function verifySA(){
- if(!process.env.EMAILABLE_API_KEY)throw new Error('EMAILABLE_API_KEY missing');
  const start=Date.now(),records=await list(PIPELINE),canonical=canonicalRecords(records),s=await suppressionData();
  const summary={mode:'SA',processed:0,valid:0,risky:0,invalid:0,catch_all:0,duplicate:0,suppressed:0,missing_email:0,verification_error:0,warnings:s.incomplete?['SUPPRESSION_DATA_INCOMPLETE_FINAL_APPROVAL_BLOCKED']:[]};
  const fixes=[];
@@ -69,34 +68,16 @@ async function verifySA(){
   if(Object.entries(gates).some(([k,v])=>f[k]!==v))fixes.push({id:r.id,fields:gates});
  }
  await patch(PIPELINE,fixes);
- const pending=records.filter(r=>canonical.has(r.id)&&isEmail(norm(r.fields.Email))&&!isSuppressed(norm(r.fields.Email),s)&&r.fields.Company&&r.fields['Job Title']&&r.fields.Country==='South Africa'&&['SA-CON','SA-PM'].includes(r.fields['Campaign Key'])&&(!r.fields['Email Verification']||r.fields['Email Verification']==='Not checked')).slice(0,1000);
- summary.pending_found=pending.length;
- for(let i=0;i<pending.length;i+=20){
-  if(Date.now()-start>240000){summary.stopped_for_time_budget=true;break;}
-  const permission=await poolPermission({allowSA:true});if(!permission.allowed||permission.mode!=='SA'){summary.stopped_by_control=true;break;}
-  const results=await Promise.all(pending.slice(i,i+20).map(async r=>{
-   const email=norm(r.fields.Email),date=new Date().toISOString();
-   try{
-    const q=new URLSearchParams({email,smtp:'true',accept_all:'true',timeout:'10'});
-    const response=await fetch(`https://api.emailable.com/v1/verify?${q}`,{headers:{Authorization:`Bearer ${process.env.EMAILABLE_API_KEY}`},signal:AbortSignal.timeout(25000)});
-    const b=await response.json().catch(()=>({}));if(!response.ok||!b.state)throw new Error(b.message||b.error||`Emailable HTTP ${response.status}`);
-    const status=b.state==='undeliverable'?'Invalid':b.accept_all===true?'Catch-all':b.state==='deliverable'&&!b.role&&!b.disposable&&!b.mailbox_full?'Valid':'Risky';
-    const fields={'Email Verification':status,'Verification Provider':'Emailable','Verification Date':date,'Verification Reason':String(b.reason||b.state),'Accept All':b.accept_all===true,'Role Email':b.role===true,'Technical Error':''};
-    if(status!=='Valid'){fields.Qualification='Rejected';fields['Research Status']='Complete';fields['Final SA Gate']='Rejected';}
-    summary[status==='Catch-all'?'catch_all':status.toLowerCase()]++;summary.processed++;
-    return {id:r.id,fields};
-   }catch(e){summary.verification_error++;return {id:r.id,fields:{'Email Verification':'Not checked','Verification Provider':'Emailable','Verification Date':date,'Technical Error':String(e.message).slice(0,1000)}};}
-  }));
-  await patch(PIPELINE,results);
- }
+ summary.skipped=true;summary.reason='Emailable subscription ended; paid verification disabled by user';
  await log('SA_VERIFICATION_RUN',summary);
  return {success:summary.verification_error===0,duration_ms:Date.now()-start,...summary};
 }
 function eligibleSA(f){
  const stale=f['Research Status']==='Researching'&&Date.now()-Date.parse(f['Last Researched']||'1970-01-01')>1800000;
- return f.Country==='South Africa'&&['SA-CON','SA-PM'].includes(f['Campaign Key'])&&f.Company&&f['Job Title']&&f['Email Verification']==='Valid'&&f['Verification Provider']==='Emailable'&&!f['Accept All']&&!f['Role Email']&&f['Duplicate Gate']==='Unique'&&f['Suppression Gate']!=='Suppressed'&&(!f['Research Status']||['Pending','Technical Failure'].includes(f['Research Status'])||stale);
+ return f.Country==='South Africa'&&['SA-CON','SA-PM'].includes(f['Campaign Key'])&&f.Company&&f['Job Title']&&isEmail(norm(f.Email))&&(!f['Email Verification']||['Not checked','Valid'].includes(f['Email Verification']))&&!f['Accept All']&&!f['Role Email']&&f['Duplicate Gate']==='Unique'&&f['Suppression Gate']!=='Suppressed'&&(!f['Research Status']||['Pending','Technical Failure'].includes(f['Research Status'])||stale);
 }
 async function dispatchSA(limit=62){
+ await verifySA(); // Reconcile source identities and suppressions without paid verification.
  const records=await list(PIPELINE),selected=records.filter(r=>eligibleSA(r.fields)).sort((a,b)=>String(a.fields['Prospect Key']).localeCompare(String(b.fields['Prospect Key']))).slice(0,Math.min(62,limit));
  const batches=[];for(let i=0;i<selected.length;i+=2)batches.push({index:batches.length,ids:selected.slice(i,i+2).map(r=>r.id)});
  await log('SA_RESEARCH_DISPATCH',{selected:selected.length,limit:Math.min(62,limit)});
