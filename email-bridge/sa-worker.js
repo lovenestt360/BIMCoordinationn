@@ -155,7 +155,7 @@ export function registerSARoutes(app){
   if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
   try{
    const [leads,suppression,activities]=await Promise.all([list(PIPELINE),list(SUPPRESSION),list(LOG)]);
-   const recentEvents=activities.filter(a=>a.fields['Event Type']==='SA_SEND_CONFIRMED').map(a=>({sender:a.fields.Source,sentAt:a.fields.Timestamp}));
+   const recentEvents=activities.filter(a=>a.fields['Event Type']==='SA_SEND_CONFIRMED').map(a=>{let d={};try{d=JSON.parse(a.fields.Details||'{}');}catch{}return {sender:d.sender,sentAt:a.fields.Timestamp};});
    const plan=planSA({leads,suppressions:suppression,recentEvents});
    return res.json({...plan,schedule:plan.schedule.slice(0,40)});
   }catch(e){return res.status(500).json({success:false,error:String(e.message).slice(0,300)});}
