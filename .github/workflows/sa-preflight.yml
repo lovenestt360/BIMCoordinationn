@@ -21,9 +21,10 @@ jobs:
         with:
           node-version: '24'
       - run: npm install --prefix email-bridge --no-audit --no-fund
+      - run: node --check email-bridge/sa-send-journal.js
       - run: node --check email-bridge/sa-atomic-quota.js
       - run: node --check email-bridge/sa-smtp-transport.js
       - run: node --check email-bridge/sa-worker.js
       - run: node --check email-bridge/sa-outbound-preflight.js
       - run: node --check email-bridge/sa-sending-plan.js
-      - run: node --test email-bridge/sa-outbound-preflight.test.js email-bridge/sa-sending-plan.test.js email-bridge/sa-smtp-transport.test.js email-bridge/sa-atomic-quota.test.js
+      - run: node --test email-bridge/sa-outbound-preflight.test.js email-bridge/sa-sending-plan.test.js email-bridge/sa-smtp-transport.test.js email-bridge/sa-atomic-quota.test.js email-bridge/sa-send-journal.test.js
