@@ -1,3 +1,4 @@
+import {senderReadiness} from './sa-smtp-transport.js';
 import {planSA} from './sa-sending-plan.js';
 import {SENDERS,evaluateSA} from './sa-outbound-preflight.js';
 const BASE='appB5ZouRh0zksgbR', PIPELINE='tbl0oArumIYj71OFC', SUPPRESSION='tblpPtB3Gob5WLvFV', CONTROL='tbl3vQuQDfxP2x5NP', LOG='tblh7K2naDbWw8dNV';
@@ -167,7 +168,7 @@ export function registerSARoutes(app){
    const eligible=rows.filter(r=>evaluateSA(r,suppression).eligible);
    const control=controls.find(r=>r.fields.Control==='Launch Outreach')?.fields||{};
    const saCampaigns=campaigns.filter(r=>r.fields.Country==='South Africa').map(r=>({name:r.fields['Campaign Name'],status:r.fields.Status}));
-   const senderConfigured=SENDERS.map(sender=>({sender:sender.address,displayName:sender.name,hourlyLimit:sender.hourlyMax,smtpConfigured:Boolean(process.env[sender.address.endsWith('.cc')?'SA_SMTP_MARIO_PASSWORD':'SA_SMTP_CONTACT_PASSWORD'])}));
+   const senderConfigured=senderReadiness().map(sender=>({sender:sender.address,displayName:sender.name,hourlyLimit:20,smtpConfigured:sender.configured}));
    const blockers=[];
    if(control.Command!=='Start'||control.Status!=='Running')blockers.push('OUTREACH_PAUSED');
    if(saCampaigns.length!==2||saCampaigns.some(c=>c.status!=='Active'))blockers.push('CAMPAIGNS_NOT_ACTIVE');
