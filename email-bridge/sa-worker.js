@@ -44,7 +44,8 @@ async function suppressionData(){
  return {emails,domains,incomplete};
 }
 function isSuppressed(email,s){return s.emails.has(email)||s.domains.has(email.split('@')[1]);}
-function approved(f){return f.Country==='South Africa'&&['SA-CON','SA-PM'].includes(f['Campaign Key'])&&f['Email Verification']==='Valid'&&f['Verification Provider']==='Emailable'&&Boolean(f['Verification Date'])&&!f['Accept All']&&!f['Role Email']&&f['Duplicate Gate']==='Unique'&&f['Suppression Gate']==='Clear'&&f['ICP Gate']==='Approved'&&f['Company Research Gate']==='Approved'&&f['Person Research Gate']==='Approved'&&f['Need Evidence Gate']==='Approved'&&f['Research Status']==='Complete'&&f.Qualification==='Qualified';}
+// User approved unchecked-email bypass on 2026-10-14; preserve verification evidence.
+function approved(f){return f.Country==='South Africa'&&['SA-CON','SA-PM'].includes(f['Campaign Key'])&&isEmail(norm(f.Email))&&(!f['Email Verification']||['Not checked','Valid'].includes(f['Email Verification']))&&!f['Accept All']&&!f['Role Email']&&f['Duplicate Gate']==='Unique'&&f['Suppression Gate']==='Clear'&&f['ICP Gate']==='Approved'&&f['Company Research Gate']==='Approved'&&f['Person Research Gate']==='Approved'&&f['Need Evidence Gate']==='Approved'&&f['Research Status']==='Complete'&&f.Qualification==='Qualified';}
 async function syncSA(){
  const rows=await list(PIPELINE),updates=[];let count=0;const counts={Qualified:0,'Insufficient Data':0,Rejected:0,Pending:0};
  for(const r of rows){const f=r.fields;counts[f.Qualification||'Pending']=(counts[f.Qualification||'Pending']||0)+1;const gate=approved(f)?'Approved':f.Qualification==='Rejected'?'Rejected':'Pending';if(gate==='Approved')count++;if(f['Final SA Gate']!==gate)updates.push({id:r.id,fields:{'Final SA Gate':gate}});}
