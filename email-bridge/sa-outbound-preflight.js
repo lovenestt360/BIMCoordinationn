@@ -1,3 +1,4 @@
+import {shouldHaltLead} from './sa-inbound-signals.js';
 // SA outbound preflight. Read-only: never sends email or changes Airtable.
 export const SENDERS = Object.freeze([
   {address:'mario@klyronconsulting.cc',name:'Mário Quissico',hourlyMax:20},
@@ -24,7 +25,7 @@ export function evaluateSA(lead, suppressions=[], previouslySent=new Set()){
     duplicate:val(f['Duplicate Gate'])==='Unique'&&!previouslySent.has(email),
     verified:!['Invalid','Risky','Catch-all'].includes(val(f['Email Verification']))&&!f['Accept All']&&!f['Role Email'],
     research:val(f['ICP Gate'])==='Approved'&&val(f['Company Research Gate'])==='Approved'&&val(f['Person Research Gate'])==='Approved'&&val(f['Need Evidence Gate'])==='Approved'&&val(f['Research Status'])==='Complete',
-    stoppage:!['Opted Out'].includes(val(f['Opt-Out Status']))&&!['Hard Bounce'].includes(val(f['Bounce Status']))&&!['Genuine Reply'].includes(val(f['Reply Status']))&&!['Booked'].includes(val(f['Booking Status']))
+    stoppage:!shouldHaltLead(f)
   };
   return {email,eligible:Object.values(checks).every(Boolean),failed:Object.keys(checks).filter(k=>!checks[k])};
 }
