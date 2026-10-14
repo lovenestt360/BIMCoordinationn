@@ -1,3 +1,4 @@
+import {SENDERS,evaluateSA} from './sa-outbound-preflight.js';
 const BASE='appB5ZouRh0zksgbR', PIPELINE='tbl0oArumIYj71OFC', SUPPRESSION='tblpPtB3Gob5WLvFV', CONTROL='tbl3vQuQDfxP2x5NP', LOG='tblh7K2naDbWw8dNV';
 import {poolPermission,pausedResult} from './pool-control.js';
 const norm=v=>String(v||'').trim().toLowerCase();
@@ -147,6 +148,24 @@ export function registerSARoutes(app){
    await handler(req,res);
   }catch(e){return res.status(500).json({success:false,mode:'SA',error:String(e.message).slice(0,1000)});}
  };
+ // Read-only, authenticated SA readiness report. Works even while Launch Outreach is paused.
+ app.get('/api/sa-outreach/readiness',async(req,res)=>{
+  if(!process.env.CRON_SECRET||req.headers.authorization!==`Bearer ${process.env.CRON_SECRET}`)return res.status(401).json({success:false,error:'Unauthorized'});
+  try{
+   const [rows,suppression,controls,campaigns]=await Promise.all([list(PIPELINE),list(SUPPRESSION),list(CONTROL),list('tblJrgzhvgDQr4H0u')]);
+   const eligible=rows.filter(r=>evaluateSA(r,suppression).eligible);
+   const control=controls.find(r=>r.fields.Control==='Launch Outreach')?.fields||{};
+   const saCampaigns=campaigns.filter(r=>r.fields.Country==='South Africa').map(r=>({name:r.fields['Campaign Name'],status:r.fields.Status}));
+   const senderConfigured=SENDERS.map(sender=>({sender:sender.address,displayName:sender.name,hourlyLimit:sender.hourlyMax,smtpConfigured:Boolean(process.env[sender.address.endsWith('.cc')?'SA_SMTP_MARIO_PASSWORD':'SA_SMTP_CONTACT_PASSWORD'])}));
+   const blockers=[];
+   if(control.Command!=='Start'||control.Status!=='Running')blockers.push('OUTREACH_PAUSED');
+   if(saCampaigns.length!==2||saCampaigns.some(c=>c.status!=='Active'))blockers.push('CAMPAIGNS_NOT_ACTIVE');
+   if(!process.env.SA_OUTREACH_LIVE_ENABLED||process.env.SA_OUTREACH_LIVE_ENABLED!=='true')blockers.push('LIVE_SENDING_DISABLED');
+   if(suppression.length===0||suppression.some(r=>!r.fields.Email&&!r.fields.Domain))blockers.push('SUPPRESSION_UNAVAILABLE');
+   if(senderConfigured.some(x=>!x.smtpConfigured))blockers.push('SENDER_CREDENTIALS_MISSING');
+   return res.json({success:true,mode:'read-only',sendingEnabled:false,sourceRecords:rows.length,eligible:eligible.length,senders:senderConfigured,campaigns:saCampaigns,blockers});
+  }catch(e){return res.status(500).json({success:false,error:String(e.message).slice(0,300)});}
+ });
  app.get('/api/process-leads',wrap(async(_q,res)=>{const r=await verifySA();return res.status(r.success?200:207).json(r);}));
  app.get('/api/process-research/dispatch',wrap(async(req,res)=>res.json(await dispatchSA(Math.min(62,Math.max(1,parseInt(req.query.limit)||62))))));
  app.post('/api/process-research',wrap(async(req,res)=>{
