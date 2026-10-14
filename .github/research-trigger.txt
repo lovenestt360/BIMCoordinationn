@@ -1,1 +1,1 @@
-Run next SA Gemini research batch, up to 62 existing eligible SA-CON/SA-PM records with primary email. 315 stale Rejected+Pending records were returned to the research queue, preserving verification and suppression evidence. No outbound email. Trigger 2026-10-14 reconciliation cycle 4.
+Trigger next SA Gemini research batch, maximum 62 eligible pending SA-CON/SA-PM records with existing primary email. Preserve suppression, duplicate, verification exclusions and source evidence. Email outreach remains paused. 2026-10-14 cycle 5.
