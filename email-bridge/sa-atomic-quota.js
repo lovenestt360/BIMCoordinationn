@@ -3,7 +3,7 @@
 // This module does not send mail.
 import {SENDERS} from './sa-outbound-preflight.js';
 const keyPart=s=>encodeURIComponent(String(s));
-export function claimKey(sender,leadId,step){return 'sa:send:'+keyPart(sender)+':'+keyPart(leadId)+':'+keyPart(step);}
+export function claimKey(sender,leadId,step){return 'sa:send:'+keyPart(leadId)+':'+keyPart(step);}
 export async function redisCommand(command,env=process.env,fetcher=fetch){
  const base=env.UPSTASH_REDIS_REST_URL,token=env.UPSTASH_REDIS_REST_TOKEN;
  if(!base||!token)throw new Error('ATOMIC_STORE_NOT_CONFIGURED');
