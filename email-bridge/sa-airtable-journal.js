@@ -2,7 +2,7 @@
 const BASE='appB5ZouRh0zksgbR',PIPELINE='tbl0oArumIYj71OFC',LOG='tblh7K2naDbWw8dNV';
 async function request(table,opts={},env=process.env,fetcher=fetch){
  if(!env.AIRTABLE_PAT)throw new Error('AIRTABLE_NOT_CONFIGURED');
- const response=await fetcher('https://api.airtable.com/v0/'+BASE+'/'+table,{...opts,headers:{Authorization:'Bearer '+env.AIRTABLE_PAT','Content-Type':'application/json'},signal:AbortSignal.timeout(10000)});
+ const response=await fetcher('https://api.airtable.com/v0/'+BASE+'/'+table,{...opts,headers:{Authorization:'Bearer '+env.AIRTABLE_PAT,'Content-Type':'application/json'},signal:AbortSignal.timeout(10000)});
  const result=await response.json();
  if(!response.ok)throw new Error('AIRTABLE_HTTP_'+response.status);
  return result;
