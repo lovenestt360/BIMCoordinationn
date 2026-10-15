@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {SENDERS,evaluateSA,validateBatch} from './sa-outbound-preflight.js';
+const base={Country:'South Africa','Campaign Key':'SA-CON',Email:'person@example.co.za','Final SA Gate':'Approved',Qualification:'Qualified','Suppression Gate':'Clear','Duplicate Gate':'Unique','Email Verification':'Not checked','ICP Gate':'Approved','Company Research Gate':'Approved','Person Research Gate':'Approved','Need Evidence Gate':'Approved','Research Status':'Complete'};
+test('sender identities and limits',()=>{assert.equal(SENDERS.length,2);assert.ok(SENDERS.every(s=>s.hourlyMax===20));});
+test('approved SA lead',()=>assert.equal(evaluateSA(base).eligible,true));
+test('suppressed addresses cannot send',()=>assert.equal(evaluateSA(base,[{Email:'person@example.co.za'}]).eligible,false));
+test('stopped contacts cannot send',()=>assert.equal(evaluateSA({...base,'Opt-Out Status':'Opted Out'}).eligible,false));
+test('per-mailbox rate caps',()=>{const now=Date.parse('2026-10-14T12:59:00Z');const mailboxEvents=Array.from({length:20},(_,i)=>({sender:SENDERS[0].address,sentAt:new Date(now-i*60000).toISOString()}));assert.equal(validateBatch({mailboxEvents,now}).valid,false);});
+test('cross-sender separation',()=>{assert.equal(validateBatch({crossSenderPairs:[{firstAt:'2026-10-14T12:00:00Z',secondAt:'2026-10-14T12:04:00Z'}]}).valid,true);});

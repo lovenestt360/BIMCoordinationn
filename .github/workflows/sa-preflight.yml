@@ -1,0 +1,34 @@
+name: SA outreach preflight checks
+on:
+  push:
+    branches:
+      - feature/sa-outreach-safety-validation-20261014
+  pull_request:
+    paths:
+      - 'email-bridge/sa-*'
+      - 'vercel.json'
+      - '.github/workflows/sa-preflight.yml'
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: npm install --prefix email-bridge --no-audit --no-fund
+      - run: node --check email-bridge/sa-lead-reconcile.js
+      - run: node --check email-bridge/sa-inbound-signals.js
+      - run: node --check email-bridge/sa-airtable-journal.js
+      - run: node --check email-bridge/sa-dispatch-one.js
+      - run: node --check email-bridge/sa-send-journal.js
+      - run: node --check email-bridge/sa-atomic-quota.js
+      - run: node --check email-bridge/sa-smtp-transport.js
+      - run: node --check email-bridge/sa-worker.js
+      - run: node --check email-bridge/sa-outbound-preflight.js
+      - run: node --check email-bridge/sa-sending-plan.js
+      - run: node --test email-bridge/sa-outbound-preflight.test.js email-bridge/sa-sending-plan.test.js email-bridge/sa-smtp-transport.test.js email-bridge/sa-atomic-quota.test.js email-bridge/sa-send-journal.test.js email-bridge/sa-dispatch-one.test.js email-bridge/sa-airtable-journal.test.js email-bridge/sa-inbound-signals.test.js email-bridge/sa-lead-reconcile.test.js
