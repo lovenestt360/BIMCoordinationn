@@ -18,24 +18,14 @@ if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion:
   gsap.globalTimeline.timeScale(200);
 }
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import CredibilityStrip from "./components/CredibilityStrip";
-import WhyBimCoordination from "./components/WhyBimCoordination";
-import ModelFederation from "./components/ModelFederation";
-import ClashDetectionSection from "./components/ClashDetectionSection";
+import KlyronScrollStory from "./components/KlyronScrollStory/KlyronScrollStory";
 import Portfolio from "./components/Portfolio";
-import Services from "./components/Services";
 import Deliverables from "./components/Deliverables";
 import OnDemandSupport from "./components/OnDemandSupport";
 import Process from "./components/Process";
-import WhyKlyron from "./components/WhyKlyron";
 import About from "./components/About";
-import QAQCSection from "./components/QAQCSection";
-import BimToConstruction from "./components/BimToConstruction";
 import MeetingScheduler from "./components/MeetingScheduler";
-import WhatHappensNext from "./components/WhatHappensNext";
 import FAQ from "./components/FAQ";
-import FinalCTA from "./components/FinalCTA";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingContact from "./components/FloatingContact";
@@ -63,26 +53,18 @@ const LandingPage = () => {
   return (
     <div data-testid="landing-page" className="min-h-screen bg-[#04070B]">
       <Navbar />
-      <main>
-        <Hero />
-        <CredibilityStrip />
-        <WhyBimCoordination />
-        <ModelFederation />
-        <ClashDetectionSection />
-        <Portfolio />
-        <Services />
-        <Deliverables />
-        <OnDemandSupport />
-        <Process />
-        <WhyKlyron />
-        <QAQCSection />
-        <About />
-        <BimToConstruction />
-        <MeetingScheduler />
-        <WhatHappensNext />
-        <FAQ />
-        <FinalCTA />
-        <Contact />
+      <main id="top">
+        <KlyronScrollStory />
+        <div className="digital-continuation">
+          <Portfolio />
+          <Deliverables />
+          <OnDemandSupport />
+          <Process />
+          <About />
+          <MeetingScheduler />
+          <FAQ />
+          <Contact />
+        </div>
       </main>
       <Footer />
       <FloatingContact />

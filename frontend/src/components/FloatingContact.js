@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Mail, X, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '../lib/analytics';
@@ -6,6 +6,24 @@ import { trackEvent } from '../lib/analytics';
 const FloatingContact = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      const portfolio = document.querySelector('#portfolio');
+      const shouldShow = Boolean(portfolio && portfolio.getBoundingClientRect().top <= window.innerHeight);
+      setVisible(shouldShow);
+      if (!shouldShow) setOpen(false);
+    };
+
+    updateVisibility();
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    window.addEventListener('resize', updateVisibility);
+    return () => {
+      window.removeEventListener('scroll', updateVisibility);
+      window.removeEventListener('resize', updateVisibility);
+    };
+  }, []);
 
   const handleBookClick = (e) => {
     e.preventDefault();
@@ -14,6 +32,8 @@ const FloatingContact = () => {
     trackEvent('consultation_start', { location: 'floating_contact' });
   };
 
+  if (!visible) return null;
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {/* Options panel */}
@@ -21,7 +41,7 @@ const FloatingContact = () => {
         <div className="flex flex-col gap-2 items-end">
           <a
             href="mailto:contact@klyronconsulting.com"
-            className="flex items-center gap-3 bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] rounded-sm px-4 py-3 text-sm text-[#F7F9FB] hover:border-[#39C3FF] hover:text-[#39C3FF] transition-all duration-200 whitespace-nowrap shadow-xl"
+            className="flex items-center gap-3 bg-[#091A28] border border-[#39C3FF]/20 rounded-md px-4 py-3 text-sm text-[#F7F9FB] hover:border-[#39C3FF] hover:text-[#39C3FF] transition-colors duration-200 whitespace-nowrap"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
             <Mail size={16} className="text-[#39C3FF]" />
@@ -30,10 +50,10 @@ const FloatingContact = () => {
           <a
             href="#schedule"
             onClick={handleBookClick}
-            className="flex items-center gap-3 bg-[#0B2A44] border border-[rgba(255,255,255,0.1)] rounded-sm px-4 py-3 text-sm text-[#F7F9FB] hover:border-[#7DE0FF] hover:text-[#7DE0FF] transition-all duration-200 whitespace-nowrap shadow-xl"
+            className="flex items-center gap-3 bg-[#091A28] border border-[#39C3FF]/20 rounded-md px-4 py-3 text-sm text-[#F7F9FB] hover:border-[#39C3FF] hover:text-[#39C3FF] transition-colors duration-200 whitespace-nowrap"
             style={{ fontFamily: 'Space Grotesk, sans-serif' }}
           >
-            <MessageCircle size={16} className="text-[#7DE0FF]" />
+            <MessageCircle size={16} className="text-[#39C3FF]" />
             {t('floatingContact.bookConsultation')}
           </a>
         </div>
@@ -42,11 +62,11 @@ const FloatingContact = () => {
       {/* Toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-14 h-14 rounded-sm flex items-center justify-center shadow-2xl transition-all duration-300"
+        className="w-14 h-14 rounded-sm flex items-center justify-center transition-colors duration-300"
         style={{
-          background: open ? '#0B2A44' : '#39C3FF',
-          border: open ? '1px solid rgba(255,255,255,0.1)' : 'none',
-          boxShadow: open ? 'none' : '0 0 30px -5px rgba(14,165,233,0.6)',
+          background: open ? '#091A28' : '#39C3FF',
+          border: open ? '1px solid rgba(57,195,255,0.24)' : '1px solid #39C3FF',
+          boxShadow: 'none',
         }}
         aria-label={t('floatingContact.ariaLabel')}
       >

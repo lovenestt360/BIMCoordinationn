@@ -10,7 +10,7 @@ import { supabase } from '../lib/supabase';
 import { getAttribution } from '../lib/attribution';
 import { trackEvent } from '../lib/analytics';
 
-const selectTriggerClass = 'w-full h-auto bg-white/[0.04] border-white/10 text-[#F7F9FB] px-3 py-2 text-sm data-[placeholder]:text-white/40 focus:ring-[#39C3FF] focus:ring-offset-0';
+const selectTriggerClass = 'w-full h-12 rounded-md bg-[#0B2233] border-[#39C3FF]/15 text-[#F7F9FB] px-3 text-sm data-[placeholder]:text-white/35 focus:ring-[#39C3FF] focus:ring-offset-0';
 const selectContentClass = 'bg-[#0B2A44] border-white/10 text-[#F7F9FB]';
 const selectItemClass = 'text-white/80 focus:bg-[#39C3FF]/10 focus:text-[#F7F9FB] cursor-pointer';
 
@@ -89,7 +89,7 @@ const Contact = () => {
     <section
       id="contact"
       data-testid="contact-section"
-      className="min-h-screen flex flex-col justify-center py-28 lg:py-40 blueprint-bg relative overflow-hidden"
+      className="py-20 lg:py-28 blueprint-bg relative overflow-hidden"
     >
       <div className="absolute pointer-events-none" style={{
         bottom: '-10%', right: '-5%',
@@ -97,13 +97,13 @@ const Contact = () => {
         background: 'radial-gradient(circle, rgba(57,195,255,0.10) 0%, transparent 70%)',
       }} />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         {/* Section Header */}
-        <div className="mb-20 max-w-3xl">
-          <span className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="contact-label">{t('contact.eyebrow')}</span>
+        <div className="mb-12 max-w-3xl">
+          <span className="text-[#39C3FF] text-xs font-medium tracking-[0.22em] uppercase mb-5 block" data-testid="contact-label">{t('contact.eyebrow')}</span>
           <h2
             data-testid="contact-title"
-            className="font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-6"
+            className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.02] text-white mb-5"
           >
             {t('contact.titlePrefix')} <span className="italic text-[#39C3FF]">{t('contact.titleEmphasis')}</span>
           </h2>
@@ -112,18 +112,18 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
           {/* Contact Info */}
-          <div className="space-y-5">
+          <div data-motion-card className="lg:col-span-4 divide-y divide-[#39C3FF]/15 rounded-xl border border-[#39C3FF]/20 bg-[#071723]/80 overflow-hidden">
             {/* Email Card */}
             <div
               data-testid="contact-email-card"
-              className="rounded-sm border border-white/10 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-[#39C3FF]/40"
+              className="p-6 transition-colors duration-200 hover:bg-[#39C3FF]/[0.045]"
             >
-              <div className="w-11 h-11 rounded-sm bg-[#39C3FF]/10 flex items-center justify-center mb-5">
+              <div className="w-10 h-10 rounded-md border border-white/15 bg-white/[0.04] flex items-center justify-center mb-4">
                 <Mail size={20} className="text-[#39C3FF]" />
               </div>
-              <h3 className="font-instrument-serif text-2xl text-white mb-2">
+              <h3 className="font-instrument-serif text-xl text-white mb-2">
                 {t('contact.emailCardTitle')}
               </h3>
               <a
@@ -138,12 +138,12 @@ const Contact = () => {
             {/* Location Card */}
             <div
               data-testid="contact-location-card"
-              className="rounded-sm border border-white/10 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-[#39C3FF]/40"
+              className="p-6 transition-colors duration-200 hover:bg-[#39C3FF]/[0.045]"
             >
-              <div className="w-11 h-11 rounded-sm bg-[#39C3FF]/10 flex items-center justify-center mb-5">
+              <div className="w-10 h-10 rounded-md border border-white/15 bg-white/[0.04] flex items-center justify-center mb-4">
                 <MapPin size={20} className="text-[#7DE0FF]" />
               </div>
-              <h3 className="font-instrument-serif text-2xl text-white mb-2">
+              <h3 className="font-instrument-serif text-xl text-white mb-2">
                 {t('contact.locationCardTitle')}
               </h3>
               <p className="text-white/55 text-sm font-light leading-relaxed">
@@ -155,12 +155,12 @@ const Contact = () => {
             {/* Response Time */}
             <div
               data-testid="contact-response-card"
-              className="rounded-sm border border-white/10 bg-white/[0.03] p-7 transition-colors duration-300 hover:border-[#39C3FF]/40"
+              className="p-6 transition-colors duration-200 hover:bg-[#39C3FF]/[0.045]"
             >
-              <div className="w-11 h-11 rounded-sm bg-[#39C3FF]/10 flex items-center justify-center mb-5">
+              <div className="w-10 h-10 rounded-md border border-white/15 bg-white/[0.04] flex items-center justify-center mb-4">
                 <Phone size={20} className="text-[#39C3FF]" />
               </div>
-              <h3 className="font-instrument-serif text-2xl text-white mb-2">
+              <h3 className="font-instrument-serif text-xl text-white mb-2">
                 {t('contact.responseCardTitle')}
               </h3>
               <p className="text-white/55 text-sm font-light leading-relaxed">
@@ -173,13 +173,16 @@ const Contact = () => {
           {/* Contact Form */}
           <div
             data-testid="contact-form-container"
-            className="lg:col-span-2 rounded-sm border border-white/10 bg-white/[0.03] p-7 lg:p-10"
+            className="lg:col-span-8 rounded-xl border border-[#39C3FF]/20 bg-[#071723]/80 p-6 sm:p-8 lg:p-9"
           >
-            <h3 className="font-instrument-serif text-3xl text-white mb-8">
+            <div className="flex items-center justify-between gap-5 mb-7">
+            <h3 className="font-instrument-serif text-3xl text-white">
               {t('contact.formTitle')}
             </h3>
+              <span className="hidden sm:block h-px w-24 bg-gradient-to-r from-[#39C3FF] to-transparent" />
+            </div>
 
-            <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-5">
+            <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <Label htmlFor="contact-name" className="text-[rgba(247,249,251,0.65)] text-sm mb-2 block">
@@ -193,7 +196,7 @@ const Contact = () => {
                     onChange={handleInputChange}
                     placeholder={t('contact.placeholderName')}
                     required
-                    className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
+                    className="h-12 rounded-md bg-[#0B2233] border-[#39C3FF]/15 text-[#F7F9FB] placeholder:text-white/35 focus-visible:border-[#39C3FF]/60"
                   />
                 </div>
 
@@ -210,7 +213,7 @@ const Contact = () => {
                     onChange={handleInputChange}
                     placeholder={t('contact.placeholderEmail')}
                     required
-                    className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
+                    className="h-12 rounded-md bg-[#0B2233] border-[#39C3FF]/15 text-[#F7F9FB] placeholder:text-white/35 focus-visible:border-[#39C3FF]/60"
                   />
                 </div>
               </div>
@@ -227,7 +230,7 @@ const Contact = () => {
                     value={formData.company}
                     onChange={handleInputChange}
                     placeholder={t('contact.placeholderCompany')}
-                    className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50"
+                    className="h-12 rounded-md bg-[#0B2233] border-[#39C3FF]/15 text-[#F7F9FB] placeholder:text-white/35 focus-visible:border-[#39C3FF]/60"
                   />
                 </div>
 
@@ -261,8 +264,8 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleInputChange}
                   placeholder={t('contact.placeholderMessage')}
-                  rows={5}
-                  className="bg-white/[0.04] border-white/10 text-[#F7F9FB] placeholder:text-white/40 focus-visible:border-[#39C3FF]/50 resize-none"
+                  rows={4}
+                  className="rounded-md bg-[#0B2233] border-[#39C3FF]/15 text-[#F7F9FB] placeholder:text-white/35 focus-visible:border-[#39C3FF]/60 resize-none"
                 />
               </div>
 
@@ -290,7 +293,7 @@ const Contact = () => {
                 type="submit"
                 data-testid="contact-submit-btn"
                 disabled={isSubmitting}
-                className="btn-primary px-9 py-4 rounded-sm font-medium flex items-center gap-2 disabled:opacity-50"
+                className="contact-action btn-primary min-w-56 px-8 py-4 rounded-md font-semibold flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   t('contact.submitLoading')

@@ -6,7 +6,7 @@ import { trackEvent } from '../lib/analytics';
 
 const NAV_LINKS = [
   { key: 'nav.about', href: '#about' },
-  { key: 'nav.services', href: '#services' },
+  { key: 'nav.deliverables', href: '#deliverables' },
   { key: 'nav.process', href: '#process' },
   { key: 'nav.projects', href: '#portfolio' },
   { key: 'nav.contact', href: '#contact' },
@@ -119,8 +119,8 @@ const Navbar = () => {
     <>
       <nav
         data-testid="navbar"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 md:px-12 lg:px-16 py-5 md:py-6 ${
-          isScrolled ? 'bg-black/25 backdrop-blur-xl border-b border-white/5' : 'bg-transparent'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 md:px-12 lg:px-16 py-5 md:py-6 bg-[#07131F]/94 backdrop-blur-md border-b ${
+          isScrolled ? 'border-white/15' : 'border-white/10'
         }`}
       >
         <div className="max-w-[1600px] mx-auto flex items-center justify-between">
@@ -155,7 +155,7 @@ const Navbar = () => {
               href="#schedule"
               onClick={(e) => handleCtaClick(e, 'navbar')}
               data-testid="navbar-cta"
-              className="bg-white text-black rounded-full px-5 py-2.5 text-sm font-medium hover:bg-[#39C3FF] transition-colors duration-200"
+              className="bg-[#39C3FF] text-[#04070B] rounded-md px-5 py-2.5 text-sm font-semibold hover:bg-[#7DE0FF] transition-colors duration-200"
             >
               {t('nav.cta')}
             </a>
@@ -199,7 +199,7 @@ const Navbar = () => {
       {/* Mobile menu overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[60] md:hidden bg-black/90 backdrop-blur-xl flex-col"
+        className="fixed inset-0 z-[60] md:hidden bg-[#04070B]/98 backdrop-blur-md flex-col"
         style={{ display: 'none' }}
       >
         <div className="flex items-center justify-between px-6 py-5">
@@ -226,7 +226,7 @@ const Navbar = () => {
               ref={(el) => { linkRefs.current[i] = el; }}
               href={link.href}
               onClick={(e) => scrollToSection(e, link.href)}
-              className="font-instrument-serif text-4xl sm:text-5xl text-white border-b border-white/10 py-4 transition-[padding] duration-300 hover:pl-4"
+              className="text-4xl sm:text-5xl font-medium text-white border-b border-white/15 py-4 transition-[padding] duration-300 hover:pl-4"
             >
               {t(link.key)}
             </a>
@@ -238,7 +238,7 @@ const Navbar = () => {
             ref={ctaRef}
             href="#schedule"
             onClick={(e) => handleCtaClick(e, 'navbar_mobile')}
-            className="block w-full text-center bg-white text-black rounded-full py-4 text-sm font-medium"
+            className="block w-full text-center bg-[#39C3FF] text-[#04070B] rounded-md py-4 text-sm font-semibold"
           >
             {t('nav.cta')}
           </a>

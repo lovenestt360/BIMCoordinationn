@@ -1,10 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const HIGHLIGHT_KEYS = [
   'onDemand.highlight1',
@@ -16,33 +11,14 @@ const HIGHLIGHT_KEYS = [
 
 const OnDemandSupport = ({ ctaTarget = '#schedule' }) => {
   const { t } = useTranslation();
-  const sectionRef = useRef(null);
 
   const scrollTo = (e, href) => {
     e.preventDefault();
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.ods-headline',
-        { autoAlpha: 0, y: 24 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-        }
-      );
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       className="min-h-screen flex flex-col justify-center relative overflow-hidden"
       style={{ background: 'linear-gradient(180deg, #04070B 0%, #0B2A44 100%)' }}
     >

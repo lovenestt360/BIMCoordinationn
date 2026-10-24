@@ -86,26 +86,6 @@ const Portfolio = () => {
     });
   }, [active]);
 
-  useEffect(() => {
-    if (!bodyRef.current) return;
-    gsap.fromTo(
-      bodyRef.current.querySelectorAll('.proj-fade'),
-      { autoAlpha: 0, y: 12 },
-      { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.03, ease: 'power2.out' }
-    );
-  }, [active, stage]);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.pf-intro-fade',
-        { autoAlpha: 0, y: 20 },
-        { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08, ease: 'power2.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' } }
-      );
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section
       ref={sectionRef}

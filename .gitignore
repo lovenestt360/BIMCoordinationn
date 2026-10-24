@@ -50,6 +50,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 dump.rdb
+dev-server*.log
+dev-server*.err.log
+theme-qa-*.png
 
 # System files
 .DS_Store
@@ -72,6 +75,7 @@ chainlit.md
 
 # Data and databases
 agenthub/agents/youtube/db
+supabase/.temp/
 
 # Archive files and large assets
 **/*.zip

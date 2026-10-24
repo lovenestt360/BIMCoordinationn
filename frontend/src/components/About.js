@@ -1,57 +1,19 @@
-import { useEffect, useRef } from 'react';
-import { Globe, Layers, Globe2, Target, Compass } from 'lucide-react';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
+import { Compass } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-gsap.registerPlugin(ScrollTrigger);
-
-const GLANCE_ICONS = [Globe, Layers, Globe2, Target];
 
 const About = () => {
   const { t } = useTranslation();
-  const sectionRef = useRef(null);
 
-  const glance = t('about.glance', { returnObjects: true }).map((g, i) => ({ ...g, icon: GLANCE_ICONS[i] }));
   const expertise = t('about.expertise', { returnObjects: true });
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray('.about-block').forEach((block) => {
-        gsap.fromTo(
-          block.querySelectorAll('.about-fade'),
-          { autoAlpha: 0, y: 24 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8,
-            stagger: 0.08,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: block, start: 'top 75%' },
-          }
-        );
-      });
-
-      gsap.utils.toArray('.expertise-row').forEach((row, i) => {
-        gsap.fromTo(
-          row,
-          { autoAlpha: 0, x: -12 },
-          {
-            autoAlpha: 1,
-            x: 0,
-            duration: 0.5,
-            delay: i * 0.05,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: row, start: 'top 90%' },
-          }
-        );
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+  const certifications = t('about.certifications', { returnObjects: true });
+  const certificationVisuals = [
+    { src: '/certifications/autodesk-bim-management.png' },
+    { src: '/certifications/acc-build-document-management.jpg' },
+    { src: '/certifications/iso-19650-business-certification.png' },
+  ];
 
   return (
-    <section id="about" ref={sectionRef} data-testid="about-section" className="relative overflow-hidden" style={{ background: '#04070B' }}>
+    <section id="about" data-testid="about-section" className="relative overflow-x-clip" style={{ background: '#04070B' }}>
       <div className="absolute inset-0 pointer-events-none blueprint-bg opacity-40" />
 
       {/* Ambient glows spaced through the section so the long scroll never reads as flat */}
@@ -61,109 +23,121 @@ const About = () => {
       <div className="absolute pointer-events-none" style={{ top: '72%', right: '-8%', width: '650px', height: '650px', background: 'radial-gradient(circle, rgba(125,224,255,0.08) 0%, transparent 70%)' }} />
       <div className="absolute pointer-events-none" style={{ top: '92%', left: '-10%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(57,195,255,0.08) 0%, transparent 70%)' }} />
 
-      {/* ================= ABOUT OPENING ================= */}
-      <div className="about-block relative z-10 py-28 lg:py-40 max-w-6xl mx-auto px-6 md:px-12 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          <div className="lg:col-span-7">
-            <span className="about-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6 block" data-testid="about-label">
-              {t('about.eyebrow')}
-            </span>
-            <h2 data-testid="about-title" className="about-fade font-instrument-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-white mb-10">
-              {t('about.openingTitleLine1')}
-              <br />
-              <span className="italic text-white/70">{t('about.openingTitleLine2')}</span>
-            </h2>
-            <div className="about-fade text-white/65 text-base md:text-lg font-light leading-relaxed space-y-4 max-w-2xl">
-              <p>{t('about.openingBody1')}</p>
-              <p>{t('about.openingBody2')}</p>
-              <p className="text-white/85">{t('about.openingBody3')}</p>
-            </div>
-          </div>
-          <div className="about-fade lg:col-span-5">
-            <img
-              src="/about-team.jpg"
-              alt="Coordination and digital delivery team collaborating"
-              className="w-full rounded-2xl object-cover border border-white/10"
-              style={{ filter: 'saturate(0.95)' }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* ================= WHY KLYRON EXISTS ================= */}
-      <div className="about-block relative z-10 py-20 lg:py-28 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          <div className="lg:col-span-7">
-            <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-8 block">
-              {t('about.existsEyebrow')}
-            </span>
-            <h3 className="about-fade font-instrument-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-white mb-12 max-w-3xl">
-              {t('about.existsTitleLine1')}
-              <br />
-              <span className="italic text-white/70">{t('about.existsTitleLine2')}</span>
-            </h3>
-            <p className="about-fade text-white/60 text-base font-light leading-relaxed max-w-2xl mb-6">
-              {t('about.existsBodyPrefix')}{' '}
-              <span className="text-white/85">{t('about.existsBodyEmphasis1')}</span>,{' '}
-              <span className="text-white/85">{t('about.existsBodyEmphasis2')}</span>, {t('about.existsBodyConnector')}{' '}
-              <span className="text-white/85">{t('about.existsBodyEmphasis3')}</span>.
-            </p>
-
-            <p className="about-fade text-white/80 text-base font-light leading-relaxed max-w-2xl">
-              {t('about.existsClosing')}
-            </p>
-          </div>
-
-          <div className="about-fade lg:col-span-5">
-            <img
-              src="/exists-digital-review.jpg"
-              alt="Reviewing digital building design information in detail"
-              className="w-full rounded-2xl object-cover border border-white/10"
-              style={{ filter: 'saturate(0.95)' }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* ================= KLYRON AT A GLANCE ================= */}
-      <div className="about-block relative z-10 py-20 lg:py-28 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
-        <span className="about-fade text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-12 block">
-          {t('about.glanceEyebrow')}
+      {/* ================= OUR STORY + PRINCIPLES ================= */}
+      <div className="about-block relative z-10 py-16 lg:py-20 max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+        <span className="about-fade text-[#39C3FF] text-xs font-medium tracking-[0.24em] uppercase" data-testid="about-label">
+          {t('about.eyebrow')}
         </span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
-          {glance.map((g, i) => {
-            const GIcon = g.icon;
+
+        <div className="mt-8 grid grid-cols-1 items-end gap-8 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-5">
+            <h2 data-testid="about-title" className="about-fade font-instrument-serif text-5xl sm:text-6xl lg:text-[4rem] leading-[0.98] text-white">
+              {t('about.storyTitleLine1')}
+              <br />
+              <span className="italic text-white/65">{t('about.storyTitleLine2')}</span>
+            </h2>
+          </div>
+          <div className="about-fade lg:col-span-6 lg:col-start-7 text-white/65 text-base font-light leading-7 space-y-4">
+            <p>{t('about.storyBody1')}</p>
+            <p>{t('about.storyBody2')}</p>
+          </div>
+        </div>
+
+        <figure className="about-fade group relative mt-10 overflow-hidden rounded-xl border border-white/10 bg-[#07131f]">
+          <div className="relative min-h-[340px] overflow-hidden sm:min-h-[400px] lg:aspect-[2.65/1] lg:min-h-0">
+            <img
+              src="/about-collaboration.jpg"
+              alt={t('about.storyImageAlt')}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.025]"
+              style={{ filter: 'saturate(0.72) contrast(1.08) brightness(0.72)' }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#04070B]/90 via-[#04070B]/38 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#04070B]/72 via-transparent to-transparent" />
+            <blockquote className="absolute bottom-14 left-6 max-w-md border-l border-[#39C3FF]/60 pl-5 font-instrument-serif text-xl leading-snug text-white/90 sm:left-8 sm:text-2xl lg:left-10 lg:max-w-lg">
+              {t('about.storyQuote')}
+            </blockquote>
+            <p className="absolute bottom-5 left-6 font-mono text-[9px] uppercase tracking-[0.14em] text-white/55 sm:left-8 lg:left-10">
+              {t('about.storyImageCaption')}
+            </p>
+          </div>
+          <figcaption className="border-t border-white/10 px-4 py-2 text-right text-[9px] text-white/35">
+            {t('about.storyImageCredit')}
+          </figcaption>
+        </figure>
+
+        <div className="about-fade mt-12 grid grid-cols-1 overflow-hidden rounded-xl border border-white/10 bg-white/[0.025] md:grid-cols-2">
+          <article className="group relative min-h-[220px] border-b border-white/10 p-7 md:border-b-0 md:border-r lg:p-8">
+            <span className="absolute right-7 top-3 font-instrument-serif text-6xl text-white/[0.045] transition-colors duration-300 group-hover:text-white/[0.08]">01</span>
+            <div className="relative flex h-full flex-col">
+              <span className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/50"><i className="h-px w-6 bg-[#39C3FF]/70" aria-hidden="true" />{t('about.missionEyebrow')}</span>
+              <h3 className="mt-4 font-instrument-serif text-3xl text-white sm:text-4xl">{t('about.missionTitle')}</h3>
+              <p className="mt-auto max-w-xl pt-6 text-sm font-light leading-6 text-white/60">{t('about.missionBody')}</p>
+            </div>
+          </article>
+
+          <article className="group relative min-h-[220px] p-7 lg:p-8">
+            <span className="absolute right-7 top-3 font-instrument-serif text-6xl text-white/[0.045] transition-colors duration-300 group-hover:text-white/[0.08]">02</span>
+            <div className="relative flex h-full flex-col">
+              <span className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/50"><i className="h-px w-6 bg-[#39C3FF]/70" aria-hidden="true" />{t('about.visionEyebrow')}</span>
+              <h3 className="mt-4 font-instrument-serif text-3xl text-white sm:text-4xl">{t('about.visionTitle')}</h3>
+              <p className="mt-auto max-w-xl pt-6 text-sm font-light leading-6 text-white/60">{t('about.visionBody')}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      {/* ================= COMPANY CERTIFICATION ROADMAP ================= */}
+      <div className="about-block relative z-10 py-24 lg:py-32 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
+        <div className="about-fade flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <span className="text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-5 block">
+              {t('about.certificationEyebrow')}
+            </span>
+            <h3 className="font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.05] text-white max-w-3xl">
+              {t('about.certificationTitleLine1')}
+              <br />
+              <span className="italic text-white/70">{t('about.certificationTitleLine2')}</span>
+            </h3>
+          </div>
+          <p className="text-white/50 text-sm font-light leading-relaxed max-w-sm md:text-right">
+            {t('about.certificationIntro')}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {certifications.map((certification, index) => {
+            const visual = certificationVisuals[index];
             return (
-              <div
-                key={g.label}
-                className={`about-fade lg:pl-8 ${i > 0 ? 'lg:border-l lg:border-white/10' : ''}`}
+              <article
+                key={certification.standard}
+                className="about-fade group relative min-h-[390px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] p-7 transition-colors duration-300 hover:border-[#39C3FF]/35"
               >
-                <p className="text-[#7DE0FF] font-mono text-xs tracking-[0.15em] uppercase mb-4">{g.label}</p>
-                <div className="flex items-center gap-3 mb-4">
-                  <GIcon size={20} className="text-[#39C3FF] flex-shrink-0" strokeWidth={1.5} />
-                  <h4 className="font-instrument-serif text-2xl text-white">{g.title}</h4>
+                <div className="relative flex h-full flex-col">
+                  <div className="mb-10 flex items-start justify-between gap-4">
+                    <div className="flex h-36 w-36 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white p-2 shadow-[0_18px_45px_rgba(0,0,0,0.28)]">
+                      <img
+                        src={visual.src}
+                        alt={certification.logoAlt}
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                    <span className="rounded-md border border-white/15 bg-white/[0.035] px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-white/55">
+                      {certification.status}
+                    </span>
+                  </div>
+                  <p className="font-mono text-xs tracking-[0.14em] text-white/55">{certification.standard}</p>
+                  <h4 className="mt-3 font-instrument-serif text-2xl leading-tight text-white">{certification.title}</h4>
+                  <p className="mt-4 text-sm font-light leading-relaxed text-white/55">{certification.description}</p>
                 </div>
-                <p className="text-white/55 text-sm font-light leading-relaxed">{g.description}</p>
-              </div>
+              </article>
             );
           })}
         </div>
-      </div>
 
-      {/* ================= EDITORIAL BRAND STATEMENT ================= */}
-      <div className="about-block relative z-10 py-32 lg:py-48 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 text-center border-t border-white/10">
-        <h3 className="about-fade font-instrument-serif text-4xl sm:text-5xl md:text-6xl leading-[1.1] text-white mb-8">
-          {t('about.editorialLine1')}
-          <br />
-          <span className="italic text-white/70">{t('about.editorialLine2')}</span>
-        </h3>
-        <p className="about-fade text-white/55 text-base font-light leading-relaxed max-w-xl mx-auto">
-          {t('about.editorialBody')}
-        </p>
       </div>
 
       {/* ================= LEADERSHIP ================= */}
-      <div className="about-block relative z-10 py-20 lg:py-28 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10">
+      <div id="leadership" className="about-block relative z-10 py-20 lg:py-28 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 border-t border-white/10 scroll-mt-28">
         <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-6 block">
           {t('about.leadershipEyebrow')}
         </span>
@@ -252,14 +226,6 @@ const About = () => {
       </div>
 
       {/* ================= TRANSITION — SELECTED WORK ================= */}
-      <div className="about-block relative z-10 pt-16 pb-8 max-w-4xl mx-auto px-6 md:px-12 lg:px-16 text-center border-t border-white/10">
-        <span className="about-fade text-[#39C3FF] text-xs font-light tracking-[0.2em] uppercase mb-4 block">
-          {t('about.selectedWorkEyebrow')}
-        </span>
-        <p className="about-fade text-white/55 text-base font-light">
-          {t('about.selectedWorkBody')}
-        </p>
-      </div>
     </section>
   );
 };
