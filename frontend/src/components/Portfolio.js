@@ -109,12 +109,12 @@ const Portfolio = () => {
 
       {/* Project switcher */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 lg:px-16 mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="project-switcher flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 no-scrollbar sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0">
           {projects.map((p, i) => (
             <button
               key={p.id}
               onClick={() => selectProject(i)}
-              className="text-left px-5 py-4 rounded-sm border transition-colors duration-200"
+              className="project-switcher-card min-w-[82%] snap-start text-left px-5 py-4 rounded-sm border transition-colors duration-200 sm:min-w-0"
               style={{
                 borderColor: active === i ? 'rgba(57,195,255,0.4)' : 'rgba(255,255,255,0.1)',
                 background: active === i ? 'rgba(57,195,255,0.06)' : 'transparent',

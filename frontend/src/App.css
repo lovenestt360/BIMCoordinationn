@@ -875,3 +875,214 @@ textarea:-webkit-autofill:focus {
     display: none !important;
   }
 }
+
+/* Phone layout: deliberately composed rather than a compressed desktop canvas. */
+@media (max-width: 640px) {
+  html {
+    scroll-padding-top: 64px;
+  }
+
+  body {
+    font-size: 16px;
+  }
+
+  [data-testid="navbar"] {
+    min-height: 64px;
+    padding: 16px 20px !important;
+  }
+
+  .digital-continuation::before,
+  .digital-continuation .blueprint-bg {
+    background-size: 44px 44px !important;
+    opacity: .32;
+  }
+
+  .digital-continuation > section {
+    scroll-margin-top: 64px;
+  }
+
+  .digital-continuation > section > div:not(.absolute) {
+    max-width: 100%;
+  }
+
+  .digital-continuation h1,
+  .digital-continuation h2 {
+    font-size: clamp(2.35rem, 11vw, 3rem) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  .digital-continuation h3 {
+    font-size: clamp(1.65rem, 7vw, 2rem) !important;
+    line-height: 1.12 !important;
+  }
+
+  .digital-continuation p {
+    line-height: 1.65;
+  }
+
+  #portfolio > div:first-of-type,
+  #deliverables > div:not(.absolute),
+  #process > div:not(.absolute),
+  #schedule > div:not(.absolute),
+  [data-testid="contact-section"] > div:not(.absolute) {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  #portfolio > div:first-of-type {
+    padding-top: 72px !important;
+  }
+
+  #portfolio .project-switcher {
+    margin-right: -24px;
+    padding-right: 24px;
+  }
+
+  #portfolio .project-switcher-card {
+    min-height: 126px;
+  }
+
+  #portfolio .relative.h-\[38vh\] {
+    height: 52svh !important;
+    min-height: 390px;
+  }
+
+  #portfolio .relative.h-\[38vh\] > .relative {
+    padding: 24px 20px !important;
+  }
+
+  #portfolio .overflow-x-auto button {
+    min-height: 48px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  [data-testid="about-section"] .about-block {
+    padding: 68px 20px !important;
+  }
+
+  [data-testid="about-section"] .about-story-figure > div {
+    min-height: 430px !important;
+  }
+
+  [data-testid="about-section"] .about-story-figure img {
+    object-position: 62% center;
+  }
+
+  [data-testid="about-section"] .about-story-figure blockquote {
+    left: 20px;
+    right: 20px;
+    bottom: 54px;
+    max-width: none;
+    padding-left: 16px;
+    font-size: 1.2rem;
+  }
+
+  [data-testid="about-section"] .about-story-figure p {
+    left: 20px;
+    right: 20px;
+  }
+
+  [data-testid="about-section"] .certification-grid {
+    display: flex;
+    gap: 14px;
+    margin-right: -20px;
+    padding-right: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  [data-testid="about-section"] .certification-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  [data-testid="about-section"] .certification-card {
+    min-width: 86%;
+    min-height: 0;
+    padding: 22px;
+    scroll-snap-align: start;
+  }
+
+  [data-testid="about-section"] .certification-card > div > div:first-child {
+    margin-bottom: 24px;
+  }
+
+  [data-testid="about-section"] .certification-media {
+    width: 112px;
+    height: 112px;
+  }
+
+  [data-testid="about-section"] #leadership img {
+    max-height: 430px;
+    object-position: center 18%;
+  }
+
+  #process,
+  #schedule,
+  [data-testid="contact-section"],
+  .digital-continuation > section.py-28 {
+    padding-top: 72px !important;
+    padding-bottom: 72px !important;
+  }
+
+  [data-testid="schedule-section"] .mb-16,
+  [data-testid="contact-section"] .mb-12 {
+    margin-bottom: 36px !important;
+  }
+
+  [data-testid="scheduler-card"],
+  [data-testid="contact-form-container"] {
+    border-radius: 8px !important;
+  }
+
+  [data-testid="scheduler-card"] > .grid > div,
+  [data-testid="contact-form-container"] {
+    padding: 20px !important;
+  }
+
+  [data-testid="calendar-container"] {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  [data-testid="contact-submit-btn"] {
+    width: 100%;
+    min-height: 50px;
+  }
+
+  [data-testid="contact-email-card"],
+  [data-testid="contact-location-card"],
+  [data-testid="contact-response-card"] {
+    padding: 22px !important;
+  }
+
+  [data-testid="footer"] {
+    padding-bottom: 88px;
+  }
+
+  .fixed.bottom-6.right-6 {
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+
+  .fixed.bottom-6.right-6 button {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .digital-continuation .motion-card {
+    clip-path: inset(0 0 18% 0);
+    transform: translateY(28px) scale(.985);
+    filter: blur(3px);
+    transition-duration: 360ms !important;
+  }
+
+  .digital-continuation .motion-card:hover,
+  .digital-continuation article:hover,
+  .digital-continuation .process-card:hover {
+    transform: none !important;
+  }
+}

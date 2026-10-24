@@ -130,7 +130,7 @@ const CSS = `.kss{
 .kss .vig{position:absolute;inset:0;pointer-events:none;z-index:1;background:
   linear-gradient(90deg,rgba(4,7,11,.78) 0%,rgba(4,7,11,.25) 36%,rgba(4,7,11,0) 55%),
   linear-gradient(0deg,rgba(4,7,11,.55) 0%,rgba(4,7,11,0) 30%)}
-@media (max-width:820px){.kss-sticky{top:72px;height:calc(100vh - 72px);height:calc(100svh - 72px)}
+@media (max-width:820px){.kss-sticky{top:64px;height:calc(100vh - 64px);height:calc(100svh - 64px)}
 .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.92) 0%,rgba(4,7,11,.4) 42%,rgba(4,7,11,0) 60%),linear-gradient(180deg,rgba(4,7,11,.6) 0%,rgba(4,7,11,0) 22%)}
 .kss .ch{bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
 .kss .ch h1{font-size:clamp(40px,11vw,56px)}

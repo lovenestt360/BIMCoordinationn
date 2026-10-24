@@ -43,7 +43,7 @@ const About = () => {
           </div>
         </div>
 
-        <figure className="about-fade group relative mt-10 overflow-hidden rounded-xl border border-white/10 bg-[#07131f]">
+        <figure className="about-story-figure about-fade group relative mt-10 overflow-hidden rounded-xl border border-white/10 bg-[#07131f]">
           <div className="relative min-h-[340px] overflow-hidden sm:min-h-[400px] lg:aspect-[2.65/1] lg:min-h-0">
             <img
               src="/about-collaboration.jpg"
@@ -104,17 +104,17 @@ const About = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="certification-grid grid grid-cols-1 md:grid-cols-3 gap-4">
           {certifications.map((certification, index) => {
             const visual = certificationVisuals[index];
             return (
               <article
                 key={certification.standard}
-                className="about-fade group relative min-h-[390px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] p-7 transition-colors duration-300 hover:border-[#39C3FF]/35"
+                className="certification-card about-fade group relative min-h-[390px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] p-7 transition-colors duration-300 hover:border-[#39C3FF]/35"
               >
                 <div className="relative flex h-full flex-col">
                   <div className="mb-10 flex items-start justify-between gap-4">
-                    <div className="flex h-36 w-36 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white p-2 shadow-[0_18px_45px_rgba(0,0,0,0.28)]">
+                    <div className="certification-media flex h-36 w-36 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white p-2 shadow-[0_18px_45px_rgba(0,0,0,0.28)]">
                       <img
                         src={visual.src}
                         alt={certification.logoAlt}
