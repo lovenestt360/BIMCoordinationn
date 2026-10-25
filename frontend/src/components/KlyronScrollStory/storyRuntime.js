@@ -745,6 +745,7 @@ export function mountKlyronScrollStory(root, {
     if (disposed) return;
     const meshes = []; gltf.scene.traverse((o) => { if (o.isMesh) meshes.push(o); });
     meshes.forEach(addElement);
+    if (elements.some((element) => element.disc === 'mech' && !element.demo)) mechProxy.visible = false;
     rebuildTasks();
     ready = true;
   };
@@ -755,16 +756,22 @@ export function mountKlyronScrollStory(root, {
   async function loadFiles(urls, label, parallel = false) {
     if (parallel && urls.length > 1) {
       const progress = urls.map(() => 0);
-      const parts = await Promise.allSettled(urls.map((url, i) => loader.loadAsync(url, (event) => {
-        progress[i] = event.total ? event.loaded / event.total : 0;
-        setLoadProgress(progress.reduce((sum, value) => sum + value, 0) / urls.length, label());
-      })));
       let loaded = 0;
-      parts.forEach((part, i) => {
-        if (part.status === 'fulfilled') { onModel(part.value); loaded++; }
-        else console.warn(`[kss] model package failed: ${urls[i]}`, part.reason);
-      });
-      if (!loaded) throw parts.find((part) => part.status === 'rejected')?.reason || new Error('Model packages could not be loaded');
+      let firstError = null;
+      await Promise.all(urls.map(async (url, i) => {
+        try {
+          const gltf = await loader.loadAsync(url, (event) => {
+            progress[i] = event.total ? event.loaded / event.total : 0;
+            setLoadProgress(progress.reduce((sum, value) => sum + value, 0) / urls.length, label());
+          });
+          onModel(gltf); // Attach each discipline immediately; never wait for the slowest package.
+          loaded++;
+        } catch (error) {
+          firstError ||= error;
+          console.warn(`[kss] model package failed: ${url}`, error);
+        }
+      }));
+      if (!loaded) throw firstError || new Error('Model packages could not be loaded');
       return;
     }
     let loaded = 0;
@@ -797,7 +804,15 @@ export function mountKlyronScrollStory(root, {
       exploreButton.disabled = false;
       setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 650);
       if (!modelUrl && urls.length > 1) {
-        guidedDetailsPromise = loadFiles(urls.slice(1), () => isPt ? 'A preparar os detalhes BIM' : 'Preparing BIM details', !isPhone)
+        const detailLabel = () => isPt ? 'A preparar os detalhes BIM' : 'Preparing BIM details';
+        const mechanical = urls.slice(1).filter((url) => /mechanical/i.test(url));
+        const supporting = urls.slice(1).filter((url) => !/mechanical/i.test(url));
+        // Phones start the first real Mechanical package immediately alongside the
+        // smaller disciplines, then add the upper package without competing for decode memory.
+        guidedDetailsPromise = isPhone && mechanical.length
+          ? loadFiles([mechanical[0], ...supporting], detailLabel, true).then(() => mechanical.length > 1 ? loadFiles(mechanical.slice(1), detailLabel) : undefined)
+          : loadFiles(urls.slice(1), detailLabel, true);
+        guidedDetailsPromise = guidedDetailsPromise
           .then(() => { if (elements.some((element) => element.disc === 'mech' && !element.demo)) mechProxy.visible = false; })
           .catch((error) => { guidedDetailsError = error; onError(error); });
       }
@@ -1087,9 +1102,10 @@ export function mountKlyronScrollStory(root, {
     const mobileStart = mobileActive === 0 ? 0 : mobileActive - .5;
     const mobileEnd = mobileActive === NCH - 1 ? NCH - 1 : mobileActive + .5;
     const mobilePhase = mobileActive === 0 ? cl(p / .5) : cl((p - mobileStart) / Math.max(.001, mobileEnd - mobileStart));
-    const copyIn = mobileActive === 0 || reduce ? 1 : ramp(mobilePhase, 0, .18);
-    const copyOpacity = reduce ? 1 : copyIn * (1 - ramp(mobilePhase, .9, 1));
-    const panelIn = reduce ? 1 : ramp(mobilePhase, .28, .5);
+    const copyIn = mobileActive === 0 || reduce ? 1 : ramp(mobilePhase, 0, .16);
+    const copyOut = mobileTechnical ? ramp(mobilePhase, .36, .48) : ramp(mobilePhase, .9, 1);
+    const copyOpacity = reduce ? (mobileTechnical && mobilePhase >= .5 ? 0 : 1) : copyIn * (1 - copyOut);
+    const panelIn = reduce ? (mobilePhase >= .5 ? 1 : 0) : ramp(mobilePhase, .54, .66);
     const panelOpacity = mobileTechnical ? panelIn * (reduce ? 1 : 1 - ramp(mobilePhase, .92, 1)) : 0;
     mobileReading.style.setProperty('--mobile-copy-opacity', copyOpacity.toFixed(3));
     mobileReading.style.setProperty('--mobile-copy-y', `${((1 - copyIn) * -12).toFixed(1)}px`);
