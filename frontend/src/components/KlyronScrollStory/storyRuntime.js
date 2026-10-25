@@ -537,7 +537,7 @@ const FED_LABEL_PT = {arch: ['Arquitetura', 'ARK.rvt'], str: ['Estrutura', 'STRU
 
 export function mountKlyronScrollStory(root, {
   modelUrl = null,
-  modelUrls = ['/models/klyron-story.glb'],
+  modelUrls = ['/models/klyron-story-shell.glb', '/models/klyron-story-architecture.glb', '/models/klyron-story-structure.glb', '/models/klyron-story-systems.glb'],
   detailModelUrls = ['/models/klyron-detail-architecture.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
   modelData = null,
   city: withCity = true,
@@ -625,7 +625,7 @@ export function mountKlyronScrollStory(root, {
   const G = (d) => { if (!groups[d]) { groups[d] = new THREE.Group(); scene.add(groups[d]); } return groups[d]; };
   const elements = [], CL = {}, TASKS = [];
   let ASSET = null, ready = false;
-  let detailsReady = Boolean(modelUrl || modelData), detailsPromise = null, loadingDetails = false;
+  let detailsReady = Boolean(modelUrl || modelData), detailsPromise = null, guidedDetailsPromise = null, guidedDetailsError = null, loadingDetails = false;
   const edgeMat = new THREE.LineBasicMaterial({color: 0x0b1016, transparent: true, opacity: .35});
 
   // Lightweight guided-story HVAC context. The full mechanical network remains an
@@ -728,11 +728,17 @@ export function mountKlyronScrollStory(root, {
     }
     const urls = modelUrl ? [modelUrl] : modelUrls;
     try {
-      await loadFiles(urls, () => isPt ? 'A preparar a experi\u00eancia 3D' : 'Preparing 3D experience');
+      // Render the exact architectural shell first. Structural and electrical BIM
+      // geometry continues loading in the background without reducing model quality.
+      await loadFiles([urls[0]], () => isPt ? 'A preparar o edif\u00edcio 3D' : 'Preparing 3D building');
       root.classList.add('kss-core-ready');
       setLoadProgress(1, isPt ? 'Experi\u00eancia 3D pronta' : '3D experience ready');
       exploreButton.disabled = false;
       setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 650);
+      if (!modelUrl && urls.length > 1) {
+        guidedDetailsPromise = loadFiles(urls.slice(1), () => isPt ? 'A preparar os detalhes BIM' : 'Preparing BIM details', true)
+          .catch((error) => { guidedDetailsError = error; onError(error); });
+      }
     } catch (error) {
       onError(error);
     }
@@ -744,7 +750,9 @@ export function mountKlyronScrollStory(root, {
     exploreButton.disabled = true;
     loadBox.hidden = false;
     setLoadProgress(0, isPt ? 'A carregar o modelo detalhado' : 'Loading detailed model');
-    detailsPromise = loadFiles(detailModelUrls, () => isPt ? 'A carregar o modelo detalhado' : 'Loading detailed model', true)
+    detailsPromise = (guidedDetailsPromise || Promise.resolve())
+      .then(() => { if (guidedDetailsError) throw guidedDetailsError; })
+      .then(() => loadFiles(detailModelUrls, () => isPt ? 'A carregar o modelo detalhado' : 'Loading detailed model', true))
       .then(() => {
         detailsReady = true;
         mechProxy.visible = false;

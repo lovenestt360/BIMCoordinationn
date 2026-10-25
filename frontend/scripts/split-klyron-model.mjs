@@ -6,13 +6,27 @@ import { MeshoptDecoder, MeshoptEncoder } from 'meshoptimizer';
 // The master BIM stays outside /public so production builds do not deploy the 96 MB source file.
 const input = new URL('../model-source/klyron-model.glb', import.meta.url).pathname.replace(/^\/(.:)/, '$1');
 const storyArchitecture = new Set(['facade', 'glass', 'wall', 'slab', 'col', 'railing', 'door']);
+const firstPaintArchitecture = new Set(['facade', 'glass', 'wall']);
 const category = (name) => name.split('|')[2] || '';
 const outputs = [
   {
-    name: 'story',
-    accepts: (name) => name.startsWith('site|') || name.startsWith('str|') || name.startsWith('ele|')
-      || name.startsWith('clash|') || name.startsWith('clashduct|') || name.startsWith('asset|')
-      || (name.startsWith('arch|') && storyArchitecture.has(category(name))),
+    name: 'story-shell',
+    accepts: (name) => name.startsWith('site|')
+      || (name.startsWith('arch|') && firstPaintArchitecture.has(category(name))),
+  },
+  {
+    name: 'story-architecture',
+    accepts: (name) => name.startsWith('arch|') && storyArchitecture.has(category(name))
+      && !firstPaintArchitecture.has(category(name)),
+  },
+  {
+    name: 'story-structure',
+    accepts: (name) => name.startsWith('str|'),
+  },
+  {
+    name: 'story-systems',
+    accepts: (name) => name.startsWith('ele|') || name.startsWith('clash|')
+      || name.startsWith('clashduct|') || name.startsWith('asset|'),
   },
   {
     name: 'detail-architecture',

@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mountKlyronScrollStory } from './storyRuntime';
 
-// Optional modelUrl keeps single-file embeds possible. The website defaults to the
-// progressively loaded discipline packages configured by storyRuntime.
+// Optional modelUrl keeps single-file embeds possible. By default, the exact BIM shell
+// appears first and the unchanged architectural/structural/system packages stream behind it.
 export default function KlyronScrollStory({ modelUrl = null }) {
   const ref = useRef(null);
   const storyRef = useRef(null);
