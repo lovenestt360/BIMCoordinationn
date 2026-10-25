@@ -232,9 +232,9 @@ const CSS = `.kss{
  .kss .model-load{display:none!important}
  .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.62) 0%,rgba(4,7,11,.12) 30%,transparent 48%),linear-gradient(180deg,rgba(4,7,11,.32) 0%,transparent 15%)}
  .kss .mobile-reading{display:contents;pointer-events:none}
- .kss .mobile-reading .ch[data-mobile-active="true"]{display:block!important;position:absolute!important;left:18px!important;right:18px!important;bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-width:330px!important;padding:0;border:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;overflow:visible;pointer-events:none;text-shadow:0 2px 12px rgba(0,0,0,.92),0 1px 3px rgba(0,0,0,.9)}
+ .kss .mobile-reading .ch[data-mobile-active="true"]{display:block!important;position:absolute!important;left:18px!important;right:18px!important;bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-width:330px!important;padding:0;border:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;overflow:visible;pointer-events:none;text-shadow:0 2px 12px rgba(0,0,0,.92),0 1px 3px rgba(0,0,0,.9);opacity:var(--mobile-copy-opacity,1)!important;transform:translateY(var(--mobile-copy-y,0px))!important;will-change:opacity,transform}
  .kss .mobile-reading:has(.panel[data-mobile-active="true"]) .ch[data-mobile-active="true"]{top:calc(76px + env(safe-area-inset-top,0px))!important;bottom:auto!important;max-width:285px!important}
- .kss .mobile-reading .panel[data-mobile-active="true"]{display:block!important;position:absolute!important;left:14px!important;right:14px!important;top:auto!important;bottom:calc(70px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-height:none;border:1px solid rgba(232,237,242,.14);border-radius:10px;background:rgba(5,10,14,.91);box-shadow:0 16px 40px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);overflow:visible;pointer-events:none;transform:none!important}
+ .kss .mobile-reading .panel[data-mobile-active="true"]{display:block!important;position:absolute!important;left:14px!important;right:14px!important;top:auto!important;bottom:calc(70px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-height:none;border:1px solid rgba(232,237,242,.14);border-radius:10px;background:rgba(5,10,14,.91);box-shadow:0 16px 40px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);overflow:visible;pointer-events:none;opacity:var(--mobile-panel-opacity,1)!important;transform:translateY(var(--mobile-panel-y,0px))!important;will-change:opacity,transform}
  .kss .mobile-reading .ch h1,.kss .mobile-reading .ch h2{font-size:clamp(25px,7vw,32px);line-height:1.02;letter-spacing:-.04em}
  .kss .mobile-reading:has(.panel[data-mobile-active="true"]) .ch h2{font-size:clamp(22px,6vw,28px)}
  .kss .mobile-reading .ch p{font-size:12px;line-height:1.42;margin-top:8px;color:rgba(247,249,251,.82)}
@@ -1082,7 +1082,19 @@ export function mountKlyronScrollStory(root, {
     /* overlays */
     const mobileActive = Math.min(NCH - 1, Math.round(p));
     [...chs, ...panels].forEach(el => el.dataset.mobileActive = String(Number(el.dataset.ch ?? el.dataset.panel) === mobileActive));
-    mobileReading.dataset.technical = String(panels.some((panel) => Number(panel.dataset.panel) === mobileActive));
+    const mobileTechnical = panels.some((panel) => Number(panel.dataset.panel) === mobileActive);
+    mobileReading.dataset.technical = String(mobileTechnical);
+    const mobileStart = mobileActive === 0 ? 0 : mobileActive - .5;
+    const mobileEnd = mobileActive === NCH - 1 ? NCH - 1 : mobileActive + .5;
+    const mobilePhase = mobileActive === 0 ? cl(p / .5) : cl((p - mobileStart) / Math.max(.001, mobileEnd - mobileStart));
+    const copyIn = mobileActive === 0 || reduce ? 1 : ramp(mobilePhase, 0, .18);
+    const copyOpacity = reduce ? 1 : copyIn * (1 - ramp(mobilePhase, .9, 1));
+    const panelIn = reduce ? 1 : ramp(mobilePhase, .28, .5);
+    const panelOpacity = mobileTechnical ? panelIn * (reduce ? 1 : 1 - ramp(mobilePhase, .92, 1)) : 0;
+    mobileReading.style.setProperty('--mobile-copy-opacity', copyOpacity.toFixed(3));
+    mobileReading.style.setProperty('--mobile-copy-y', `${((1 - copyIn) * -12).toFixed(1)}px`);
+    mobileReading.style.setProperty('--mobile-panel-opacity', panelOpacity.toFixed(3));
+    mobileReading.style.setProperty('--mobile-panel-y', `${((1 - panelIn) * 20).toFixed(1)}px`);
     if (mobileActive !== mobileChapter) { mobileReading.scrollTop = 0; mobileChapter = mobileActive; }
 
     chs.forEach((c, k) => { const v = vis(p, k); c.style.opacity = v.toFixed(3); c.style.transform = `translateY(${((1 - v) * (p < k ? 24 : -24)).toFixed(1)}px)`; c.style.visibility = v > 0.01 ? 'visible' : 'hidden'; });
