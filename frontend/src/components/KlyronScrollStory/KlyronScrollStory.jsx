@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mountKlyronScrollStory } from './storyRuntime';
 
-// Optional modelUrl keeps single-file embeds possible. The website defaults to the
-// progressively loaded discipline packages configured by storyRuntime.
+// The website defaults to a procedural guided scene. Optional modelUrl keeps
+// single-file embeds possible, while authored BIM is loaded only for Explore mode.
 export default function KlyronScrollStory({ modelUrl = null }) {
   const ref = useRef(null);
   const storyRef = useRef(null);
