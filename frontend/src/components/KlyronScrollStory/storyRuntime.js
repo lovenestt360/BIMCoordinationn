@@ -9,7 +9,6 @@
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import {buildProceduralBuilding} from './proceduralBuilding';
 import {MeshoptDecoder} from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import {buildCity, SUN_DIR} from './city.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -538,8 +537,8 @@ const FED_LABEL_PT = {arch: ['Arquitetura', 'ARK.rvt'], str: ['Estrutura', 'STRU
 
 export function mountKlyronScrollStory(root, {
   modelUrl = null,
-  modelUrls = [],
-  detailModelUrls = ['/models/klyron-story.glb', '/models/klyron-detail-architecture.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
+  modelUrls = ['/models/klyron-story.glb'],
+  detailModelUrls = ['/models/klyron-detail-architecture.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
   modelData = null,
   city: withCity = true,
   language = 'en'
@@ -643,7 +642,7 @@ export function mountKlyronScrollStory(root, {
   mechProxy.visible = !detailsReady;
   G('mech').add(mechProxy);
 
-  function addElement(mesh, guided = false) {
+  function addElement(mesh) {
     const [d0, lv, cat] = mesh.name.split('|');
     const level = +lv;
     const disc = d0 === 'clash' ? 'ele' : d0 === 'asset' || d0 === 'clashduct' ? 'mech' : d0;
@@ -655,7 +654,7 @@ export function mountKlyronScrollStory(root, {
     if (disc === 'str') { const e = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, 30), edgeMat.clone()); e.material.userData = {op: .35}; e.position.copy(mesh.position); e.quaternion.copy(mesh.quaternion); e.scale.copy(mesh.scale); o.add(e); }
     G(disc === 'site' ? 'site' : disc).add(o);
     const qty = (mesh.userData && mesh.userData.qty) || {};
-    const rec = {o, mesh, disc, level, cat, qty, guided, demo: /^(clash|clashduct|asset)$/.test(d0), demoKind: d0, key: mesh.name, flag: FLAGGED.has(mesh.name), f: 1, lift: disc === 'str' ? 2.5 : 1.2,
+    const rec = {o, mesh, disc, level, cat, qty, demo: /^(clash|clashduct|asset)$/.test(d0), demoKind: d0, key: mesh.name, flag: FLAGGED.has(mesh.name), f: 1, lift: disc === 'str' ? 2.5 : 1.2,
       clashKeep: d0 === 'clash' || d0 === 'clashduct' ? 1 : (disc === 'ele' || disc === 'mech') && level === CLASH ? .32 : 0};   // 1 = in focus, .32 = context
     elements.push(rec);
     if (d0 === 'clash') CL[cat] = rec;
@@ -728,15 +727,6 @@ export function mountKlyronScrollStory(root, {
       return;
     }
     const urls = modelUrl ? [modelUrl] : modelUrls;
-    if (!urls.length) {
-      buildProceduralBuilding(addElement);
-      rebuildTasks();
-      ready = true;
-      root.classList.add('kss-core-ready');
-      exploreButton.disabled = false;
-      loadBox.hidden = true;
-      return;
-    }
     try {
       await loadFiles(urls, () => isPt ? 'A preparar a experi\u00eancia 3D' : 'Preparing 3D experience');
       root.classList.add('kss-core-ready');
@@ -758,7 +748,6 @@ export function mountKlyronScrollStory(root, {
       .then(() => {
         detailsReady = true;
         mechProxy.visible = false;
-        elements.filter((element) => element.guided).forEach((element) => { element.o.visible = false; });
         loadingDetails = false;
         setLoadProgress(1, isPt ? 'Modelo detalhado pronto' : 'Detailed model ready');
         setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 450);
@@ -985,7 +974,6 @@ export function mountKlyronScrollStory(root, {
         tk.bar.style.width = (q * 100) + '%';
       });
       elements.forEach((e) => {
-        if (detailsReady && e.guided) { e.o.visible = false; return; }
         let op = 1;
         if (e.disc === 'site') op = 1 - .7 * Math.max(clashV, cobie);
         else {
