@@ -225,22 +225,24 @@ const CSS = `.kss{
  .kss.kss-explore .mobile-reading{display:none;pointer-events:none}
 }
 
-/* Kybos-style phone composition: the 3D scene owns the viewport and each chapter
-   becomes one content-sized bottom card. Technical chapters alone may scroll. */
+/* Phone composition: keep the model dominant while separating the story copy
+   from the technical interface. The surfaces stay neutral so no blue veil sits
+   over the model. */
 @media(max-width:700px){
  .kss-sticky{top:0;height:100vh;height:100svh}
  .kss .model-load{top:calc(64px + env(safe-area-inset-top,0px));right:14px}
- .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.82) 0%,rgba(4,7,11,.24) 43%,transparent 62%),linear-gradient(180deg,rgba(4,7,11,.48) 0%,transparent 20%)}
- .kss .mobile-reading{top:auto;bottom:calc(68px + env(safe-area-inset-bottom,0px));left:14px;right:14px;max-height:min(42svh,360px);overflow:hidden;padding:17px 17px 16px;border:1px solid rgba(125,224,255,.16);border-radius:10px;background:rgba(5,13,21,.88);box-shadow:0 20px 52px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overscroll-behavior:contain}
- .kss .mobile-reading[data-technical="true"]{max-height:min(52svh,440px);overflow:auto}
- .kss .mobile-reading .panel{margin-top:12px;border-radius:7px;background:rgba(10,25,38,.72);backdrop-filter:none;-webkit-backdrop-filter:none}
+ .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.76) 0%,rgba(4,7,11,.18) 38%,transparent 57%),linear-gradient(180deg,rgba(4,7,11,.38) 0%,transparent 17%)}
+ .kss .mobile-reading{display:contents;pointer-events:none}
+ .kss .mobile-reading .ch,.kss .mobile-reading .panel{margin:0;box-shadow:0 18px 46px rgba(0,0,0,.3);border:1px solid rgba(232,237,242,.13);background:rgba(5,10,15,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overscroll-behavior:contain}
+ .kss .mobile-reading .ch[data-mobile-active="true"]{display:block!important;position:absolute!important;left:14px!important;right:14px!important;bottom:calc(68px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-height:min(37svh,330px);padding:17px 17px 16px;border-radius:10px;overflow:auto;pointer-events:auto}
+ .kss .mobile-reading .panel[data-mobile-active="true"]{display:block!important;position:absolute!important;left:14px!important;right:14px!important;top:calc(70px + env(safe-area-inset-top,0px))!important;width:auto!important;max-height:min(31svh,270px);border-radius:9px;overflow:auto;pointer-events:auto;transform:none!important}
  .kss .mobile-reading .ch h1,.kss .mobile-reading .ch h2{font-size:clamp(26px,7.4vw,34px);line-height:1.04;letter-spacing:-.04em}
  .kss .mobile-reading .ch p{font-size:13.5px;line-height:1.48;margin-top:10px}
  .kss .mobile-reading .eyebrow{margin-bottom:9px;font-size:9px;letter-spacing:.18em}
  .kss .mobile-reading .eyebrow:before{width:24px}
  .kss .mobile-reading .row{margin-top:14px}
  .kss .xbtn{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:14px;min-height:42px;padding:0 15px;background:rgba(5,13,21,.8)}
- .kss #tags{clip-path:inset(56px 0 43% 0)}
+ .kss #tags{clip-path:inset(56px 0 39% 0)}
  .kss .label b{font-size:9px;letter-spacing:.06em}
  .kss .label small{font-size:9px;margin-top:3px}
  .kss .label:after{height:15px;margin-top:5px}
@@ -577,9 +579,11 @@ export function mountKlyronScrollStory(root, {
   const canvas = root.querySelector('#stage');
   const memory = navigator.deviceMemory || 8;
   const cores = navigator.hardwareConcurrency || 8;
-  const lowPower = matchMedia('(max-width: 820px)').matches || memory <= 4 || cores <= 4;
-  const renderer = new THREE.WebGLRenderer({canvas, antialias: !lowPower, alpha: true, powerPreference: 'high-performance'});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1 : 1.5));
+  const isPhone = matchMedia('(max-width: 820px)').matches;
+  const constrainedDevice = memory <= 4 || cores <= 4;
+  const renderer = new THREE.WebGLRenderer({canvas, antialias: !constrainedDevice, alpha: true, powerPreference: 'high-performance'});
+  const pixelRatioCap = constrainedDevice ? 1.25 : isPhone ? 1.75 : 1.5;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;   // PCF supports shadow.radius (soft edges)
   const scene = new THREE.Scene();
@@ -603,7 +607,8 @@ export function mountKlyronScrollStory(root, {
     scene.environment = city.envMap;   // building and city reflect the same sky (RoomEnvironment looked like a grey studio next to it)
     Object.assign(LIGHT, {sun: 2.55, hemi: .62, env: .62});
     sun.color.setHex(0xffdcb0); sun.position.copy(SUN_DIR).multiplyScalar(200);
-    sun.shadow.mapSize.set(lowPower ? 1024 : 2048, lowPower ? 1024 : 2048); sun.shadow.radius = 2.5; sun.shadow.bias = -0.0003; sun.shadow.normalBias = .05;
+    const shadowSize = constrainedDevice ? 1024 : isPhone ? 1536 : 2048;
+    sun.shadow.mapSize.set(shadowSize, shadowSize); sun.shadow.radius = 2.5; sun.shadow.bias = -0.0003; sun.shadow.normalBias = .05;
     Object.assign(sun.shadow.camera, {left: -95, right: 95, top: 95, bottom: -95, near: 60, far: 380}); sun.shadow.camera.updateProjectionMatrix();
     hemi.color.setHex(0xcfdcea); hemi.groundColor.setHex(0x5f6447);
     rim.intensity = 0; renderer.toneMappingExposure = .92;
@@ -1133,7 +1138,7 @@ export function mountKlyronScrollStory(root, {
 
   /* ---------- loop ---------- */
   let raf = 0, onScreen = true, paused = false, lastRender = 0;
-  const frameInterval = 1000 / (lowPower ? 30 : 45);
+  const frameInterval = 1000 / (constrainedDevice ? 30 : isPhone ? 40 : 45);
   const io = new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }, {rootMargin: '200px'}); io.observe(root);
   function frame(now) {
     if (paused) return;
