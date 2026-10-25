@@ -537,7 +537,8 @@ const FED_LABEL_PT = {arch: ['Arquitetura', 'ARK.rvt'], str: ['Estrutura', 'STRU
 
 export function mountKlyronScrollStory(root, {
   modelUrl = null,
-  modelUrls = ['/models/klyron-shell.glb', '/models/klyron-structure.glb', '/models/klyron-electrical.glb', '/models/klyron-mechanical-core.glb', '/models/klyron-mechanical-upper.glb'],
+  modelUrls = ['/models/klyron-story.glb'],
+  detailModelUrls = ['/models/klyron-detail-architecture.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
   modelData = null,
   city: withCity = true,
   language = 'en'
@@ -624,7 +625,22 @@ export function mountKlyronScrollStory(root, {
   const G = (d) => { if (!groups[d]) { groups[d] = new THREE.Group(); scene.add(groups[d]); } return groups[d]; };
   const elements = [], CL = {}, TASKS = [];
   let ASSET = null, ready = false;
+  let detailsReady = Boolean(modelUrl || modelData), detailsPromise = null, loadingDetails = false;
   const edgeMat = new THREE.LineBasicMaterial({color: 0x0b1016, transparent: true, opacity: .35});
+
+  // Lightweight guided-story HVAC context. The full mechanical network remains an
+  // Explore-only download, while these simple runs keep federation and clash views legible.
+  const mechProxy = new THREE.Group(); mechProxy.name = 'guided-mechanical-proxy';
+  const proxyDuctMat = M({color: 0x3f8fde, roughness: .42, metalness: .45, transparent: true, opacity: .78});
+  const proxyPipeMat = M({color: 0x3faf64, roughness: .45, metalness: .25, transparent: true, opacity: .82});
+  [[13, .85, 1.35, 1.8, 10.65, 2.1], [1.2, .8, 13, 4.1, 10.72, -1.5], [8, .55, .8, -2, 10.9, -4.15]].forEach(([x, y, z, px, py, pz]) => {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(x, y, z), proxyDuctMat); mesh.position.set(px, py, pz); mechProxy.add(mesh);
+  });
+  [[-3.5, 10.5, 2.8], [7.2, 10.5, 1.3]].forEach(([x, y, z]) => {
+    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(.16, .16, 15, 8), proxyPipeMat); mesh.rotation.z = Math.PI / 2; mesh.position.set(x, y, z); mechProxy.add(mesh);
+  });
+  mechProxy.visible = !detailsReady;
+  G('mech').add(mechProxy);
 
   function addElement(mesh) {
     const [d0, lv, cat] = mesh.name.split('|');
@@ -687,10 +703,24 @@ export function mountKlyronScrollStory(root, {
     console.error('[kss] model load failed', err);
     setLoadProgress(0, isPt ? 'N\u00e3o foi poss\u00edvel carregar o modelo' : 'Model could not be loaded');
   };
-  const idle = () => new Promise((resolve) => {
-    if ('requestIdleCallback' in window) window.requestIdleCallback(resolve, {timeout: 900});
-    else setTimeout(resolve, 80);
-  });
+  async function loadFiles(urls, label, parallel = false) {
+    if (parallel && urls.length > 1) {
+      const progress = urls.map(() => 0);
+      const parts = await Promise.all(urls.map((url, i) => loader.loadAsync(url, (event) => {
+        progress[i] = event.total ? event.loaded / event.total : 0;
+        setLoadProgress(progress.reduce((sum, value) => sum + value, 0) / urls.length, label());
+      })));
+      parts.forEach(onModel);
+      return;
+    }
+    for (let i = 0; i < urls.length; i++) {
+      const gltf = await loader.loadAsync(urls[i], (event) => {
+        const part = event.total ? event.loaded / event.total : 0;
+        setLoadProgress((i + part) / urls.length, label());
+      });
+      onModel(gltf);
+    }
+  }
   async function startModelLoading() {
     if (modelData) {
       loader.parse(modelData, '', (gltf) => { onModel(gltf); exploreButton.disabled = false; loadBox.hidden = true; }, onError);
@@ -698,23 +728,38 @@ export function mountKlyronScrollStory(root, {
     }
     const urls = modelUrl ? [modelUrl] : modelUrls;
     try {
-      for (let i = 0; i < urls.length; i++) {
-        const gltf = await loader.loadAsync(urls[i], (event) => {
-          const part = event.total ? event.loaded / event.total : 0;
-          setLoadProgress((i + part) / urls.length, i === 0
-            ? (isPt ? 'A preparar o modelo coordenado' : 'Preparing coordinated model')
-            : (isPt ? 'Modelo base pronto \u00b7 a adicionar sistemas' : 'Core model ready \u00b7 adding systems'));
-        });
-        onModel(gltf);
-        if (i === 0) root.classList.add('kss-core-ready');
-        if (i < urls.length - 1) await idle();
-      }
-      setLoadProgress(1, isPt ? 'Modelo federado pronto' : 'Federated model ready');
+      await loadFiles(urls, () => isPt ? 'A preparar a experi\u00eancia 3D' : 'Preparing 3D experience');
+      root.classList.add('kss-core-ready');
+      setLoadProgress(1, isPt ? 'Experi\u00eancia 3D pronta' : '3D experience ready');
       exploreButton.disabled = false;
       setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 650);
     } catch (error) {
       onError(error);
     }
+  }
+  async function ensureExploreDetails() {
+    if (detailsReady || modelUrl || modelData) return;
+    if (detailsPromise) return detailsPromise;
+    loadingDetails = true;
+    exploreButton.disabled = true;
+    loadBox.hidden = false;
+    setLoadProgress(0, isPt ? 'A carregar o modelo detalhado' : 'Loading detailed model');
+    detailsPromise = loadFiles(detailModelUrls, () => isPt ? 'A carregar o modelo detalhado' : 'Loading detailed model', true)
+      .then(() => {
+        detailsReady = true;
+        mechProxy.visible = false;
+        loadingDetails = false;
+        setLoadProgress(1, isPt ? 'Modelo detalhado pronto' : 'Detailed model ready');
+        setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 450);
+      })
+      .catch((error) => {
+        loadingDetails = false;
+        detailsPromise = null;
+        onError(error);
+        throw error;
+      })
+      .finally(() => { exploreButton.disabled = false; });
+    return detailsPromise;
   }
 
   /* ---------- 4D schedule UI ---------- */
@@ -873,9 +918,9 @@ export function mountKlyronScrollStory(root, {
     syncTextTree(root.querySelector('.xhint'), translatedRoot.querySelector('.xhint'));
     canvas.setAttribute('aria-label', isPt ? 'Modelo 3D do edifício que muda ao deslocar a página' : '3D building model that changes as you scroll');
     mobileReading.setAttribute('aria-label', isPt ? 'Informação e relatório do capítulo' : 'Chapter information and report');
-    if (!loadBox.hidden) loadLabel.textContent = ready
-      ? (isPt ? 'Modelo base pronto \u00b7 a adicionar sistemas' : 'Core model ready \u00b7 adding systems')
-      : (isPt ? 'A preparar o modelo coordenado' : 'Preparing coordinated model');
+    if (!loadBox.hidden) loadLabel.textContent = loadingDetails
+      ? (isPt ? 'A carregar o modelo detalhado' : 'Loading detailed model')
+      : (isPt ? 'A preparar a experi\u00eancia 3D' : 'Preparing 3D experience');
     TASKS.forEach((task) => { if (task.label) task.label.textContent = taskLabel(task.n); });
   }
   function vis(p, k) {
@@ -913,6 +958,11 @@ export function mountKlyronScrollStory(root, {
     let conc = 0, glass = 0, tray = 0;
 
     if (ready) {
+      if (!detailsReady) {
+        const proxyOpacity = lerp(1, .3, Math.max(clashV, cobie));
+        proxyDuctMat.opacity = .78 * proxyOpacity;
+        proxyPipeMat.opacity = .82 * proxyOpacity;
+      }
       const fs = cam.aspect < 1 ? .72 : 1;
       const FED = cam.aspect < 1 ? FED_TALL : FED_WIDE;
       const lift = cam.aspect < 1 ? 0 : 6.5 * fed;   // side-by-side models rise clear of the terrace and plazas
@@ -1019,8 +1069,10 @@ export function mountKlyronScrollStory(root, {
   /* ---------- free exploration ---------- */
   const xopen = $('xopen'), xbar = $('xbar'), xclose = $('xclose'), xreset = $('xreset');
   let explore = null, back = null;   // explore: {controls, home}; back: return transition to the story camera
-  function openExplore() {
+  async function openExplore() {
     if (explore || !ready) return;
+    try { await ensureExploreDetails(); } catch (_) { return; }
+    if (disposed || explore) return;
     const controls = new OrbitControls(cam, canvas);
     controls.target.copy(lastTgt); controls.enableDamping = true; controls.dampingFactor = .08; controls.screenSpacePanning = true;
     controls.minDistance = 3; controls.maxDistance = 900; controls.maxPolarAngle = Math.PI * .495; controls.update();

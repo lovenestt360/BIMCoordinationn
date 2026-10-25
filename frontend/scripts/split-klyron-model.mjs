@@ -5,17 +5,25 @@ import { MeshoptDecoder, MeshoptEncoder } from 'meshoptimizer';
 
 // The master BIM stays outside /public so production builds do not deploy the 96 MB source file.
 const input = new URL('../model-source/klyron-model.glb', import.meta.url).pathname.replace(/^\/(.:)/, '$1');
+const storyArchitecture = new Set(['facade', 'glass', 'wall', 'slab', 'col', 'railing', 'door']);
+const category = (name) => name.split('|')[2] || '';
 const outputs = [
-  { name: 'shell', accepts: (name) => name.startsWith('arch|') || name.startsWith('site|') },
-  { name: 'structure', accepts: (name) => name.startsWith('str|') },
-  { name: 'electrical', accepts: (name) => name.startsWith('ele|') || name.startsWith('clash|') },
   {
-    name: 'mechanical-core',
-    accepts: (name) => name.startsWith('asset|') || name.startsWith('clashduct|')
-      || (name.startsWith('mech|') && Number(name.split('|')[1]) <= 2),
+    name: 'story',
+    accepts: (name) => name.startsWith('site|') || name.startsWith('str|') || name.startsWith('ele|')
+      || name.startsWith('clash|') || name.startsWith('clashduct|') || name.startsWith('asset|')
+      || (name.startsWith('arch|') && storyArchitecture.has(category(name))),
   },
   {
-    name: 'mechanical-upper',
+    name: 'detail-architecture',
+    accepts: (name) => name.startsWith('arch|') && !storyArchitecture.has(category(name)),
+  },
+  {
+    name: 'detail-mechanical-core',
+    accepts: (name) => name.startsWith('mech|') && Number(name.split('|')[1]) <= 2,
+  },
+  {
+    name: 'detail-mechanical-upper',
     accepts: (name) => name.startsWith('mech|') && Number(name.split('|')[1]) > 2,
   },
 ];

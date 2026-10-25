@@ -7,11 +7,10 @@ globalThis.ProgressEvent ??= class ProgressEvent {
 };
 
 const files = [
-  'klyron-shell.glb',
-  'klyron-structure.glb',
-  'klyron-electrical.glb',
-  'klyron-mechanical-core.glb',
-  'klyron-mechanical-upper.glb',
+  'klyron-story.glb',
+  'klyron-detail-architecture.glb',
+  'klyron-detail-mechanical-core.glb',
+  'klyron-detail-mechanical-upper.glb',
 ];
 const names = new Set();
 const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
