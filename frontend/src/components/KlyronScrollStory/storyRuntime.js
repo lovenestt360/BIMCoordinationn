@@ -26,6 +26,12 @@ const CSS = `.kss{
 .kss-sticky{position:sticky;top:88px;height:calc(100vh - 88px);height:calc(100svh - 88px);overflow:hidden}
 .kss #stage{position:absolute;inset:0;width:100%;height:100%;display:block;
   background:radial-gradient(120% 90% at 60% 35%,#0d2438 0%,#06101a 45%,var(--ink) 80%)}
+.kss .model-load{position:absolute;right:clamp(16px,3vw,42px);top:clamp(18px,4vh,42px);z-index:3;width:min(260px,calc(100% - 32px));padding:11px 13px;border:1px solid rgba(125,224,255,.22);border-radius:7px;background:rgba(4,12,19,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .35s,visibility .35s}
+.kss .model-load[hidden]{display:block;opacity:0;visibility:hidden}
+.kss .model-load__row{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;font:500 9px/1.3 var(--f-label);letter-spacing:.13em;text-transform:uppercase;color:rgba(232,237,242,.68)}
+.kss .model-load__row b{color:var(--cyan-2);font-weight:600;font-variant-numeric:tabular-nums}
+.kss .model-load__track{height:2px;background:rgba(125,224,255,.14);overflow:hidden}
+.kss .model-load__bar{display:block;width:0;height:100%;background:var(--cyan);transition:width .2s linear}
 .kss .ui{position:absolute;inset:0;pointer-events:none;z-index:2}
 .kss .ui a,.kss .ui button{pointer-events:auto}
 .kss .btn{font:500 12px/1 var(--f-label);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;
@@ -35,6 +41,7 @@ const CSS = `.kss{
 .kss .btn-ghost{border:1px solid rgba(125,224,255,.45);color:var(--paper)}
 .kss .btn-ghost:hover,.kss .btn-ghost:focus-visible{background:rgba(57,195,255,.12)}
 .kss .btn:focus-visible{outline:2px solid var(--cyan-2);outline-offset:3px}
+.kss .btn:disabled{cursor:wait;opacity:.48}
 .kss .ch{position:absolute;left:clamp(16px,5vw,80px);bottom:clamp(82px,12vh,132px);max-width:min(520px,calc(100vw - 32px));opacity:0;will-change:opacity,transform}
 .kss .eyebrow{font:500 11px/1 var(--f-label);letter-spacing:.32em;text-transform:uppercase;color:var(--cyan);margin:0 0 18px;display:flex;align-items:center;gap:12px}
 .kss .eyebrow:before{content:"";width:28px;height:1px;background:var(--cyan)}
@@ -131,6 +138,7 @@ const CSS = `.kss{
   linear-gradient(90deg,rgba(4,7,11,.78) 0%,rgba(4,7,11,.25) 36%,rgba(4,7,11,0) 55%),
   linear-gradient(0deg,rgba(4,7,11,.55) 0%,rgba(4,7,11,0) 30%)}
 @media (max-width:820px){.kss-sticky{top:64px;height:calc(100vh - 64px);height:calc(100svh - 64px)}
+.kss .model-load{top:12px;right:12px;width:min(220px,calc(100% - 24px));padding:9px 11px}
 .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.92) 0%,rgba(4,7,11,.4) 42%,rgba(4,7,11,0) 60%),linear-gradient(180deg,rgba(4,7,11,.6) 0%,rgba(4,7,11,0) 22%)}
 .kss .ch{bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
 .kss .ch h1{font-size:clamp(40px,11vw,56px)}
@@ -223,6 +231,7 @@ const CSS = `.kss{
 const MARKUP = `<div class="kss-sticky">
 <canvas id="stage" aria-label="3D building model that changes as you scroll"></canvas>
 <div class="vig"></div>
+<div class="model-load" id="modelLoad" role="status" aria-live="polite"><div class="model-load__row"><span id="modelLoadLabel">Preparing coordinated model</span><b id="modelLoadValue">0%</b></div><div class="model-load__track"><i class="model-load__bar" id="modelLoadBar"></i></div></div>
 
 <div class="ui">
   <div id="tags"></div>
@@ -237,7 +246,7 @@ const MARKUP = `<div class="kss-sticky">
     <div class="facts"><span><b>Architecture \u00b7 Structure \u00b7 MEP</b></span><span>Projects in Australia &amp; Mozambique</span><span>Response within 24 h</span></div>
   </section>
   <div class="hint" id="hint">Scroll to explore<i></i></div>
-  <button class="btn btn-ghost xbtn" id="xopen" type="button">Explore in 3D</button>
+  <button class="btn btn-ghost xbtn" id="xopen" type="button" disabled>Explore in 3D</button>
   <div class="xbar" id="xbar" hidden><span class="xhint">Drag to orbit \u00b7 scroll or pinch to zoom \u00b7 right-drag or two fingers to pan</span><button class="btn btn-ghost" id="xreset" type="button">Reset view</button><button class="btn btn-solid" id="xclose" type="button">Back to story</button></div>
 
   <!-- 1 federation -->
@@ -526,7 +535,13 @@ const FED_LABEL = {arch: ['Architectural', 'ARK.rvt'], str: ['Structure', 'STRUC
 const FED_LABEL_PT = {arch: ['Arquitetura', 'ARK.rvt'], str: ['Estrutura', 'STRUC.ifc'], ele: ['Elétrica', 'ELE.rvt'], mech: ['Mecânica', 'HVAC.rvt']};
 
 
-export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.glb', modelData = null, city: withCity = true, language = 'en'} = {}) {
+export function mountKlyronScrollStory(root, {
+  modelUrl = null,
+  modelUrls = ['/models/klyron-shell.glb', '/models/klyron-structure.glb', '/models/klyron-electrical.glb', '/models/klyron-mechanical-core.glb', '/models/klyron-mechanical-upper.glb'],
+  modelData = null,
+  city: withCity = true,
+  language = 'en'
+} = {}) {
   let isPt = language === 'pt';
   root.classList.add('kss');
   if (!document.getElementById('kss-style')) {
@@ -538,8 +553,11 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
 
   /* ---------- renderer ---------- */
   const canvas = root.querySelector('#stage');
-  const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true, powerPreference: 'high-performance'});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, Math.min(innerWidth, innerHeight) > 600 ? 2 : 1.5));   // phones: 1.5x is sharp enough and much cheaper
+  const memory = navigator.deviceMemory || 8;
+  const cores = navigator.hardwareConcurrency || 8;
+  const lowPower = matchMedia('(max-width: 820px)').matches || memory <= 4 || cores <= 4;
+  const renderer = new THREE.WebGLRenderer({canvas, antialias: !lowPower, alpha: true, powerPreference: 'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1 : 1.5));
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;   // PCF supports shadow.radius (soft edges)
   const scene = new THREE.Scene();
@@ -563,8 +581,7 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
     scene.environment = city.envMap;   // building and city reflect the same sky (RoomEnvironment looked like a grey studio next to it)
     Object.assign(LIGHT, {sun: 2.55, hemi: .62, env: .62});
     sun.color.setHex(0xffdcb0); sun.position.copy(SUN_DIR).multiplyScalar(200);
-    const big = Math.min(innerWidth, innerHeight) > 600;
-    sun.shadow.mapSize.set(big ? 4096 : 2048, big ? 4096 : 2048); sun.shadow.radius = 2.5; sun.shadow.bias = -0.0003; sun.shadow.normalBias = .05;
+    sun.shadow.mapSize.set(lowPower ? 1024 : 2048, lowPower ? 1024 : 2048); sun.shadow.radius = 2.5; sun.shadow.bias = -0.0003; sun.shadow.normalBias = .05;
     Object.assign(sun.shadow.camera, {left: -95, right: 95, top: 95, bottom: -95, near: 60, far: 380}); sun.shadow.camera.updateProjectionMatrix();
     hemi.color.setHex(0xcfdcea); hemi.groundColor.setHex(0x5f6447);
     rim.intensity = 0; renderer.toneMappingExposure = .92;
@@ -630,14 +647,23 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
   }
 
   const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
-  const onModel = (gltf) => {
-    if (disposed) return;
-    const meshes = []; gltf.scene.traverse((o) => { if (o.isMesh) meshes.push(o); });
-    meshes.forEach(addElement);
+  const loadBox = root.querySelector('#modelLoad');
+  const loadLabel = root.querySelector('#modelLoadLabel');
+  const loadValue = root.querySelector('#modelLoadValue');
+  const loadBar = root.querySelector('#modelLoadBar');
+  const exploreButton = root.querySelector('#xopen');
+  const setLoadProgress = (value, label) => {
+    const pct = Math.max(0, Math.min(100, Math.round(value * 100)));
+    loadValue.textContent = `${pct}%`;
+    loadBar.style.width = `${pct}%`;
+    if (label) loadLabel.textContent = label;
+  };
+  const rebuildTasks = () => {
+    TASKS.length = 0;
     const by = (fn) => elements.filter(fn).sort((a, b) => a.level - b.level);
     const envelope = new Set(['facade', 'glass', 'wall', 'slab', 'railing']);
     TASKS.push(
-      {n: 'Excavation', s: 0, d: 6, it: [], works: true},     // site works drawn by the city (pit, excavator)
+      {n: 'Excavation', s: 0, d: 6, it: [], works: true},
       {n: 'Substructure', s: 5, d: 6, it: by((e) => e.disc === 'str' && e.level <= 0 && e.cat !== 'col')},
       {n: 'Frame L00\u2013L02', s: 10, d: 12, it: by((e) => e.disc === 'str' && ((e.level >= 0 && e.level <= 2 && !(e.level === 0 && e.cat !== 'col'))))},
       {n: 'Frame L03\u2013Roof', s: 20, d: 12, it: by((e) => e.disc === 'str' && e.level >= 3)},
@@ -645,15 +671,51 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
       {n: 'Electrical', s: 32, d: 22, it: by((e) => e.disc === 'ele')},
       {n: 'Mechanical', s: 34, d: 22, it: by((e) => e.disc === 'mech')},
       {n: 'Fit-out', s: 46, d: 14, it: by((e) => e.disc === 'arch' && !envelope.has(e.cat))},
-      {n: 'Landscape', s: 58, d: 6, it: [], works: true},     // terrace, planting and paving return
+      {n: 'Landscape', s: 58, d: 6, it: [], works: true},
     );
     for (let i = TASKS.length - 1; i >= 0; i--) if (!TASKS[i].it.length && !(TASKS[i].works && city)) TASKS.splice(i, 1);
     buildGantt();
+  };
+  const onModel = (gltf) => {
+    if (disposed) return;
+    const meshes = []; gltf.scene.traverse((o) => { if (o.isMesh) meshes.push(o); });
+    meshes.forEach(addElement);
+    rebuildTasks();
     ready = true;
   };
-  const onError = (err) => { console.error('[kss] model load failed', err); };
-  if (modelData) loader.parse(modelData, '', onModel, onError);      // model already in memory (embedded builds)
-  else loader.load(modelUrl, onModel, undefined, onError);
+  const onError = (err) => {
+    console.error('[kss] model load failed', err);
+    setLoadProgress(0, isPt ? 'N\u00e3o foi poss\u00edvel carregar o modelo' : 'Model could not be loaded');
+  };
+  const idle = () => new Promise((resolve) => {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(resolve, {timeout: 900});
+    else setTimeout(resolve, 80);
+  });
+  async function startModelLoading() {
+    if (modelData) {
+      loader.parse(modelData, '', (gltf) => { onModel(gltf); exploreButton.disabled = false; loadBox.hidden = true; }, onError);
+      return;
+    }
+    const urls = modelUrl ? [modelUrl] : modelUrls;
+    try {
+      for (let i = 0; i < urls.length; i++) {
+        const gltf = await loader.loadAsync(urls[i], (event) => {
+          const part = event.total ? event.loaded / event.total : 0;
+          setLoadProgress((i + part) / urls.length, i === 0
+            ? (isPt ? 'A preparar o modelo coordenado' : 'Preparing coordinated model')
+            : (isPt ? 'Modelo base pronto \u00b7 a adicionar sistemas' : 'Core model ready \u00b7 adding systems'));
+        });
+        onModel(gltf);
+        if (i === 0) root.classList.add('kss-core-ready');
+        if (i < urls.length - 1) await idle();
+      }
+      setLoadProgress(1, isPt ? 'Modelo federado pronto' : 'Federated model ready');
+      exploreButton.disabled = false;
+      setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 650);
+    } catch (error) {
+      onError(error);
+    }
+  }
 
   /* ---------- 4D schedule UI ---------- */
   const WEEKS = 64;
@@ -667,6 +729,7 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
   };
   const taskLabel = (name) => isPt ? (taskNamesPt[name] || name) : name;
   function buildGantt() {
+    gantt.replaceChildren();
     TASKS.forEach((t) => {
       const r = document.createElement('div'); r.className = 'g-row';
       r.innerHTML = `<span>${taskLabel(t.n)}</span><div class="g-track"><div style="left:${t.s / WEEKS * 100}%;width:${t.d / WEEKS * 100}%"><b></b></div></div>`;
@@ -674,6 +737,7 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
     });
     gantt.appendChild(head);
   }
+  startModelLoading();
   const RATE = {conc: 240, glass: 520, tray: 95};
 
   /* ---------- helpers ---------- */
@@ -809,6 +873,9 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
     syncTextTree(root.querySelector('.xhint'), translatedRoot.querySelector('.xhint'));
     canvas.setAttribute('aria-label', isPt ? 'Modelo 3D do edifício que muda ao deslocar a página' : '3D building model that changes as you scroll');
     mobileReading.setAttribute('aria-label', isPt ? 'Informação e relatório do capítulo' : 'Chapter information and report');
+    if (!loadBox.hidden) loadLabel.textContent = ready
+      ? (isPt ? 'Modelo base pronto \u00b7 a adicionar sistemas' : 'Core model ready \u00b7 adding systems')
+      : (isPt ? 'A preparar o modelo coordenado' : 'Preparing coordinated model');
     TASKS.forEach((task) => { if (task.label) task.label.textContent = taskLabel(task.n); });
   }
   function vis(p, k) {
@@ -982,12 +1049,15 @@ export function mountKlyronScrollStory(root, {modelUrl = '/models/klyron-model.g
   }
 
   /* ---------- loop ---------- */
-  let raf = 0, onScreen = true, paused = false;
+  let raf = 0, onScreen = true, paused = false, lastRender = 0;
+  const frameInterval = 1000 / (lowPower ? 30 : 45);
   const io = new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }, {rootMargin: '200px'}); io.observe(root);
   function frame(now) {
     if (paused) return;
     raf = requestAnimationFrame(frame);
     if (!onScreen || document.hidden) { last = now; return; }
+    if (now - lastRender < frameInterval) return;
+    lastRender = now;
     const dt = Math.min(.1, (now - last) / 1000); last = now;
     const t = now / 1000;
     if (explore) exploreFrame(now);          // scroll-driven camera paused; the chapter state stays as it was

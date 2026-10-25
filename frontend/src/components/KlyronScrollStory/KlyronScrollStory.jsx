@@ -2,8 +2,9 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mountKlyronScrollStory } from './storyRuntime';
 
-// modelUrl: where the web model is served from (put klyron-model.glb in /public/models/).
-export default function KlyronScrollStory({ modelUrl = '/models/klyron-model.glb' }) {
+// Optional modelUrl keeps single-file embeds possible. The website defaults to the
+// progressively loaded discipline packages configured by storyRuntime.
+export default function KlyronScrollStory({ modelUrl = null }) {
   const ref = useRef(null);
   const storyRef = useRef(null);
   const { i18n } = useTranslation();
