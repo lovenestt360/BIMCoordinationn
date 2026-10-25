@@ -225,24 +225,46 @@ const CSS = `.kss{
  .kss.kss-explore .mobile-reading{display:none;pointer-events:none}
 }
 
-/* Phone composition: keep the model dominant while separating the story copy
-   from the technical interface. The surfaces stay neutral so no blue veil sits
-   over the model. */
+/* Phone composition: direct-on-model editorial copy and compact bottom reports.
+   Technical chapters reserve the middle of the viewport for the 3D annotations. */
 @media(max-width:700px){
  .kss-sticky{top:0;height:100vh;height:100svh}
- .kss .model-load{top:calc(64px + env(safe-area-inset-top,0px));right:14px}
- .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.76) 0%,rgba(4,7,11,.18) 38%,transparent 57%),linear-gradient(180deg,rgba(4,7,11,.38) 0%,transparent 17%)}
+ .kss .model-load{display:none!important}
+ .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.62) 0%,rgba(4,7,11,.12) 30%,transparent 48%),linear-gradient(180deg,rgba(4,7,11,.32) 0%,transparent 15%)}
  .kss .mobile-reading{display:contents;pointer-events:none}
- .kss .mobile-reading .ch,.kss .mobile-reading .panel{margin:0;box-shadow:0 18px 46px rgba(0,0,0,.3);border:1px solid rgba(232,237,242,.13);background:rgba(5,10,15,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overscroll-behavior:contain}
- .kss .mobile-reading .ch[data-mobile-active="true"]{display:block!important;position:absolute!important;left:14px!important;right:14px!important;bottom:calc(68px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-height:min(37svh,330px);padding:17px 17px 16px;border-radius:10px;overflow:auto;pointer-events:auto}
- .kss .mobile-reading .panel[data-mobile-active="true"]{display:block!important;position:absolute!important;left:14px!important;right:14px!important;top:calc(70px + env(safe-area-inset-top,0px))!important;width:auto!important;max-height:min(31svh,270px);border-radius:9px;overflow:auto;pointer-events:auto;transform:none!important}
- .kss .mobile-reading .ch h1,.kss .mobile-reading .ch h2{font-size:clamp(26px,7.4vw,34px);line-height:1.04;letter-spacing:-.04em}
- .kss .mobile-reading .ch p{font-size:13.5px;line-height:1.48;margin-top:10px}
- .kss .mobile-reading .eyebrow{margin-bottom:9px;font-size:9px;letter-spacing:.18em}
+ .kss .mobile-reading .ch[data-mobile-active="true"]{display:block!important;position:absolute!important;left:18px!important;right:18px!important;bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-width:330px!important;padding:0;border:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;overflow:visible;pointer-events:none;text-shadow:0 2px 12px rgba(0,0,0,.92),0 1px 3px rgba(0,0,0,.9)}
+ .kss .mobile-reading:has(.panel[data-mobile-active="true"]) .ch[data-mobile-active="true"]{top:calc(76px + env(safe-area-inset-top,0px))!important;bottom:auto!important;max-width:285px!important}
+ .kss .mobile-reading .panel[data-mobile-active="true"]{display:block!important;position:absolute!important;left:14px!important;right:14px!important;top:auto!important;bottom:calc(70px + env(safe-area-inset-bottom,0px))!important;width:auto!important;max-height:none;border:1px solid rgba(232,237,242,.14);border-radius:10px;background:rgba(5,10,14,.91);box-shadow:0 16px 40px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);overflow:visible;pointer-events:none;transform:none!important}
+ .kss .mobile-reading .ch h1,.kss .mobile-reading .ch h2{font-size:clamp(25px,7vw,32px);line-height:1.02;letter-spacing:-.04em}
+ .kss .mobile-reading:has(.panel[data-mobile-active="true"]) .ch h2{font-size:clamp(22px,6vw,28px)}
+ .kss .mobile-reading .ch p{font-size:12px;line-height:1.42;margin-top:8px;color:rgba(247,249,251,.82)}
+ .kss .mobile-reading .eyebrow{margin-bottom:7px;font-size:8px;letter-spacing:.16em}
  .kss .mobile-reading .eyebrow:before{width:24px}
- .kss .mobile-reading .row{margin-top:14px}
+ .kss .mobile-reading .row{margin-top:11px;pointer-events:auto}
+ .kss .mobile-reading .ph{padding:7px 10px;font-size:8px;letter-spacing:.11em;flex-wrap:nowrap}
+ .kss .mobile-reading .pb{padding:3px 10px 7px}
+ .kss .mobile-reading .tbl{font-size:9px;line-height:1.2}
+ .kss .mobile-reading .tbl th{padding:4px 0 3px;font-size:7.5px;letter-spacing:.08em}
+ .kss .mobile-reading .tbl td{padding:3px 0}
+ .kss .mobile-reading .tbl td small{display:block;margin-top:1px;font-size:7px;line-height:1.15}
+ .kss .mobile-reading .panel .hide-m{display:table-row}
+ .kss .mobile-reading .pill{font-size:7px;padding:3px 4px}
+ .kss .mobile-reading .note{display:block;margin-top:4px;font-size:7.5px;line-height:1.25}
+ .kss .mobile-reading .kv{gap:3px 10px;font-size:9px}
+ .kss .mobile-reading .kv dt{font-size:7.5px;line-height:1.35}
+ .kss .mobile-reading .steps{margin-top:2px}
+ .kss .mobile-reading .step{grid-template-columns:12px 1fr auto;padding:2px 0;font-size:8px}
+ .kss .mobile-reading .step span:last-child{display:block;font-size:6.5px;letter-spacing:.04em}
+ .kss .mobile-reading .g-row{height:12px;font-size:8px}
+ .kss .mobile-reading .qty{gap:5px;margin-top:5px}
+ .kss .mobile-reading .qty div{padding:5px 7px}
+ .kss .mobile-reading .qty small{font-size:7px}
+ .kss .mobile-reading .qty b{font-size:12px}
+ .kss .mobile-reading .cde{gap:3px;margin-top:4px}
+ .kss .mobile-reading .cde div{padding:4px 3px;font-size:7px}
+ .kss .mobile-reading .file{margin-top:4px;font-size:8px}
  .kss .xbtn{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:14px;min-height:42px;padding:0 15px;background:rgba(5,13,21,.8)}
- .kss #tags{clip-path:inset(56px 0 39% 0)}
+ .kss #tags{clip-path:none}
  .kss .label b{font-size:9px;letter-spacing:.06em}
  .kss .label small{font-size:9px;margin-top:3px}
  .kss .label:after{height:15px;margin-top:5px}
