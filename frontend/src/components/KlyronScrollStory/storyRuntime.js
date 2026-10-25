@@ -572,9 +572,10 @@ const CLASH = 2;                    // the clash cluster sits on Level 02
 const CLASH_PTS = [[1.28, 10.78, 3.0], [4.14, 10.78, -4.2], [2.42, 10.63, 1.6]];   // where each cable tray meets the ductwork
 const CLASH_DROP = {c1: .16, c2: .43, c3: .06};   // drop that gives each tray 100 mm clearance under the duct
 const ASSET_TOP = [5.1, 23.4, 3.7];                // top of AHU-01, Level 05 plant room
-/* exploded view: side by side on wide screens (like a row of models), stacked on phones */
+/* Exploded view: every viewport separates disciplines laterally. On portrait
+   screens the tighter spread keeps the complete federation within frame. */
 const FED_WIDE = {arch: [0, 0, 1.5], str: [0, 0, .5], mech: [0, 0, -.5], ele: [0, 0, -1.5]};
-const FED_TALL = {str: [0, 0, 0], ele: [0, 1, 0], mech: [0, 2, 0], arch: [0, 3, 0]};
+const FED_TALL = {arch: [0, 0, 1.5], str: [0, 0, .5], mech: [0, 0, -.5], ele: [0, 0, -1.5]};
 const FED_GAP = 44;
 const FED_LABEL = {arch: ['Architectural', 'ARK.rvt'], str: ['Structure', 'STRUC.ifc'], ele: ['Electrical', 'ELE.rvt'], mech: ['Mechanical', 'HVAC.rvt']};
 const FED_LABEL_PT = {arch: ['Arquitetura', 'ARK.rvt'], str: ['Estrutura', 'STRUC.ifc'], ele: ['Elétrica', 'ELE.rvt'], mech: ['Mecânica', 'HVAC.rvt']};
@@ -603,8 +604,8 @@ export function mountKlyronScrollStory(root, {
   const cores = navigator.hardwareConcurrency || 8;
   const isPhone = matchMedia('(max-width: 820px)').matches;
   const constrainedDevice = memory <= 4 || cores <= 4;
-  const renderer = new THREE.WebGLRenderer({canvas, antialias: !constrainedDevice, alpha: true, powerPreference: 'high-performance'});
-  const pixelRatioCap = constrainedDevice ? 1.25 : isPhone ? 1.75 : 1.5;
+  const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true, powerPreference: 'high-performance'});
+  const pixelRatioCap = isPhone ? (constrainedDevice ? 1.6 : 2) : 1.5;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;   // PCF supports shadow.radius (soft edges)
@@ -629,7 +630,7 @@ export function mountKlyronScrollStory(root, {
     scene.environment = city.envMap;   // building and city reflect the same sky (RoomEnvironment looked like a grey studio next to it)
     Object.assign(LIGHT, {sun: 2.55, hemi: .62, env: .62});
     sun.color.setHex(0xffdcb0); sun.position.copy(SUN_DIR).multiplyScalar(200);
-    const shadowSize = constrainedDevice ? 1024 : isPhone ? 1536 : 2048;
+    const shadowSize = constrainedDevice ? 1536 : 2048;
     sun.shadow.mapSize.set(shadowSize, shadowSize); sun.shadow.radius = 2.5; sun.shadow.bias = -0.0003; sun.shadow.normalBias = .05;
     Object.assign(sun.shadow.camera, {left: -95, right: 95, top: 95, bottom: -95, near: 60, far: 380}); sun.shadow.camera.updateProjectionMatrix();
     hemi.color.setHex(0xcfdcea); hemi.groundColor.setHex(0x5f6447);
@@ -754,20 +755,32 @@ export function mountKlyronScrollStory(root, {
   async function loadFiles(urls, label, parallel = false) {
     if (parallel && urls.length > 1) {
       const progress = urls.map(() => 0);
-      const parts = await Promise.all(urls.map((url, i) => loader.loadAsync(url, (event) => {
+      const parts = await Promise.allSettled(urls.map((url, i) => loader.loadAsync(url, (event) => {
         progress[i] = event.total ? event.loaded / event.total : 0;
         setLoadProgress(progress.reduce((sum, value) => sum + value, 0) / urls.length, label());
       })));
-      parts.forEach(onModel);
+      let loaded = 0;
+      parts.forEach((part, i) => {
+        if (part.status === 'fulfilled') { onModel(part.value); loaded++; }
+        else console.warn(`[kss] model package failed: ${urls[i]}`, part.reason);
+      });
+      if (!loaded) throw parts.find((part) => part.status === 'rejected')?.reason || new Error('Model packages could not be loaded');
       return;
     }
+    let loaded = 0;
     for (let i = 0; i < urls.length; i++) {
-      const gltf = await loader.loadAsync(urls[i], (event) => {
-        const part = event.total ? event.loaded / event.total : 0;
-        setLoadProgress((i + part) / urls.length, label());
-      });
-      onModel(gltf);
+      try {
+        const gltf = await loader.loadAsync(urls[i], (event) => {
+          const part = event.total ? event.loaded / event.total : 0;
+          setLoadProgress((i + part) / urls.length, label());
+        });
+        onModel(gltf);
+        loaded++;
+      } catch (error) {
+        console.warn(`[kss] model package failed: ${urls[i]}`, error);
+      }
     }
+    if (!loaded) throw new Error('Model packages could not be loaded');
   }
   async function startModelLoading() {
     if (modelData) {
@@ -784,8 +797,8 @@ export function mountKlyronScrollStory(root, {
       exploreButton.disabled = false;
       setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 650);
       if (!modelUrl && urls.length > 1) {
-        guidedDetailsPromise = loadFiles(urls.slice(1), () => isPt ? 'A preparar os detalhes BIM' : 'Preparing BIM details', true)
-          .then(() => { mechProxy.visible = false; })
+        guidedDetailsPromise = loadFiles(urls.slice(1), () => isPt ? 'A preparar os detalhes BIM' : 'Preparing BIM details', !isPhone)
+          .then(() => { if (elements.some((element) => element.disc === 'mech' && !element.demo)) mechProxy.visible = false; })
           .catch((error) => { guidedDetailsError = error; onError(error); });
       }
     } catch (error) {
