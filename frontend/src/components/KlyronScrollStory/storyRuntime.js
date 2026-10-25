@@ -537,8 +537,8 @@ const FED_LABEL_PT = {arch: ['Arquitetura', 'ARK.rvt'], str: ['Estrutura', 'STRU
 
 export function mountKlyronScrollStory(root, {
   modelUrl = null,
-  modelUrls = ['/models/klyron-story-shell.glb', '/models/klyron-story-architecture.glb', '/models/klyron-story-structure.glb', '/models/klyron-story-systems.glb'],
-  detailModelUrls = ['/models/klyron-detail-architecture.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
+  modelUrls = ['/models/klyron-story-shell.glb', '/models/klyron-story-architecture.glb', '/models/klyron-story-structure.glb', '/models/klyron-story-systems.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
+  detailModelUrls = ['/models/klyron-detail-architecture.glb'],
   modelData = null,
   city: withCity = true,
   language = 'en'
@@ -737,6 +737,7 @@ export function mountKlyronScrollStory(root, {
       setTimeout(() => { if (!disposed) loadBox.hidden = true; }, 650);
       if (!modelUrl && urls.length > 1) {
         guidedDetailsPromise = loadFiles(urls.slice(1), () => isPt ? 'A preparar os detalhes BIM' : 'Preparing BIM details', true)
+          .then(() => { mechProxy.visible = false; })
           .catch((error) => { guidedDetailsError = error; onError(error); });
       }
     } catch (error) {

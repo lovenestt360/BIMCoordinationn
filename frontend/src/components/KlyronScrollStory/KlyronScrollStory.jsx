@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { mountKlyronScrollStory } from './storyRuntime';
 
 // Optional modelUrl keeps single-file embeds possible. By default, the exact BIM shell
-// appears first and the unchanged architectural/structural/system packages stream behind it.
+// appears first and the complete architectural, structural, electrical and mechanical
+// packages stream behind it without changing the authored BIM geometry.
 export default function KlyronScrollStory({ modelUrl = null }) {
   const ref = useRef(null);
   const storyRef = useRef(null);
