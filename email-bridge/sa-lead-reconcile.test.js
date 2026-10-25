@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {acceptedSAUpdate} from './sa-lead-reconcile.js';
+const lead={id:'recABC123',fields:{'Last Sent Step':0}};
+test('S01 receipt reconciles safely',()=>{const x=acceptedSAUpdate({lead,step:'S01',sentAt:'2026-10-14T12:00:00Z',messageId:'mock',activityId:'sa-attempt123'});assert.equal(x.allowed,true);assert.equal(x.fields['S01 Sent'],true);assert.equal(x.fields['Last Sent Step'],1);});
+test('never move sequence backward or skip steps',()=>{assert.equal(acceptedSAUpdate({lead,step:'S02',sentAt:'2026-10-14T12:00:00Z',messageId:'mock',activityId:'a'}).allowed,false);assert.equal(acceptedSAUpdate({lead:{id:'recABC123',fields:{'Last Sent Step':1}},step:'S01',sentAt:'2026-10-14T12:00:00Z',messageId:'mock',activityId:'a'}).allowed,false);});
+test('stop statuses block reconciliation',()=>{for(const [k,v] of [['Reply Status','Genuine Reply'],['Opt-Out Status','Opted Out'],['Booking Status','Booked'],['Bounce Status','Hard Bounce']])assert.equal(acceptedSAUpdate({lead:{id:'recABC123',fields:{...lead.fields,[k]:v}},sentAt:'2026-10-14T12:00:00Z',messageId:'mock',activityId:'a'}).allowed,false);});

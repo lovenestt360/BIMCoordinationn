@@ -12,6 +12,18 @@
   },
   "rewrites": [
     {
+      "source": "/api/sa-outreach/preview",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
+      "source": "/api/sa-outreach/readiness",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
       "source": "/api/process-research/gemini-test",
       "destination": {
         "service": "email_bridge"
