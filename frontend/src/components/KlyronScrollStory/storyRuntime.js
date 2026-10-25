@@ -582,7 +582,7 @@ const FED_LABEL_PT = {arch: ['Arquitetura', 'ARK.rvt'], str: ['Estrutura', 'STRU
 
 export function mountKlyronScrollStory(root, {
   modelUrl = null,
-  modelUrls = ['/models/klyron-story-shell.glb', '/models/klyron-story-architecture.glb', '/models/klyron-story-structure.glb', '/models/klyron-story-systems.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
+  modelUrls = ['/models/klyron-story-shell.glb', '/models/klyron-story-architecture.glb', '/models/klyron-story-structure.glb', '/models/klyron-story-systems.glb', '/models/klyron-detail-mechanical-priority.glb', '/models/klyron-detail-mechanical-core.glb', '/models/klyron-detail-mechanical-upper.glb'],
   detailModelUrls = ['/models/klyron-detail-architecture.glb'],
   modelData = null,
   city: withCity = true,

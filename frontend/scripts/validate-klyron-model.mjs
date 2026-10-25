@@ -12,6 +12,7 @@ const files = [
   'klyron-story-structure.glb',
   'klyron-story-systems.glb',
   'klyron-detail-architecture.glb',
+  'klyron-detail-mechanical-priority.glb',
   'klyron-detail-mechanical-core.glb',
   'klyron-detail-mechanical-upper.glb',
 ];

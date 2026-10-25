@@ -33,12 +33,18 @@ const outputs = [
     accepts: (name) => name.startsWith('arch|') && !storyArchitecture.has(category(name)),
   },
   {
+    name: 'detail-mechanical-priority',
+    accepts: (name) => name.startsWith('mech|') && category(name) === 'duct',
+  },
+  {
     name: 'detail-mechanical-core',
-    accepts: (name) => name.startsWith('mech|') && Number(name.split('|')[1]) <= 2,
+    accepts: (name) => name.startsWith('mech|') && category(name) !== 'duct'
+      && Number(name.split('|')[1]) <= 2,
   },
   {
     name: 'detail-mechanical-upper',
-    accepts: (name) => name.startsWith('mech|') && Number(name.split('|')[1]) > 2,
+    accepts: (name) => name.startsWith('mech|') && category(name) !== 'duct'
+      && Number(name.split('|')[1]) > 2,
   },
 ];
 
