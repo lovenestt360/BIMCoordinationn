@@ -37,6 +37,7 @@ const CSS = `.kss{
 .kss .btn{font:500 12px/1 var(--f-label);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;
   padding:14px 20px;border-radius:999px;transition:background .25s,color .25s,border-color .25s;white-space:nowrap}
 .kss .btn-solid{background:var(--cyan);color:var(--ink)}
+.kss .ch .btn-solid{box-shadow:none;text-shadow:none}
 .kss .btn-solid:hover,.kss .btn-solid:focus-visible{background:var(--paper)}
 .kss .btn-ghost{border:1px solid rgba(125,224,255,.45);color:var(--paper)}
 .kss .btn-ghost:hover,.kss .btn-ghost:focus-visible{background:rgba(57,195,255,.12)}
@@ -283,7 +284,8 @@ const MARKUP = `<div class="kss-sticky">
   <!-- 0 hero -->
   <section class="ch" data-ch="0" style="opacity:1">
     <p class="eyebrow">BIM Coordination &amp; Digital Delivery</p>
-    <h1>Resolve coordination <em>before it becomes</em> a construction problem.</h1>
+    <h1>Resolve coordination issues <em>before they become</em> construction problems.</h1>
+    <p>We help contractors avoid costly rework, project delays, and material waste by identifying design conflicts early, coordinating across disciplines, and driving issues to resolution before they reach the construction site.</p>
     <div class="row">
       <a class="btn btn-solid" href="#schedule">Book a 15-Minute Consultation</a>
     </div>
@@ -433,7 +435,8 @@ const PT_TEXT = {
   'Workflow': 'Fluxo de trabalho',
   'Start': 'Início',
   'BIM Coordination &amp; Digital Delivery': 'Coordenação BIM e Entrega Digital',
-  'Resolve coordination <em>before it becomes</em> a construction problem.': 'Resolva a coordenação <em>antes que se torne</em> um problema em obra.',
+  'Resolve coordination issues <em>before they become</em> construction problems.': 'Resolva problemas de coordenação <em>antes que se tornem</em> problemas em obra.',
+  'We help contractors avoid costly rework, project delays, and material waste by identifying design conflicts early, coordinating across disciplines, and driving issues to resolution before they reach the construction site.': 'Ajudamos empreiteiros a evitar retrabalho dispendioso, atrasos no projeto e desperdício de materiais, identificando conflitos de projeto antecipadamente, coordenando as disciplinas e conduzindo os problemas até à sua resolução antes de chegarem ao estaleiro.',
   'Book a 15-Minute Consultation': 'Marcar uma Consulta de 15 Minutos',
   'View Our Work': 'Ver os Nossos Projetos',
   'Architecture \u00b7 Structure \u00b7 MEP': 'Arquitetura \u00b7 Estrutura \u00b7 MEP',
@@ -602,9 +605,10 @@ export function mountKlyronScrollStory(root, {
   const memory = navigator.deviceMemory || 8;
   const cores = navigator.hardwareConcurrency || 8;
   const isPhone = matchMedia('(max-width: 820px)').matches;
+  const isAndroid = /Android/i.test(navigator.userAgent);
   const constrainedDevice = memory <= 4 || cores <= 4;
   const renderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true, powerPreference: 'high-performance'});
-  const pixelRatioCap = isPhone ? (constrainedDevice ? 1.6 : 2) : 1.5;
+  const pixelRatioCap = isAndroid ? (constrainedDevice ? 1.25 : 1.5) : isPhone ? (constrainedDevice ? 1.6 : 2) : 1.5;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;   // PCF supports shadow.radius (soft edges)
@@ -629,7 +633,7 @@ export function mountKlyronScrollStory(root, {
     scene.environment = city.envMap;   // building and city reflect the same sky (RoomEnvironment looked like a grey studio next to it)
     Object.assign(LIGHT, {sun: 2.55, hemi: .62, env: .62});
     sun.color.setHex(0xffdcb0); sun.position.copy(SUN_DIR).multiplyScalar(200);
-    const shadowSize = constrainedDevice ? 1536 : 2048;
+    const shadowSize = isAndroid ? 1024 : constrainedDevice ? 1536 : 2048;
     sun.shadow.mapSize.set(shadowSize, shadowSize); sun.shadow.radius = 2.5; sun.shadow.bias = -0.0003; sun.shadow.normalBias = .05;
     Object.assign(sun.shadow.camera, {left: -95, right: 95, top: 95, bottom: -95, near: 60, far: 380}); sun.shadow.camera.updateProjectionMatrix();
     hemi.color.setHex(0xcfdcea); hemi.groundColor.setHex(0x5f6447);
@@ -899,7 +903,7 @@ export function mountKlyronScrollStory(root, {
   // Bring technical views 25% closer while preserving targets and surrounding context.
   for (const i of [2, 3, 6]) K[i][0].sub(K[i][1]).multiplyScalar(.75).add(K[i][1]);
   /* portrait screens: text sits below the model, so aim at the building itself (null = keep desktop target) */
-  const KM = [V(0, -12, 0), V(0, 38, 0), V(2.3, 12.4, 0.5), V(2.6, 11.0, 0.5), V(2, 12, 0), V(0, -4, 0), V(5.24, 25.5, 3.88), V(0, -5, 0)];
+  const KM = [V(0, 6, 0), V(0, 38, 0), V(2.3, 12.4, 0.5), V(2.6, 11.0, 0.5), V(2, 14, 0), V(0, 10, 0), V(5.24, 25.5, 3.88), V(0, 8, 0)];
   const NCH = K.length, INSIDE = new Set([2, 3, 6]);
   const PLIFT = [0, 0, 0, 0, 0, 0, 0, 26];
   /* Optional intermediate poses for the move from chapter k to k+1 (desktop coordinates; `at` = share of the move). */
@@ -934,7 +938,7 @@ export function mountKlyronScrollStory(root, {
     } else r = arc(pa, ta, pb, tb, m);
     const sph = new THREE.Spherical().setFromVector3(r.pos.clone().sub(r.tgt));
     sph.theta += .06 * Math.sin(Math.PI * u) * (1 - m) + Math.sin(t * .15) * .012;   // slow drift while holding; zero at chapter boundaries
-    const pk = (i) => (i === 1 ? 1.05 : 1);
+    const pk = (i) => (i === 1 ? 1.05 : i === 7 ? 1.1 : 1);
     const inside = lerp(INSIDE.has(k) ? 1 : 0, INSIDE.has(k2) ? 1 : 0, m);
     const portrait = por ? (1.1 + (1 - aspect) * .35) * lerp(pk(k), pk(k2), m) : 1;
     sph.radius *= lerp(portrait, lerp(portrait, 1.15, .6), inside);
@@ -1200,7 +1204,7 @@ export function mountKlyronScrollStory(root, {
 
   /* ---------- loop ---------- */
   let raf = 0, onScreen = true, paused = false, lastRender = 0;
-  const frameInterval = 1000 / (constrainedDevice ? 30 : isPhone ? 40 : 45);
+  const frameInterval = 1000 / (isAndroid || constrainedDevice ? 30 : isPhone ? 40 : 45);
   const io = new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }, {rootMargin: '200px'}); io.observe(root);
   function frame(now) {
     if (paused) return;

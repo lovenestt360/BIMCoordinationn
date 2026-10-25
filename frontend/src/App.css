@@ -29,6 +29,14 @@
   color: var(--scene-paper);
 }
 
+/* Static content system: motion is reserved for the 3D story above. */
+.digital-continuation *,
+.digital-continuation *::before,
+.digital-continuation *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
 .digital-continuation::before {
   content: '';
   position: absolute;
@@ -170,6 +178,10 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--duration-default, 200ms) var(--ease-out, ease-out);
+}
+
+.drawing-progress {
+  display: none !important;
 }
 
 .drawing-progress.is-active {

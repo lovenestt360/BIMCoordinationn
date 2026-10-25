@@ -20,7 +20,7 @@ const selectItemClass = 'text-[rgba(247,249,251,0.8)] focus:bg-[#39C3FF]/10 focu
 
 const fieldVariants = {
   hidden: { opacity: 0, y: 10 },
-  show: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.05, duration: 0.35, ease: [0.22, 1, 0.36, 1] } }),
+  show: { opacity: 1, y: 0, transition: { duration: 0 } },
 };
 
 // `headerOverride` lets a landing page swap the generic "Book a Consultation"
@@ -160,10 +160,7 @@ const MeetingScheduler = ({ headerOverride }) => {
         {/* Section Header */}
         <motion.div
           className="mb-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          initial={false}
         >
           <p className="text-white/50 text-xs font-light tracking-[0.2em] uppercase mb-6" data-testid="schedule-label">{t('scheduler.eyebrow')}</p>
           <h2
@@ -198,10 +195,7 @@ const MeetingScheduler = ({ headerOverride }) => {
         <motion.div
           className="flex items-center justify-center gap-2 sm:gap-3 mb-10"
           data-testid="schedule-steps"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          initial={false}
         >
           {STEPS.map((label, i) => {
             const isDone = i < currentStep;
@@ -215,7 +209,7 @@ const MeetingScheduler = ({ headerOverride }) => {
                       borderColor: isDone || isActive ? '#39C3FF' : 'rgba(255,255,255,0.1)',
                       scale: isActive ? 1.08 : 1,
                     }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0 }}
                     className="w-7 h-7 rounded-full border flex items-center justify-center font-mono text-xs font-bold flex-shrink-0"
                     style={{ color: isDone || isActive ? '#7DE0FF' : 'rgba(247,249,251,0.55)' }}
                   >
@@ -235,7 +229,7 @@ const MeetingScheduler = ({ headerOverride }) => {
                       style={{ background: 'linear-gradient(90deg, #39C3FF, #7DE0FF)' }}
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: isDone ? 1 : 0 }}
-                      transition={{ duration: 0.4 }}
+                      transition={{ duration: 0 }}
                     />
                   </div>
                 )}
@@ -248,10 +242,7 @@ const MeetingScheduler = ({ headerOverride }) => {
         <motion.div
           data-testid="scheduler-card"
           className="glass rounded-sm max-w-4xl mx-auto overflow-hidden relative"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          initial={false}
         >
           {/* Ambient corner glow for extra depth */}
           <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full pointer-events-none" style={{
@@ -291,7 +282,7 @@ const MeetingScheduler = ({ headerOverride }) => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0 }}
                   >
                     <div className="flex items-center gap-2 mb-4 pt-1">
                       <Clock size={16} className="text-[#39C3FF]" />
@@ -316,8 +307,6 @@ const MeetingScheduler = ({ headerOverride }) => {
                             variants={fieldVariants}
                             initial="hidden"
                             animate="show"
-                            whileHover={{ scale: 1.04 }}
-                            whileTap={{ scale: 0.96 }}
                             className={`py-2 px-3 rounded-sm text-sm font-mono transition-colors duration-200 ${
                               selectedTime === slot
                                 ? 'bg-[#39C3FF] text-[#04070B]'
@@ -498,7 +487,7 @@ const MeetingScheduler = ({ headerOverride }) => {
                       initial={{ opacity: 0, scale: 0.95, y: -6 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: -6 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 0 }}
                       className="flex items-center gap-3 p-3 rounded-sm border border-[#39C3FF]/40"
                       style={{ background: 'linear-gradient(90deg, rgba(57,195,255,0.1), rgba(125,224,255,0.04))' }}
                     >
@@ -515,7 +504,7 @@ const MeetingScheduler = ({ headerOverride }) => {
                   )}
                 </AnimatePresence>
 
-                <motion.div whileHover={{ scale: selectedDate && selectedTime ? 1.01 : 1 }} whileTap={{ scale: selectedDate && selectedTime ? 0.98 : 1 }}>
+                <motion.div>
                   <Button
                     type="submit"
                     data-testid="schedule-submit-btn"

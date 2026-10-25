@@ -2,7 +2,6 @@ import "@/App.css";
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import gsap from "gsap";
-import { useGlobalScrollReveal } from "./hooks/useScrollReveal";
 import { captureAttribution } from "./lib/attribution";
 
 // Captured once per page load so cold-email UTM/role/pain params are
@@ -10,13 +9,9 @@ import { captureAttribution } from "./lib/attribution";
 // regardless of which route the visitor lands on.
 captureAttribution();
 
-// GSAP tweens are driven by JS, not CSS, so the prefers-reduced-motion rules in
-// App.css can't reach them. Collapsing the global timeline makes every GSAP
-// entrance/scroll animation resolve near-instantly for users who asked for less motion,
-// without having to thread a check through every component.
-if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  gsap.globalTimeline.timeScale(200);
-}
+// Motion is reserved for the scroll-driven 3D story. Legacy GSAP transitions in
+// the remaining marketing sections resolve immediately while state changes work.
+gsap.globalTimeline.timeScale(1000000);
 import Navbar from "./components/Navbar";
 import KlyronScrollStory from "./components/KlyronScrollStory/KlyronScrollStory";
 import Portfolio from "./components/Portfolio";
@@ -33,8 +28,6 @@ import { Toaster } from "./components/ui/sonner";
 import LandingPageVariant from "./pages/LandingPage";
 
 const LandingPage = () => {
-  useGlobalScrollReveal();
-
   useEffect(() => {
     // Landing pages redirect here as e.g. "/#about" when a section only
     // exists on the homepage. A plain browser navigation tries to scroll to

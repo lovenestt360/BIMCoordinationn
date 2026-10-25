@@ -71,7 +71,7 @@ const FAQ = () => {
                   <motion.span
                     className="flex-shrink-0"
                     animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0 }}
                   >
                     <ChevronDown
                       size={18}
@@ -89,7 +89,7 @@ const FAQ = () => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25 } }}
+                      transition={{ duration: 0 }}
                       style={{ overflow: 'hidden' }}
                     >
                       <div className="pb-6 pl-[calc(0.75rem+1.25rem)]">
