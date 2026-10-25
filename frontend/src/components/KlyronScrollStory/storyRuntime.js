@@ -225,6 +225,27 @@ const CSS = `.kss{
  .kss.kss-explore .mobile-reading{display:none;pointer-events:none}
 }
 
+/* Kybos-style phone composition: the 3D scene owns the viewport and each chapter
+   becomes one content-sized bottom card. Technical chapters alone may scroll. */
+@media(max-width:700px){
+ .kss-sticky{top:0;height:100vh;height:100svh}
+ .kss .model-load{top:calc(64px + env(safe-area-inset-top,0px));right:14px}
+ .kss .vig{background:linear-gradient(0deg,rgba(4,7,11,.82) 0%,rgba(4,7,11,.24) 43%,transparent 62%),linear-gradient(180deg,rgba(4,7,11,.48) 0%,transparent 20%)}
+ .kss .mobile-reading{top:auto;bottom:calc(68px + env(safe-area-inset-bottom,0px));left:14px;right:14px;max-height:min(42svh,360px);overflow:hidden;padding:17px 17px 16px;border:1px solid rgba(125,224,255,.16);border-radius:10px;background:rgba(5,13,21,.88);box-shadow:0 20px 52px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overscroll-behavior:contain}
+ .kss .mobile-reading[data-technical="true"]{max-height:min(52svh,440px);overflow:auto}
+ .kss .mobile-reading .panel{margin-top:12px;border-radius:7px;background:rgba(10,25,38,.72);backdrop-filter:none;-webkit-backdrop-filter:none}
+ .kss .mobile-reading .ch h1,.kss .mobile-reading .ch h2{font-size:clamp(26px,7.4vw,34px);line-height:1.04;letter-spacing:-.04em}
+ .kss .mobile-reading .ch p{font-size:13.5px;line-height:1.48;margin-top:10px}
+ .kss .mobile-reading .eyebrow{margin-bottom:9px;font-size:9px;letter-spacing:.18em}
+ .kss .mobile-reading .eyebrow:before{width:24px}
+ .kss .mobile-reading .row{margin-top:14px}
+ .kss .xbtn{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:14px;min-height:42px;padding:0 15px;background:rgba(5,13,21,.8)}
+ .kss #tags{clip-path:inset(56px 0 43% 0)}
+ .kss .label b{font-size:9px;letter-spacing:.06em}
+ .kss .label small{font-size:9px;margin-top:3px}
+ .kss .label:after{height:15px;margin-top:5px}
+}
+
 @media (prefers-reduced-motion:reduce){.kss .hint i,.kss .pin:before{animation:none}}
 `;
 
@@ -1021,6 +1042,7 @@ export function mountKlyronScrollStory(root, {
     /* overlays */
     const mobileActive = Math.min(NCH - 1, Math.round(p));
     [...chs, ...panels].forEach(el => el.dataset.mobileActive = String(Number(el.dataset.ch ?? el.dataset.panel) === mobileActive));
+    mobileReading.dataset.technical = String(panels.some((panel) => Number(panel.dataset.panel) === mobileActive));
     if (mobileActive !== mobileChapter) { mobileReading.scrollTop = 0; mobileChapter = mobileActive; }
 
     chs.forEach((c, k) => { const v = vis(p, k); c.style.opacity = v.toFixed(3); c.style.transform = `translateY(${((1 - v) * (p < k ? 24 : -24)).toFixed(1)}px)`; c.style.visibility = v > 0.01 ? 'visible' : 'hidden'; });
