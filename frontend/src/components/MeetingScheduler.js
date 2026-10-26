@@ -270,6 +270,11 @@ const MeetingScheduler = ({ headerOverride }) => {
                   disabled={disabledDays}
                   locale={dateLocale}
                   className="mx-auto rounded-sm border border-[#0B2A44]"
+                  classNames={{
+                    table: 'w-auto mx-auto border-collapse space-y-1',
+                    head_row: 'flex justify-center',
+                    row: 'flex justify-center w-full mt-2',
+                  }}
                   style={{ marginInline: 'auto' }}
                 />
               </div>

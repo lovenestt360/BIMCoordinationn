@@ -940,6 +940,27 @@ textarea:-webkit-autofill:focus {
     border-top: 1px solid rgba(255,255,255,.08) !important;
   }
 
+  .digital-continuation [data-testid="contact-section"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  .digital-continuation [data-testid="contact-section"]::before,
+  .digital-continuation [data-testid="contact-section"]::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .digital-continuation [data-testid="contact-section"] > div:not(.absolute) {
+    position: relative;
+    z-index: 2;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+  }
+
   [data-testid="schedule-section"] > .absolute,
   [data-testid="contact-section"] > .absolute {
     display: none !important;
@@ -1255,6 +1276,17 @@ textarea:-webkit-autofill:focus {
   [data-testid="calendar-container"] .rdp-month {
     margin-left: auto !important;
     margin-right: auto !important;
+  }
+
+  [data-testid="calendar-container"] .rdp-table {
+    width: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  [data-testid="calendar-container"] .rdp-head_row,
+  [data-testid="calendar-container"] .rdp-row {
+    justify-content: center !important;
   }
 
   [data-testid="contact-submit-btn"] {
