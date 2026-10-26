@@ -934,7 +934,8 @@ textarea:-webkit-autofill:focus {
 
   .digital-continuation [data-testid="schedule-section"],
   .digital-continuation [data-testid="contact-section"] {
-    background: #07111a !important;
+    background-color: #08131f !important;
+    background-image: none !important;
     border-top: 1px solid rgba(255,255,255,.08) !important;
   }
 
@@ -1241,9 +1242,16 @@ textarea:-webkit-autofill:focus {
   }
 
   [data-testid="calendar-container"] {
-    justify-content: flex-start;
-    overflow-x: auto;
+    justify-content: center !important;
+    overflow: visible !important;
     padding-bottom: 4px;
+  }
+
+  [data-testid="calendar-container"] > *,
+  [data-testid="calendar-container"] .rdp-months,
+  [data-testid="calendar-container"] .rdp-month {
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   [data-testid="contact-submit-btn"] {
