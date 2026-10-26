@@ -112,9 +112,9 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
+        <div data-testid="contact-layout" className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
           {/* Contact Info */}
-          <div data-motion-card className="lg:col-span-4 divide-y divide-[#39C3FF]/15 rounded-xl border border-[#39C3FF]/20 bg-[#071723]/80 overflow-hidden">
+          <div data-motion-card data-testid="contact-info-panel" className="lg:col-span-4 divide-y divide-[#39C3FF]/15 rounded-xl border border-[#39C3FF]/20 bg-[#071723]/80 overflow-hidden">
             {/* Email Card */}
             <div
               data-testid="contact-email-card"

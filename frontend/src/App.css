@@ -913,6 +913,145 @@ textarea:-webkit-autofill:focus {
     opacity: .32;
   }
 
+  /* Mobile consultation/contact: one calm surface, restrained accent colour. */
+  .drawing-progress,
+  .digital-continuation .motion-section::after {
+    display: none !important;
+  }
+
+  [data-testid="schedule-section"],
+  [data-testid="contact-section"] {
+    background: #07111a !important;
+    border-top: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+  [data-testid="schedule-section"] > .absolute,
+  [data-testid="contact-section"] > .absolute {
+    display: none !important;
+  }
+
+  [data-testid="schedule-section"] .mb-16,
+  [data-testid="contact-section"] .mb-12 {
+    margin-bottom: 28px !important;
+    text-align: left !important;
+  }
+
+  [data-testid="schedule-title"],
+  [data-testid="contact-title"] {
+    max-width: 11ch;
+    margin-bottom: 16px !important;
+    font-size: clamp(2.25rem, 10vw, 2.75rem) !important;
+    line-height: 1 !important;
+  }
+
+  [data-testid="contact-title"] span,
+  [data-testid="schedule-title"] span {
+    color: rgba(247,249,251,.78) !important;
+  }
+
+  [data-testid="schedule-section"] .mb-16 > p,
+  [data-testid="contact-section"] .mb-12 > p {
+    margin-left: 0 !important;
+    max-width: 34rem !important;
+    color: rgba(247,249,251,.62) !important;
+  }
+
+  [data-testid="schedule-steps"] {
+    justify-content: flex-start !important;
+    margin-bottom: 20px !important;
+    padding: 0 2px;
+  }
+
+  [data-testid="scheduler-card"],
+  [data-testid="contact-info-panel"],
+  [data-testid="contact-form-container"] {
+    background: #0a1823 !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  [data-testid="scheduler-card"] > .absolute {
+    display: none !important;
+  }
+
+  [data-testid="scheduler-card"] > .grid > div {
+    border-color: rgba(255,255,255,.09) !important;
+  }
+
+  [data-testid="calendar-container"] {
+    width: 100%;
+    overflow: visible !important;
+  }
+
+  [data-testid="calendar-container"] > * {
+    width: 100%;
+  }
+
+  [data-testid="contact-layout"] {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  [data-testid="contact-form-container"] {
+    order: 1;
+  }
+
+  [data-testid="contact-info-panel"] {
+    order: 2;
+    border-color: rgba(255,255,255,.1) !important;
+  }
+
+  [data-testid="contact-info-panel"] > div {
+    display: grid;
+    grid-template-columns: 40px minmax(0,1fr);
+    column-gap: 14px;
+    padding: 18px !important;
+    border-color: rgba(255,255,255,.08) !important;
+  }
+
+  [data-testid="contact-info-panel"] > div > div:first-child {
+    grid-row: 1 / span 3;
+    margin-bottom: 0 !important;
+    border-color: rgba(255,255,255,.12) !important;
+    background: rgba(255,255,255,.035) !important;
+  }
+
+  [data-testid="contact-info-panel"] h3,
+  [data-testid="contact-info-panel"] a,
+  [data-testid="contact-info-panel"] p {
+    grid-column: 2;
+  }
+
+  [data-testid="contact-info-panel"] h3 {
+    margin-bottom: 4px !important;
+    font-size: 1.15rem !important;
+  }
+
+  [data-testid="contact-form-container"] input,
+  [data-testid="contact-form-container"] textarea,
+  [data-testid="contact-form-container"] button[role="combobox"],
+  [data-testid="scheduler-card"] input,
+  [data-testid="scheduler-card"] textarea,
+  [data-testid="scheduler-card"] button[role="combobox"] {
+    background: #0d202e !important;
+    border-color: rgba(255,255,255,.12) !important;
+    box-shadow: none !important;
+  }
+
+  [data-testid="contact-submit-btn"],
+  [data-testid="schedule-submit-btn"] {
+    background: #39c3ff !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 6px !important;
+  }
+
+  [data-testid="contact-submit-btn"]::before {
+    display: none !important;
+  }
+
   .digital-continuation > section {
     scroll-margin-top: 64px;
   }
