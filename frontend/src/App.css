@@ -1035,7 +1035,8 @@ textarea:-webkit-autofill:focus {
   }
 
   [data-testid="calendar-container"] > * {
-    width: 100%;
+    width: fit-content !important;
+    max-width: 100%;
   }
 
   [data-testid="contact-layout"] {
@@ -1279,14 +1280,24 @@ textarea:-webkit-autofill:focus {
   }
 
   [data-testid="calendar-container"] .rdp-table {
-    width: auto !important;
+    width: 224px !important;
+    max-width: 224px !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    table-layout: fixed !important;
   }
 
   [data-testid="calendar-container"] .rdp-head_row,
   [data-testid="calendar-container"] .rdp-row {
+    width: 224px !important;
     justify-content: center !important;
+  }
+
+  [data-testid="calendar-container"] .rdp-head_cell,
+  [data-testid="calendar-container"] .rdp-cell {
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
   }
 
   [data-testid="contact-submit-btn"] {
