@@ -19,6 +19,7 @@ const OnDemandSupport = ({ ctaTarget = '#schedule' }) => {
 
   return (
     <section
+      data-testid="ondemand-section"
       className="min-h-screen flex flex-col justify-center relative overflow-hidden"
       style={{ background: 'linear-gradient(180deg, #04070B 0%, #0B2A44 100%)' }}
     >

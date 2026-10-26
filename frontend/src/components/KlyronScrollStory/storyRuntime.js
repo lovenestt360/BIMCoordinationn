@@ -159,6 +159,12 @@ const CSS = `.kss{
 .kss .xbar{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 22px);z-index:4;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;pointer-events:auto;max-width:calc(100vw - 32px)}
 .kss .xbar[hidden]{display:none}
 @media (min-width:821px){.kss .ch[data-ch="2"],.kss .ch[data-ch="3"],.kss .ch[data-ch="4"],.kss .ch[data-ch="5"],.kss .ch[data-ch="6"]{max-width:min(520px,calc(100vw - clamp(24px,3vw,56px) - 420px - clamp(16px,5vw,80px) - 44px))}}
+@media (min-width:821px) and (max-height:900px){
+  .kss .ch[data-ch="0"]{bottom:34px;max-width:min(640px,calc(100vw - 64px))}
+  .kss .ch[data-ch="0"] h1{font-size:clamp(44px,3.55vw,58px);line-height:1}
+  .kss .ch[data-ch="0"] p{margin-top:16px;max-width:52ch;font-size:15px;line-height:1.5}
+  .kss .ch[data-ch="0"] .row{margin-top:20px}
+}
 .kss .xbar .btn{background:rgba(8,16,24,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .kss .xbar .btn-solid{background:var(--cyan)}
 .kss .xhint{width:100%;text-align:center;font:500 10.5px/1.4 var(--f-label);letter-spacing:.14em;text-transform:uppercase;color:rgba(247,249,251,.85);text-shadow:0 1px 8px rgba(4,7,11,.8)}
@@ -289,7 +295,6 @@ const MARKUP = `<div class="kss-sticky">
     <div class="row">
       <a class="btn btn-solid" href="#schedule">Book a 15-Minute Consultation</a>
     </div>
-    <div class="facts"><span><b>Architecture \u00b7 Structure \u00b7 MEP</b></span><span>Projects in Australia &amp; Mozambique</span><span>Response within 24 h</span></div>
   </section>
   <div class="hint" id="hint">Scroll to explore<i></i></div>
   <button class="btn btn-ghost xbtn" id="xopen" type="button" disabled>Explore in 3D</button>

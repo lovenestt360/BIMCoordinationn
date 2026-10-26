@@ -889,6 +889,19 @@ textarea:-webkit-autofill:focus {
 }
 
 /* Phone layout: deliberately composed rather than a compressed desktop canvas. */
+@media (min-width: 821px) and (max-height: 900px) {
+  [data-testid="ondemand-section"] {
+    min-height: auto !important;
+    padding-top: 112px;
+    padding-bottom: 112px;
+  }
+
+  [data-testid="ondemand-section"] > div:last-child {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
 @media (max-width: 640px) {
   html {
     scroll-padding-top: 64px;
@@ -919,8 +932,8 @@ textarea:-webkit-autofill:focus {
     display: none !important;
   }
 
-  [data-testid="schedule-section"],
-  [data-testid="contact-section"] {
+  .digital-continuation [data-testid="schedule-section"],
+  .digital-continuation [data-testid="contact-section"] {
     background: #07111a !important;
     border-top: 1px solid rgba(255,255,255,.08) !important;
   }
@@ -957,7 +970,7 @@ textarea:-webkit-autofill:focus {
   }
 
   [data-testid="schedule-steps"] {
-    justify-content: flex-start !important;
+    justify-content: center !important;
     margin-bottom: 20px !important;
     padding: 0 2px;
   }
@@ -978,6 +991,19 @@ textarea:-webkit-autofill:focus {
 
   [data-testid="scheduler-card"] > .grid > div {
     border-color: rgba(255,255,255,.09) !important;
+  }
+
+  [data-testid="scheduler-card"] > .grid > div > .flex.items-center {
+    justify-content: center;
+  }
+
+  [data-testid="scheduler-card"] h3,
+  [data-testid="time-slots-container"] {
+    text-align: center;
+  }
+
+  [data-testid="time-slots-container"] > .flex {
+    justify-content: center;
   }
 
   [data-testid="calendar-container"] {
@@ -1050,6 +1076,23 @@ textarea:-webkit-autofill:focus {
 
   [data-testid="contact-submit-btn"]::before {
     display: none !important;
+  }
+
+  [data-testid="ondemand-cta"],
+  [data-testid="deliverables-cta"] {
+    display: flex !important;
+    width: fit-content;
+    min-height: 48px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 12px 22px !important;
+    justify-content: center;
+    border: 1px solid rgba(247,249,251,.32) !important;
+    border-radius: 6px !important;
+    background: transparent !important;
+    color: #f7f9fb !important;
+    box-shadow: none !important;
+    text-align: center;
   }
 
   .digital-continuation > section {
