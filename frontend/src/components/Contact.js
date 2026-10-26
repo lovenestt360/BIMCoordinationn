@@ -89,7 +89,7 @@ const Contact = () => {
     <section
       id="contact"
       data-testid="contact-section"
-      className="py-20 lg:py-28 blueprint-bg relative overflow-hidden"
+      className="py-20 lg:py-28 relative overflow-hidden"
     >
       <div className="absolute pointer-events-none" style={{
         bottom: '-10%', right: '-5%',

@@ -934,8 +934,9 @@ textarea:-webkit-autofill:focus {
 
   .digital-continuation [data-testid="schedule-section"],
   .digital-continuation [data-testid="contact-section"] {
-    background-color: #08131f !important;
-    background-image: none !important;
+    background:
+      linear-gradient(235deg, rgba(57,195,255,.04), transparent 22%),
+      linear-gradient(180deg, rgba(4,7,11,.99), rgba(9,22,34,.985)) !important;
     border-top: 1px solid rgba(255,255,255,.08) !important;
   }
 
@@ -1242,12 +1243,14 @@ textarea:-webkit-autofill:focus {
   }
 
   [data-testid="calendar-container"] {
+    display: flex !important;
     justify-content: center !important;
     overflow: visible !important;
     padding-bottom: 4px;
   }
 
   [data-testid="calendar-container"] > *,
+  [data-testid="calendar-container"] .rdp,
   [data-testid="calendar-container"] .rdp-months,
   [data-testid="calendar-container"] .rdp-month {
     margin-left: auto !important;

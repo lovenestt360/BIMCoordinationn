@@ -262,14 +262,15 @@ const MeetingScheduler = ({ headerOverride }) => {
                 </h3>
               </div>
 
-              <div data-testid="calendar-container" className="flex justify-center">
+              <div data-testid="calendar-container" className="flex w-full items-center justify-center">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
                   onSelect={setSelectedDate}
                   disabled={disabledDays}
                   locale={dateLocale}
-                  className="rounded-sm border border-[#0B2A44]"
+                  className="mx-auto rounded-sm border border-[#0B2A44]"
+                  style={{ marginInline: 'auto' }}
                 />
               </div>
 
