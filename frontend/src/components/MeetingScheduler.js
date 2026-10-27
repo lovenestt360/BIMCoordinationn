@@ -10,6 +10,7 @@ import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../components/ui/select';
 import { supabase } from '../lib/supabase';
+import { getAttribution } from '../lib/attribution';
 import { format, addDays, isBefore, startOfToday } from 'date-fns';
 
 const ALL_SLOTS = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
@@ -96,11 +97,16 @@ const MeetingScheduler = ({ headerOverride }) => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    const attribution = getAttribution();
+    const attributionLine = Object.keys(attribution).length
+      ? `Source: ${Object.entries(attribution).map(([key, value]) => `${key}=${value}`).join(', ')}`
+      : '';
     const enrichedNotes = [
       formData.service ? `Service Needed: ${formData.service}` : '',
       formData.projectStage ? `Project Stage: ${formData.projectStage}` : '',
       formData.meetingFocus ? `Meeting Focus: ${formData.meetingFocus}` : '',
       formData.notes ? `Notes: ${formData.notes}` : '',
+      attributionLine,
     ].filter(Boolean).join('\n');
 
     try {

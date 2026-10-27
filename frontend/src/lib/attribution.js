@@ -8,8 +8,8 @@
 const STORAGE_KEY = 'klyron_attribution';
 
 const ALLOWED = {
-  utm_source: ['cold_email'],
-  utm_medium: ['outbound'],
+  utm_source: ['cold_email', 'google', 'linkedin', 'meta', 'instagram', 'referral', 'organic'],
+  utm_medium: ['outbound', 'email', 'cpc', 'paid_social', 'referral', 'organic'],
   role: [
     'bim_manager',
     'project_director',
@@ -50,7 +50,7 @@ function readValidated(params) {
     }
   }
 
-  for (const key of ['utm_campaign', 'utm_content']) {
+  for (const key of ['utm_campaign', 'utm_content', 'lead_ref']) {
     const raw = params.get(key);
     if (raw && SLUG_PATTERN.test(raw)) {
       result[key] = raw;

@@ -26,6 +26,7 @@ import Footer from "./components/Footer";
 import FloatingContact from "./components/FloatingContact";
 import { Toaster } from "./components/ui/sonner";
 import LandingPageVariant from "./pages/LandingPage";
+import AdminPage from "./pages/AdminPage";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -71,6 +72,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/en/bim-managers" element={<LandingPageVariant variantKey="bimManagers" />} />
           {/* Alias: the master brief originally named this page "bim-support" */}
