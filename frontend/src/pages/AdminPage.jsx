@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   BarChart3, CalendarDays, ChevronRight, CircleUserRound,
   Clock3, Inbox, LogOut, Mail, RefreshCw, Search, ShieldCheck,
-  SlidersHorizontal, UserRoundCheck,
+  SlidersHorizontal, UserRoundCheck, Plus, Settings, Users,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import './AdminPage.css';
@@ -88,6 +88,25 @@ function StatusFilter({ value, statuses, onChange }) {
   );
 }
 
+function CreateBooking({ onCreated }) {
+  const [form, setForm] = useState({ name:'', email:'', company:'', date:'', time:'09:00', notes:'' });
+  const [message, setMessage] = useState('');
+  const submit = async (e) => { e.preventDefault(); setMessage(''); const { data, error } = await supabase.from('meeting_requests').insert({ ...form, company:form.company||null, notes:form.notes||null, timezone:'Africa/Johannesburg', status:'confirmed' }).select().single(); if(error) setMessage(error.message); else { onCreated(data); setMessage('Booking created.'); setForm({ name:'',email:'',company:'',date:'',time:'09:00',notes:'' }); } };
+  return <section className="admin-panel"><div className="admin-panel-head"><div><p>Internal scheduling</p><h2>Create booking</h2></div></div><form className="admin-form-grid" onSubmit={submit}><label>Name<input required value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/></label><label>Email<input required type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/></label><label>Company<input value={form.company} onChange={e=>setForm({...form,company:e.target.value})}/></label><label>Date<input required type="date" min={localDateKey()} value={form.date} onChange={e=>setForm({...form,date:e.target.value})}/></label><label>Time<input required type="time" value={form.time} onChange={e=>setForm({...form,time:e.target.value})}/></label><label className="admin-form-wide">Notes<textarea rows="4" value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})}/></label><div className="admin-form-wide admin-form-submit">{message&&<span role="status">{message}</span>}<button>Create booking</button></div></form></section>;
+}
+
+function SettingsView({ email }) {
+  const [newEmail,setNewEmail]=useState(email); const [password,setPassword]=useState(''); const [message,setMessage]=useState('');
+  const updateEmail=async(e)=>{e.preventDefault();const {error}=await supabase.auth.updateUser({email:newEmail});setMessage(error?error.message:'Check both email addresses to confirm the change.');};
+  const updatePassword=async(e)=>{e.preventDefault();if(password.length<12){setMessage('Use at least 12 characters.');return;}const {error}=await supabase.auth.updateUser({password});setMessage(error?error.message:'Password updated successfully.');if(!error)setPassword('');};
+  return <div className="admin-settings-grid"><section className="admin-panel"><div className="admin-panel-head"><div><p>Account identity</p><h2>Change email</h2></div></div><form className="admin-form-grid single" onSubmit={updateEmail}><label>Email<input type="email" required value={newEmail} onChange={e=>setNewEmail(e.target.value)}/></label><button>Request email change</button></form></section><section className="admin-panel"><div className="admin-panel-head"><div><p>Account security</p><h2>Change password</h2></div></div><form className="admin-form-grid single" onSubmit={updatePassword}><label>New password<input type="password" autoComplete="new-password" minLength="12" required value={password} onChange={e=>setPassword(e.target.value)}/></label><button>Update password</button></form></section>{message&&<div className="admin-banner" role="status">{message}</div>}</div>;
+}
+
+function VisitorsView({ events }) {
+  const paths=Object.entries(events.reduce((a,e)=>{a[e.path]=(a[e.path]||0)+1;return a;},{})).sort((a,b)=>b[1]-a[1]);
+  return <section className="admin-panel"><div className="admin-panel-head"><div><p>Consent-based analytics</p><h2>Website visits</h2></div><span>{events.length} page views</span></div>{paths.length?<div className="admin-campaigns">{paths.slice(0,20).map(([path,count])=><div key={path}><div><strong>{path}</strong><span>{count} views</span></div><div className="admin-campaign-bar"><i style={{width:`${Math.max(8,count/paths[0][1]*100)}%`}}/></div></div>)}</div>:<EmptyState>Consented page views will appear here.</EmptyState>}</section>;
+}
+
 function RecordDrawer({ record, type, onClose, onSave }) {
   const statuses = type === 'booking' ? BOOKING_STATUSES : ENQUIRY_STATUSES;
   const [status, setStatus] = useState(record.status || statuses[0]);
@@ -143,6 +162,7 @@ export default function AdminPage() {
   const [adminProfile, setAdminProfile] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
+  const [visitors, setVisitors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [view, setView] = useState('overview');
@@ -160,10 +180,11 @@ export default function AdminPage() {
     if (!session) return;
     setLoading(true);
     setError('');
-    const [adminResult, bookingResult, enquiryResult] = await Promise.all([
+    const [adminResult, bookingResult, enquiryResult, visitorResult] = await Promise.all([
       supabase.from('admin_users').select('user_id, full_name, role').eq('user_id', session.user.id).maybeSingle(),
       supabase.from('meeting_requests').select('*').order('date', { ascending: true }).order('time', { ascending: true }),
       supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
+      supabase.from('visitor_events').select('*').order('created_at', { ascending: false }).limit(1000),
     ]);
     if (adminResult.error || !adminResult.data || adminResult.data.role !== 'admin') {
       setAuthorized(false);
@@ -174,7 +195,8 @@ export default function AdminPage() {
       setAdminProfile(adminResult.data);
       setBookings(bookingResult.data || []);
       setEnquiries(enquiryResult.data || []);
-      if (bookingResult.error || enquiryResult.error) setError(bookingResult.error?.message || enquiryResult.error?.message);
+      setVisitors(visitorResult.data || []);
+      if (bookingResult.error || enquiryResult.error || visitorResult.error) setError(bookingResult.error?.message || enquiryResult.error?.message || visitorResult.error?.message);
     }
     setLoading(false);
   }, [session]);
@@ -229,7 +251,8 @@ export default function AdminPage() {
 
   const nav = [
     ['overview', BarChart3, 'Overview'], ['bookings', CalendarDays, 'Bookings'],
-    ['enquiries', Inbox, 'Enquiries'], ['campaigns', SlidersHorizontal, 'Campaigns'],
+    ['create', Plus, 'Create'], ['enquiries', Inbox, 'Enquiries'], ['visitors', Users, 'Visitors'],
+    ['campaigns', SlidersHorizontal, 'Campaigns'], ['settings', Settings, 'Settings'],
   ];
 
   return (
@@ -259,8 +282,11 @@ export default function AdminPage() {
         {view === 'bookings' && <section className="admin-panel"><div className="admin-panel-head"><div><p>Calendar queue</p><h2>Consultation bookings</h2></div><span>{filteredBookings.length} of {bookings.length}</span></div><StatusFilter value={statusFilter} statuses={BOOKING_STATUSES} onChange={setStatusFilter} /><BookingList records={filteredBookings} onOpen={(record) => setSelected({ type: 'booking', record })} /></section>}
         {view === 'enquiries' && <section className="admin-panel"><div className="admin-panel-head"><div><p>Inbound interest</p><h2>Project enquiries</h2></div><span>{filteredEnquiries.length} of {enquiries.length}</span></div><StatusFilter value={statusFilter} statuses={ENQUIRY_STATUSES} onChange={setStatusFilter} /><EnquiryList records={filteredEnquiries} onOpen={(record) => setSelected({ type: 'enquiry', record })} /></section>}
         {view === 'campaigns' && <CampaignView records={[...bookings, ...enquiries]} />}
+        {view === 'create' && <CreateBooking onCreated={(item)=>setBookings(items=>[...items,item])} />}
+        {view === 'visitors' && <VisitorsView events={visitors} />}
+        {view === 'settings' && <SettingsView email={session.user.email} />}
       </main>
-      <nav className="admin-mobile-nav">{nav.map(([key, Icon, label]) => <button key={key} className={view === key ? 'active' : ''} onClick={() => changeView(key)}><Icon size={18} /><span>{label}</span></button>)}</nav>
+      <nav className="admin-mobile-nav">{nav.slice(0,5).map(([key, Icon, label]) => <button key={key} className={view === key ? 'active' : ''} onClick={() => changeView(key)}><Icon size={18} /><span>{label}</span></button>)}</nav>
       {selected && <RecordDrawer type={selected.type} record={selected.record} onClose={() => setSelected(null)} onSave={(id, changes) => saveRecord(selected.type, id, changes)} />}
     </div>
   );

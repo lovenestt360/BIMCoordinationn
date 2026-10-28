@@ -20,6 +20,7 @@
 
 export function trackEvent(name, payload = {}) {
   if (typeof window === 'undefined') return;
+  if (localStorage.getItem('klyron_cookie_consent') !== 'accepted') return;
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event: name, ...payload });
 }

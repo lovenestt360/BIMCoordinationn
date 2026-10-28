@@ -1,6 +1,6 @@
 import "@/App.css";
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { captureAttribution } from "./lib/attribution";
 
@@ -27,6 +27,20 @@ import FloatingContact from "./components/FloatingContact";
 import { Toaster } from "./components/ui/sonner";
 import LandingPageVariant from "./pages/LandingPage";
 import AdminPage from "./pages/AdminPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import CookieConsent from "./components/CookieConsent";
+import { recordPageView } from "./lib/visitorAnalytics";
+
+const VisitorTracker = () => {
+  const location = useLocation();
+  useEffect(() => {
+    const track = () => recordPageView(`${location.pathname}${location.search}`);
+    track();
+    window.addEventListener('klyron-consent-change', track, { once: true });
+    return () => window.removeEventListener('klyron-consent-change', track);
+  }, [location.pathname, location.search]);
+  return null;
+};
 
 const LandingPage = () => {
   useEffect(() => {
@@ -71,8 +85,10 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <VisitorTracker />
         <Routes>
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/en/bim-managers" element={<LandingPageVariant variantKey="bimManagers" />} />
           {/* Alias: the master brief originally named this page "bim-support" */}
@@ -83,6 +99,7 @@ function App() {
           <Route path="/en/preconstruction" element={<LandingPageVariant variantKey="preconstruction" />} />
           <Route path="/en/digital-delivery" element={<LandingPageVariant variantKey="digitalDelivery" />} />
         </Routes>
+        <CookieConsent />
       </BrowserRouter>
     </div>
   );

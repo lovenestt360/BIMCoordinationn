@@ -94,11 +94,37 @@ create policy "Admins can update enquiries"
   with check (public.is_klyron_admin());
 
 grant select, update on public.meeting_requests to authenticated;
+grant insert on public.meeting_requests to authenticated;
 grant select, update on public.contact_messages to authenticated;
 grant select on public.admin_users to authenticated;
 
 create index if not exists meeting_requests_date_status_idx on public.meeting_requests(date, status);
 create index if not exists contact_messages_created_status_idx on public.contact_messages(created_at desc, status);
+
+drop policy if exists "Admins can create meetings" on public.meeting_requests;
+create policy "Admins can create meetings" on public.meeting_requests for insert to authenticated
+  with check (public.is_klyron_admin());
+
+create table if not exists public.visitor_events (
+  id bigint generated always as identity primary key,
+  created_at timestamptz not null default now(),
+  path text not null check (char_length(path) <= 200),
+  referrer text check (char_length(referrer) <= 200),
+  utm_source text check (char_length(utm_source) <= 40),
+  utm_campaign text check (char_length(utm_campaign) <= 40),
+  device_type text not null check (device_type in ('mobile','tablet','desktop')),
+  consent text not null check (consent = 'accepted')
+);
+alter table public.visitor_events enable row level security;
+drop policy if exists "Consenting visitors can record page views" on public.visitor_events;
+create policy "Consenting visitors can record page views" on public.visitor_events for insert to anon
+  with check (consent = 'accepted');
+drop policy if exists "Admins can read visitor analytics" on public.visitor_events;
+create policy "Admins can read visitor analytics" on public.visitor_events for select to authenticated
+  using (public.is_klyron_admin());
+grant insert on public.visitor_events to anon;
+grant select on public.visitor_events to authenticated;
+create index if not exists visitor_events_created_idx on public.visitor_events(created_at desc);
 
 -- After creating an Auth user in Supabase Authentication, grant access with:
 -- insert into public.admin_users (user_id, full_name, role)
