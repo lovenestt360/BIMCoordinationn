@@ -148,18 +148,25 @@ function footerCard(): string {
 function meetBtn(meetLink: string, meetCode: string, center = false): string {
   if (!meetLink) return "";
   const align = center ? "center" : "left";
+  const isZoom = /(^|\.)zoom\.us(?:\/|$)/i.test(new URL(meetLink).hostname);
+  const buttonColor = isZoom ? "#2D8CFF" : "#1a73e8";
+  const buttonShadow = isZoom ? "rgba(45,140,255,0.4)" : "rgba(26,115,232,0.4)";
+  const providerMark = isZoom
+    ? `<span style="display:inline-block;color:#fff;font-size:14px;font-weight:800;font-family:Arial,sans-serif;letter-spacing:-0.3px">zoom</span>`
+    : `<img src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png" width="22" height="22" alt="Google Meet" style="display:block">`;
+  const buttonLabel = isZoom ? "Join Zoom Meeting" : "Join with Google Meet";
   return `<table cellpadding="0" cellspacing="0" width="100%">
     <tr><td align="${align}">
       <table cellpadding="0" cellspacing="0" class="btn-wrap">
         <tr>
-          <td class="btn-cell" style="background:#1a73e8;border-radius:10px;box-shadow:0 4px 16px rgba(26,115,232,0.4)">
+          <td class="btn-cell" style="background:${buttonColor};border-radius:10px;box-shadow:0 4px 16px ${buttonShadow}">
             <a href="${meetLink}" class="btn-a" style="display:inline-table;text-decoration:none;padding:14px 28px">
               <table cellpadding="0" cellspacing="0"><tr>
                 <td style="vertical-align:middle;padding-right:10px">
-                  <img src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png" width="22" height="22" alt="Meet" style="display:block">
+                  ${providerMark}
                 </td>
                 <td style="vertical-align:middle">
-                  <span style="color:#fff;font-size:15px;font-weight:700;font-family:Arial,sans-serif">Join with Google Meet</span>
+                  <span style="color:#fff;font-size:15px;font-weight:700;font-family:Arial,sans-serif">${buttonLabel}</span>
                 </td>
               </tr></table>
             </a>
