@@ -534,8 +534,9 @@ app.post('/api/public-booking', async (req, res) => {
     const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const insert = await fetch(`${supabaseUrl}/rest/v1/meeting_requests`, { method:'POST', headers:{ apikey:serviceKey,Authorization:`Bearer ${serviceKey}`,'Content-Type':'application/json',Prefer:'return=representation' }, body:JSON.stringify({ name,email,company:company||null,notes:notes||null,date,time,timezone,status:'confirmed',zoom_meeting_id:String(meeting.id),zoom_join_url:meeting.join_url,zoom_start_url:meeting.start_url }) });
-    if (!insert.ok) { const details=await insert.json(); return res.status(409).json({ error:details.message || 'Could not save the booking.' }); }
-    return res.status(201).json({ success:true, join_url:meeting.join_url });
+    const saved = await insert.json();
+    if (!insert.ok) return res.status(409).json({ error:saved.message || 'Could not save the booking.' });
+    return res.status(201).json({ success:true, join_url:meeting.join_url, booking:saved[0] });
   } catch(error) { return res.status(500).json({ error:error.message || 'Booking failed.' }); }
 });
 
