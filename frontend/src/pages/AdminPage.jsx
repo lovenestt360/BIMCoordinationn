@@ -265,7 +265,7 @@ export default function AdminPage() {
       <main className="admin-main">
         <header className="admin-topbar">
           <div><p>Operations workspace</p><h1>{nav.find(([key]) => key === view)?.[2]}</h1></div>
-          <div className="admin-top-actions">{['bookings', 'enquiries'].includes(view) && <label><Search size={16} /><input type="search" autoComplete="off" aria-label={`Search ${view}`} placeholder="Search name, email or company…" value={search} onChange={(e) => setSearch(e.target.value)} /></label>}<button onClick={loadData} disabled={loading} aria-label="Refresh data" title="Refresh data"><RefreshCw className={loading ? 'is-spinning' : ''} size={17} /></button><div className="admin-avatar" title={adminProfile?.full_name || session.user.email}><CircleUserRound size={18} /><span>{adminProfile?.full_name || session.user.email}</span></div></div>
+          <div className="admin-top-actions">{['bookings', 'enquiries'].includes(view) && <label><Search size={16} /><input type="search" autoComplete="off" aria-label={`Search ${view}`} placeholder="Search name, email or company…" value={search} onChange={(e) => setSearch(e.target.value)} /></label>}<button onClick={loadData} disabled={loading} aria-label="Refresh data" title="Refresh data"><RefreshCw className={loading ? 'is-spinning' : ''} size={17} /></button><button className="admin-avatar" onClick={() => changeView('settings')} title={adminProfile?.full_name || session.user.email} aria-label="Open account settings"><CircleUserRound size={18} /><span>{adminProfile?.full_name || session.user.email}</span></button></div>
         </header>
         {error && <div className="admin-banner" role="alert">{error}</div>}
 
@@ -286,7 +286,7 @@ export default function AdminPage() {
         {view === 'visitors' && <VisitorsView events={visitors} />}
         {view === 'settings' && <SettingsView email={session.user.email} />}
       </main>
-      <nav className="admin-mobile-nav">{nav.slice(0,5).map(([key, Icon, label]) => <button key={key} className={view === key ? 'active' : ''} onClick={() => changeView(key)}><Icon size={18} /><span>{label}</span></button>)}</nav>
+      <nav className="admin-mobile-nav">{nav.map(([key, Icon, label]) => <button key={key} className={view === key ? 'active' : ''} onClick={() => changeView(key)}><Icon size={18} /><span>{label}</span></button>)}</nav>
       {selected && <RecordDrawer type={selected.type} record={selected.record} onClose={() => setSelected(null)} onSave={(id, changes) => saveRecord(selected.type, id, changes)} />}
     </div>
   );
