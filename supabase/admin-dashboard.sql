@@ -39,6 +39,14 @@ alter table public.meeting_requests
   add column if not exists zoom_join_url text,
   add column if not exists zoom_start_url text;
 
+-- New bookings must pass through the Zoom-first server workflow. NOT VALID
+-- preserves historical rows while enforcing the rule for every new insert.
+alter table public.meeting_requests
+  drop constraint if exists meeting_requests_zoom_required;
+alter table public.meeting_requests
+  add constraint meeting_requests_zoom_required
+  check (zoom_join_url is not null and zoom_meeting_id is not null) not valid;
+
 alter table public.contact_messages
   add column if not exists status text not null default 'new',
   add column if not exists internal_notes text,
