@@ -480,4 +480,45 @@ app.get('/api/process-leads', async (req, res) => {
 
 registerResearchRoutes(app);
 
+async function requireKlyronAdmin(req) {
+  const authorization = req.headers.authorization || '';
+  const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+  const anonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+  if (!authorization.startsWith('Bearer ') || !supabaseUrl || !anonKey) return false;
+  const profile = await fetch(`${supabaseUrl}/rest/v1/admin_users?select=role&user_id=eq.${encodeURIComponent(req.body?.admin_user_id || '')}`, {
+    headers: { apikey: anonKey, Authorization: authorization },
+  });
+  if (!profile.ok) return false;
+  const rows = await profile.json();
+  return rows[0]?.role === 'admin';
+}
+
+async function zoomAccessToken() {
+  const credentials = Buffer.from(`${process.env.ZOOM_CLIENT_ID}:${process.env.ZOOM_CLIENT_SECRET}`).toString('base64');
+  const response = await fetch(`https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${encodeURIComponent(process.env.ZOOM_ACCOUNT_ID || '')}`, {
+    method: 'POST', headers: { Authorization: `Basic ${credentials}` },
+  });
+  if (!response.ok) throw new Error('Zoom authentication failed.');
+  return response.json();
+}
+
+app.post('/api/zoom-meeting', async (req, res) => {
+  try {
+    if (!(await requireKlyronAdmin(req))) return res.status(403).json({ error: 'Administrator access required.' });
+    const { name, date, time, timezone = 'Africa/Johannesburg' } = req.body || {};
+    if (!name || !date || !time) return res.status(400).json({ error: 'Booking name, date and time are required.' });
+    const token = await zoomAccessToken();
+    const meeting = await fetch(`${token.api_url || 'https://api.zoom.us'}/v2/users/me/meetings`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token.access_token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic: `Klyron consultation — ${name}`, type: 2, start_time: `${date}T${time}:00`, timezone, duration: 30, settings: { waiting_room: true, join_before_host: false } }),
+    });
+    const data = await meeting.json();
+    if (!meeting.ok) return res.status(502).json({ error: data.message || 'Zoom could not create the meeting.' });
+    return res.json({ meeting_id: String(data.id), join_url: data.join_url, start_url: data.start_url });
+  } catch (error) {
+    return res.status(500).json({ error: error.message || 'Zoom meeting creation failed.' });
+  }
+});
+
 export default app;

@@ -12,6 +12,12 @@
   },
   "rewrites": [
     {
+      "source": "/api/zoom-meeting",
+      "destination": {
+        "service": "email_bridge"
+      }
+    },
+    {
       "source": "/api/process-research/gemini-test",
       "destination": {
         "service": "email_bridge"

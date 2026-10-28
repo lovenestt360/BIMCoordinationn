@@ -113,6 +113,8 @@ function RecordDrawer({ record, type, onClose, onSave }) {
   const [notes, setNotes] = useState(record.internal_notes || '');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [zoomData, setZoomData] = useState({ meeting_id: record.zoom_meeting_id, join_url: record.zoom_join_url, start_url: record.zoom_start_url });
+  const [zoomLoading, setZoomLoading] = useState(false);
   const closeButtonRef = useRef(null);
 
   useEffect(() => {
@@ -135,6 +137,17 @@ function RecordDrawer({ record, type, onClose, onSave }) {
     setSaving(false);
   };
 
+  const createZoom = async () => {
+    setZoomLoading(true); setSaveError('');
+    const { data: { session } } = await supabase.auth.getSession();
+    try {
+      const response = await fetch('/api/zoom-meeting', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${session.access_token}` }, body:JSON.stringify({ admin_user_id:session.user.id, name:record.name, date:record.date, time:record.time, timezone:record.timezone || 'Africa/Johannesburg' }) });
+      const data = await response.json(); if(!response.ok) throw new Error(data.error || 'Could not create Zoom meeting.');
+      const changes={ zoom_meeting_id:data.meeting_id, zoom_join_url:data.join_url, zoom_start_url:data.start_url, status:'confirmed' };
+      const result=await onSave(record.id,changes,{close:false}); if(!result.ok) throw new Error(result.message); setZoomData(data);
+    } catch(error){ setSaveError(error.message); } finally { setZoomLoading(false); }
+  };
+
   return (
     <div className="admin-drawer-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <aside className="admin-drawer" role="dialog" aria-modal="true" aria-labelledby="admin-record-title">
@@ -146,10 +159,11 @@ function RecordDrawer({ record, type, onClose, onSave }) {
           <div><dt>Received</dt><dd>{safeDate(record.created_at, { dateStyle: 'medium', timeStyle: 'short' })}</dd></div>
         </dl>
         <div className="admin-message-block"><span>Submitted information</span><p>{record.notes || record.message || 'No additional details.'}</p></div>
+        {type === 'booking' && <div className="admin-message-block"><span>Zoom meeting</span>{zoomData.join_url ? <p><a href={zoomData.join_url} target="_blank" rel="noreferrer">Join Zoom call</a>{' · '}<a href={zoomData.start_url} target="_blank" rel="noreferrer">Start as host</a><br/>Meeting ID: {zoomData.meeting_id}</p> : <p>No Zoom meeting has been created yet.</p>}</div>}
         <label className="admin-field">Status<select value={status} onChange={(e) => setStatus(e.target.value)}>{statuses.map((item) => <option key={item} value={item}>{statusLabel(item)}</option>)}</select></label>
         <label className="admin-field">Internal notes<textarea rows="6" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Add qualification notes, next steps or project context…" /></label>
         {saveError && <p className="admin-error" role="alert">{saveError}</p>}
-        <div className="admin-drawer-actions"><a href={`mailto:${record.email}`}>Email contact</a><button onClick={save} disabled={saving}>{saving ? 'Saving…' : 'Save changes'}</button></div>
+        <div className="admin-drawer-actions"><a href={`mailto:${record.email}`}>Email contact</a>{type === 'booking' && !zoomData.join_url && <button onClick={createZoom} disabled={zoomLoading}>{zoomLoading ? 'Creating…' : 'Create Zoom link'}</button>}<button onClick={save} disabled={saving}>{saving ? 'Saving…' : 'Save changes'}</button></div>
       </aside>
     </div>
   );
@@ -231,7 +245,7 @@ export default function AdminPage() {
     setStatusFilter('all');
   };
 
-  const saveRecord = async (type, id, changes) => {
+  const saveRecord = async (type, id, changes, options = {}) => {
     const table = type === 'booking' ? 'meeting_requests' : 'contact_messages';
     const { error: updateError } = await supabase.from(table).update({ ...changes, updated_at: new Date().toISOString() }).eq('id', id);
     if (updateError) {
@@ -240,7 +254,7 @@ export default function AdminPage() {
     }
     const setter = type === 'booking' ? setBookings : setEnquiries;
     setter((items) => items.map((item) => item.id === id ? { ...item, ...changes } : item));
-    setSelected(null);
+    if (options.close !== false) setSelected(null);
     return { ok: true };
   };
 
@@ -287,7 +301,7 @@ export default function AdminPage() {
         {view === 'settings' && <SettingsView email={session.user.email} />}
       </main>
       <nav className="admin-mobile-nav">{nav.map(([key, Icon, label]) => <button key={key} className={view === key ? 'active' : ''} onClick={() => changeView(key)}><Icon size={18} /><span>{label}</span></button>)}</nav>
-      {selected && <RecordDrawer type={selected.type} record={selected.record} onClose={() => setSelected(null)} onSave={(id, changes) => saveRecord(selected.type, id, changes)} />}
+      {selected && <RecordDrawer type={selected.type} record={selected.record} onClose={() => setSelected(null)} onSave={(id, changes, options) => saveRecord(selected.type, id, changes, options)} />}
     </div>
   );
 }

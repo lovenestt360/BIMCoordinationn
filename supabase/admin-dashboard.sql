@@ -34,7 +34,10 @@ create policy "Admins can read their profile"
 
 alter table public.meeting_requests
   add column if not exists internal_notes text,
-  add column if not exists updated_at timestamptz not null default now();
+  add column if not exists updated_at timestamptz not null default now(),
+  add column if not exists zoom_meeting_id text,
+  add column if not exists zoom_join_url text,
+  add column if not exists zoom_start_url text;
 
 alter table public.contact_messages
   add column if not exists status text not null default 'new',
