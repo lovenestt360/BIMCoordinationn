@@ -409,7 +409,7 @@ function clientEmailHtml(record: any, meetLink: string): string {
       <table cellpadding="0" cellspacing="0" width="100%" style="background:rgba(14,165,233,0.07);border-radius:10px;border:1px solid rgba(14,165,233,0.2)">
         <tr><td style="padding:14px 16px">
           <p style="margin:0 0 5px;font-size:13px;font-weight:600;color:#0EA5E9;font-family:Arial,sans-serif">&#128161; Before the meeting</p>
-          <p style="margin:0;font-size:13px;color:#94A3B8;line-height:1.6;font-family:Arial,sans-serif">Save the Google Meet link above. You can join from any device &#8212; computer, tablet or phone. No download required.</p>
+          <p style="margin:0;font-size:13px;color:#94A3B8;line-height:1.6;font-family:Arial,sans-serif">Save the Zoom link above. You can join from a computer, tablet or phone. Zoom may ask you to open its app or continue in your browser.</p>
         </td></tr>
       </table>
     </td></tr>
@@ -452,12 +452,12 @@ serve(async (req) => {
     // Calendar/Meet is a nice-to-have — if Google credentials are missing or
     // the API call fails, still send the confirmation emails without it
     // rather than losing the notification entirely.
-    let meetLink = "";
+    let meetLink = record.zoom_join_url || "";
     let calendarLink = "";
     // Surfaced in the response so a silently skipped Meet link can be
     // diagnosed without digging through function logs.
     let calendarStatus = "skipped: google credentials not configured";
-    if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_REFRESH_TOKEN) {
+    if (!meetLink && GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_REFRESH_TOKEN) {
       try {
         const accessToken = await getAccessToken();
         const calendarEvent = await createCalendarEvent(record, accessToken);

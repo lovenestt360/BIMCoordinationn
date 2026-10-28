@@ -521,4 +521,22 @@ app.post('/api/zoom-meeting', async (req, res) => {
   }
 });
 
+app.post('/api/public-booking', async (req, res) => {
+  try {
+    const allowedTimes = new Set(['09:00','10:00','11:00','14:00','15:00','16:00']);
+    const { name, email, company, notes, date, time, timezone = 'Africa/Johannesburg' } = req.body || {};
+    const daysAhead = (new Date(`${date}T00:00:00Z`).getTime() - Date.now()) / 86400000;
+    if (!name || name.length > 100 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '') || !allowedTimes.has(time) || daysAhead < -1 || daysAhead > 45 || String(notes || '').length > 3000) return res.status(400).json({ error: 'Invalid booking details.' });
+    const token = await zoomAccessToken();
+    const meetingResponse = await fetch(`${token.api_url || 'https://api.zoom.us'}/v2/users/me/meetings`, { method:'POST', headers:{ Authorization:`Bearer ${token.access_token}`,'Content-Type':'application/json' }, body:JSON.stringify({ topic:`Klyron consultation — ${name}`,type:2,start_time:`${date}T${time}:00`,timezone,duration:30,settings:{waiting_room:true,join_before_host:false} }) });
+    const meeting = await meetingResponse.json();
+    if (!meetingResponse.ok) return res.status(502).json({ error: meeting.message || 'Zoom could not create the meeting.' });
+    const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const insert = await fetch(`${supabaseUrl}/rest/v1/meeting_requests`, { method:'POST', headers:{ apikey:serviceKey,Authorization:`Bearer ${serviceKey}`,'Content-Type':'application/json',Prefer:'return=representation' }, body:JSON.stringify({ name,email,company:company||null,notes:notes||null,date,time,timezone,status:'confirmed',zoom_meeting_id:String(meeting.id),zoom_join_url:meeting.join_url,zoom_start_url:meeting.start_url }) });
+    if (!insert.ok) { const details=await insert.json(); return res.status(409).json({ error:details.message || 'Could not save the booking.' }); }
+    return res.status(201).json({ success:true, join_url:meeting.join_url });
+  } catch(error) { return res.status(500).json({ error:error.message || 'Booking failed.' }); }
+});
+
 export default app;

@@ -110,7 +110,7 @@ const MeetingScheduler = ({ headerOverride }) => {
     ].filter(Boolean).join('\n');
 
     try {
-      const { error } = await supabase.from('meeting_requests').insert([{
+      const response = await fetch('/api/public-booking', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
         name: formData.name,
         email: formData.email,
         company: formData.company || null,
@@ -118,10 +118,9 @@ const MeetingScheduler = ({ headerOverride }) => {
         date: format(selectedDate, 'yyyy-MM-dd'),
         time: selectedTime,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        status: 'pending',
-      }]);
-
-      if (error) throw error;
+      }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || t('scheduler.errorFallback'));
 
       setSubmitStatus({
         type: 'success',
